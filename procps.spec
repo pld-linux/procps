@@ -6,7 +6,7 @@ Summary(pl):	Narzêdzia do monitorowania procesów
 Summary(pt_BR):	Utilitários de monitoração de processos
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
-Version:	3.1.7
+Version:	3.1.8
 Release:	1
 License:	GPL
 Group:		Applications/System
