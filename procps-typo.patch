@@ -1,0 +1,34 @@
+diff -urN procps-3.1.3.orig/ps/TRANSLATION procps-3.1.3/ps/TRANSLATION
+--- procps-3.1.3.orig/ps/TRANSLATION	Fri Feb  1 23:47:27 2002
++++ procps-3.1.3/ps/TRANSLATION	Fri Dec 13 18:16:16 2002
+@@ -24,5 +24,5 @@
+ -f            full format
+ s             signal format
+ u             user-oriented format
+---forest      ASCII art forest (process heirarchy)
++--forest      ASCII art forest (process hierarchy)
+ c             show true command name
+diff -urN procps-3.1.3.orig/ps/help.c procps-3.1.3/ps/help.c
+--- procps-3.1.3.orig/ps/help.c	Wed Oct  9 06:41:53 2002
++++ procps-3.1.3/ps/help.c	Fri Dec 13 18:16:20 2002
+@@ -42,7 +42,7 @@
+ "-V,V show version       L  list format codes  f  ASCII art forest\n"
+ "-m,m show threads       S  children in sum    -y change -l format\n"
+ "-n,N set namelist file  c  true command name  n  numeric WCHAN,UID\n"
+-"-w,w wide output        e  show environment   -H process heirarchy\n"
++"-w,w wide output        e  show environment   -H process hierarchy\n"
+ ;
+ 
+ 
+diff -urN procps-3.1.3.orig/ps/parser.c procps-3.1.3/ps/parser.c
+--- procps-3.1.3.orig/ps/parser.c	Tue Dec  3 08:46:21 2002
++++ procps-3.1.3/ps/parser.c	Fri Dec 13 18:16:27 2002
+@@ -253,7 +253,7 @@
+       selection_list->typecode = SEL_RGID;
+       return NULL; /* can't have any more options */
+     case 'H':     /* another nice HP/UX feature */
+-      trace("-H Process heirarchy (like ASCII art forest option)\n");
++      trace("-H Process hierarchy (like ASCII art forest option)\n");
+       forest_type = 'u';
+       break;
+     case 'L':  /*  */
