@@ -1,20 +1,139 @@
---- Makefile.orig	Wed Aug 16 21:12:48 2000
-+++ Makefile	Wed Aug 16 21:19:47 2000
-@@ -4,7 +4,7 @@
+diff -Nur procps-2.0.7.orig/Makefile procps-2.0.7/Makefile
+--- procps-2.0.7.orig/Makefile	Thu Jul 13 22:22:58 2000
++++ procps-2.0.7/Makefile	Mon Aug 26 22:25:26 2002
+@@ -4,18 +4,18 @@
  export PREFIX     =  #proc# prefix for program names
  
  export DESTDIR    = /
 -export MANDIR     =  /usr/man
-+export MANDIR     =  /usr/share
- export MAN1DIR    =  $(DESTDIR)$(MANDIR)/man1
- export MAN5DIR    =  $(DESTDIR)$(MANDIR)/man5
- export MAN8DIR    =  $(DESTDIR)$(MANDIR)/man8
-@@ -14,7 +14,7 @@
- export USRBINDIR  =  $(DESTDIR)/usr/bin
- export PROCDIR    =  $(DESTDIR)/usr/bin# /usr/proc/bin for Solaris devotees
- export APPLNK     =  $(DESTDIR)/etc/X11/applnk/Utilities
+-export MAN1DIR    =  $(DESTDIR)$(MANDIR)/man1
+-export MAN5DIR    =  $(DESTDIR)$(MANDIR)/man5
+-export MAN8DIR    =  $(DESTDIR)$(MANDIR)/man8
+-export BINDIR     =  $(DESTDIR)/bin
+-export SBINDIR    =  $(DESTDIR)/sbin
+-export XBINDIR    =  $(DESTDIR)/usr/X11R6/bin
+-export USRBINDIR  =  $(DESTDIR)/usr/bin
+-export PROCDIR    =  $(DESTDIR)/usr/bin# /usr/proc/bin for Solaris devotees
+-export APPLNK     =  $(DESTDIR)/etc/X11/applnk/Utilities
 -export OWNERGROUP =  --owner 0 --group 0
+-export INSTALLBIN =  install --mode a=rx --strip
++export MANDIR     =  /usr/share/man
++export MAN1DIR    =  $(MANDIR)/man1
++export MAN5DIR    =  $(MANDIR)/man5
++export MAN8DIR    =  $(MANDIR)/man8
++export BINDIR     =  /bin
++export SBINDIR    =  /sbin
++export XBINDIR    =  /usr/X11R6/bin
++export USRBINDIR  =  /usr/bin
++export PROCDIR    =  /usr/bin# /usr/proc/bin for Solaris devotees
++export APPLNK     =  /etc/X11/applnk/Utilities
 +export OWNERGROUP =
- export INSTALLBIN =  install --mode a=rx --strip
++export INSTALLBIN =  install --mode a=rx
  export INSTALLSCT =  install --mode a=rx
  export INSTALLMAN =  install --mode a=r
+ 
+@@ -39,7 +39,7 @@
+ export CFLAGS     =  -D_GNU_SOURCE $(OPT) -I$(shell pwd) $(INCDIRS) -Wall -Wno-unused
+ 
+ export SHARED     =  1# build/install both a static and ELF shared library
+-export SHLIBDIR   =  $(DESTDIR)/lib# where to install the shared library
++export SHLIBDIR   =  /lib# where to install the shared library
+ 
+ export LDFLAGS    =  -Wl,-warn-common #-s	recommended for ELF systems
+ #LDFLAGS    =  -qmagic -s#		recommended for a.out systems
+@@ -71,7 +71,8 @@
+ # INSTALL PROGRAMS + DOCS
+ install: $(patsubst %,install_%,$(BUILD) $(XSCPT) $(MAN1) $(MAN5) $(MAN8))
+ ifeq ($(SHARED),1)
+-	install $(OWNERGROUP) --mode a=rx $(LIB_TGT) $(SHLIBDIR)
++	install -d $(DESTDIR)$(SHLIBDIR)
++	install $(OWNERGROUP) --mode a=rx $(LIB_TGT) $(DESTDIR)$(SHLIBDIR)
+ endif
+ 
+ # INSTALL LIBRARIES + HEADERS (OPTIONAL)
+@@ -175,31 +176,31 @@
+ # static pattern installation rules
+ 
+ $(patsubst %,install_%,$(BPROG)): install_%: %
+-	$(INSTALLBIN) $< $(BINDIR)/$(PREFIX)$<
++	$(INSTALLBIN) $< $(DESTDIR)$(BINDIR)/$(PREFIX)$<
+ $(patsubst %,install_%,$(SPROG)): install_%: %
+-	$(INSTALLBIN) $< $(SBINDIR)/$(PREFIX)$<
++	$(INSTALLBIN) $< $(DESTDIR)$(SBINDIR)/$(PREFIX)$<
+ $(patsubst %,install_%,$(UPROG)): install_%: %
+-	$(INSTALLBIN) $< $(USRBINDIR)/$(PREFIX)$<
++	$(INSTALLBIN) $< $(DESTDIR)$(USRBINDIR)/$(PREFIX)$<
+ $(patsubst %,install_%,$(PPROG)): install_%: %
+-	$(INSTALLBIN) $< $(PROCDIR)/$(PREFIX)$<
++	$(INSTALLBIN) $< $(DESTDIR)$(PROCDIR)/$(PREFIX)$<
+ $(patsubst %,install_%,$(XSCPT)): install_%: %
+-	$(INSTALLSCT) $< $(XBINDIR)/$(PREFIX)$<
++	$(INSTALLSCT) $< $(DESTDIR)$(XBINDIR)/$(PREFIX)$<
+ $(patsubst %,install_%,$(MAN1)) : install_%: %
+-	$(INSTALLMAN) $< $(MAN1DIR)/$(PREFIX)$<
++	$(INSTALLMAN) $< $(DESTDIR)$(MAN1DIR)/$(PREFIX)$<
+ $(patsubst %,install_%,$(MAN5)) : install_%: %
+-	$(INSTALLMAN) $< $(MAN5DIR)/$(PREFIX)$<
++	$(INSTALLMAN) $< $(DESTDIR)$(MAN5DIR)/$(PREFIX)$<
+ $(patsubst %,install_%,$(MAN8)) : install_%: %
+-	$(INSTALLMAN) $< $(MAN8DIR)/$(PREFIX)$<
++	$(INSTALLMAN) $< $(DESTDIR)$(MAN8DIR)/$(PREFIX)$<
+ $(patsubst %,install_%,$(DESKTOP)) : install_%: %
+-	$(INSTALLSCT $< $(APPLNK)/$(PREFIX)$<
++	$(INSTALLSCT $< $(DESTDIR)$(APPLNK)/$(PREFIX)$<
+ 
+ # special case install rules
+ install_snice: snice install_skill
+-	cd $(USRBINDIR) && ln -f skill snice
++	cd $(DESTDIR)$(USRBINDIR) && ln -f skill snice
+ install_kill: snice install_skill
+-	cd $(USRBINDIR) && ln -f skill kill
++	cd $(DESTDIR)$(USRBINDIR) && ln -f skill kill
+ install_pkill: pgrep install_pgrep
+-	cd $(USRBINDIR) && ln -f pgrep pkill
++	cd $(DESTDIR)$(USRBINDIR) && ln -f pgrep pkill
+ 
+ # Find all the source and object files in this directory
+ 
+diff -Nur procps-2.0.7.orig/proc/Makefile procps-2.0.7/proc/Makefile
+--- procps-2.0.7.orig/proc/Makefile	Mon Aug 26 21:47:44 2002
++++ procps-2.0.7/proc/Makefile	Mon Aug 26 22:25:18 2002
+@@ -56,13 +56,14 @@
+ # INSTALLATION
+ 
+ install: all
+-	if ! [ -d $(HDRDIR) ] ; then mkdir $(HDRDIR) ; fi
+-	$(INSTALL) $(HDROWN) $(HDR) $(TOPDIR)/include/$(NAME)
+-	$(INSTALL) $(LIBOWN) lib$(NAME).a $(LIBDIR)
++	if ! [ -d $(HDRDIR) ] ; then install -d $(DESTDIR)$(HDRDIR) ; fi
++	$(INSTALL) $(HDROWN) $(HDR) $(DESTDIR)$(TOPDIR)/include/$(NAME)
++	install -d $(DESTDIR)$(LIBDIR)
++	$(INSTALL) $(LIBOWN) lib$(NAME).a $(DESTDIR)$(LIBDIR)
+ ifeq ($(SHARED),1)
+-	$(INSTALL) $(LIBOWN) $(SONAME) $(SHLIBDIR)
+-	ln -sf $(SHLIBDIR)/$(SONAME) $(SHLIBDIR)/lib$(NAME).so
+-	ldconfig
++	install -d $(DESTDIR)$(SHLIBDIR)
++	$(INSTALL) $(LIBOWN) $(SONAME) $(DESTDIR)$(SHLIBDIR)
++	ln -sf $(SHLIBDIR)/$(SONAME) $(DESTDIR)$(LIBDIR)/lib$(NAME).so
+ endif
+ 
+ # VARIOUS SHORT CUT TARGETS
+diff -Nur procps-2.0.7.orig/ps/Makefile procps-2.0.7/ps/Makefile
+--- procps-2.0.7.orig/ps/Makefile	Mon Jul 10 19:16:47 2000
++++ procps-2.0.7/ps/Makefile	Mon Aug 26 22:25:18 2002
+@@ -27,10 +27,11 @@
+ 
+ 
+ install: ps
+-	install $(OWNERGROUP) --mode a=rx --strip ps $(BINDIR)/ps
+-	install $(OWNERGROUP) --mode a=r ps.1 $(MAN1DIR)/ps.1
++	install -d $(DESTDIR)$(BINDIR)
++	install $(OWNERGROUP) --mode a=rx ps $(DESTDIR)$(BINDIR)/ps
++	install -d $(DESTDIR)$(MAN1DIR)
++	install $(OWNERGROUP) --mode a=r ps.1 $(DESTDIR)$(MAN1DIR)/ps.1
+ 	# The following does no harm and on older systems might help
+-	rm -f /var/catman/cat1/ps.1.gz /var/man/cat1/ps.1.gz
+ 
+ clean:
+ 	rm -f *.o DEADJOE *~ core ps gmon.out

@@ -7,7 +7,7 @@ Summary(pt_BR):	Utilitários de monitoração de processos
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
 Version:	2.0.7
-Release:	13
+Release:	14
 License:	GPL
 Group:		Applications/System
 Source0:	ftp://metalab.unc.edu/pub/Linux/system/status/ps/%{name}-%{version}.tar.gz
@@ -91,11 +91,37 @@ Sistemin durumunu rapor eden araçlar paketidir. Koþan süreçlerin
 durumunu, kullanýlabilir bellek miktarýný, ve o an için sisteme girmiþ
 kullanýcýlarý bildirir.
 
+%package devel
+Summary:	libproc header files
+Summary(pl):	Pliki nag³ówkowe libproc
+License:	LGPL
+Group:		Development/Libraries
+Requires:	%{name} = %{version}
+
+%description devel
+libproc header files.
+
+%description devel -l pl
+Pliki nag³ówkowe biblioteki libproc.
+
+%package static
+Summary:	Static libproc library
+Summary(pl):	Statyczna biblioteka libproc
+License:	LGPL
+Group:		Development/Libraries
+Requires:	%{name}-devel = %{version}
+
+%description static
+Static version of libproc library.
+
+%description static -l pl
+Statyczna wersja biblioteki libproc.
+
 %prep
 %setup -q
 %patch0 -p1
 %patch1 -p1
-%patch2 -p0
+%patch2 -p1
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
@@ -113,15 +139,12 @@ PATH=%{_prefix}/X11R6/bin:$PATH
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/{bin,sbin,lib,usr/X11R6/bin} \
-	$RPM_BUILD_ROOT{%{_bindir},%{_datadir},%{_mandir}/{man{1,5,8},pl/man1}} \
+install -d $RPM_BUILD_ROOT/{bin,sbin,usr/X11R6/bin} \
+	$RPM_BUILD_ROOT{%{_bindir},%{_mandir}/man{1,5,8}} \
 	$RPM_BUILD_ROOT%{_applnkdir}/System
 
-%{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT BINGRP=`id -g` \
-	MAN1DIR=$RPM_BUILD_ROOT%{_mandir}/man1 \
-	MAN5DIR=$RPM_BUILD_ROOT%{_mandir}/man5 \
-	MAN8DIR=$RPM_BUILD_ROOT%{_mandir}/man8
+%{__make} install libinstall \
+	DESTDIR=$RPM_BUILD_ROOT
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_applnkdir}/System
 install XConsole   $RPM_BUILD_ROOT%{_prefix}/X11R6/bin
@@ -138,7 +161,8 @@ echo ".so skill.1" > $RPM_BUILD_ROOT%{_mandir}/man1/snice.1
 bzcat -dc %{SOURCE2} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
 rm -f $RPM_BUILD_ROOT%{_mandir}/*/man1/{kill,oldps}.1
 
-gzip -9nf NEWS BUGS TODO
+%clean
+rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/ldconfig
@@ -149,19 +173,14 @@ rm -f %{_sysconfdir}/psdevtab %{_sysconfdir}/psdatabase
 
 %postun -p /sbin/ldconfig
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
 %files
 %defattr(644,root,root,755)
-%doc {NEWS,BUGS,TODO}.gz
-
+%doc NEWS BUGS TODO
 %attr(755,root,root) /lib/libproc.so.*.*
 %attr(755,root,root) /bin/*
 %attr(755,root,root) /sbin/sysctl
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_prefix}/X11R6/bin/XConsole
-
 %{_mandir}/man*/*
 %lang(cs) %{_mandir}/cs/man*/*
 %lang(de) %{_mandir}/de/man*/*
@@ -174,5 +193,13 @@ rm -rf $RPM_BUILD_ROOT
 %lang(ko) %{_mandir}/ko/man*/*
 %lang(nl) %{_mandir}/nl/man*/*
 %lang(pl) %{_mandir}/pl/man*/*
-
 %{_applnkdir}/System/top.desktop
+
+%files devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libproc.so
+%{_includedir}/proc
+
+%files static
+%defattr(644,root,root,755)
+%{_libdir}/libproc.a
