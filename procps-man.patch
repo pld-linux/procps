@@ -1,0 +1,53 @@
+--- procps-2.0.7/top.1.orig	Thu Oct 24 21:04:36 2002
++++ procps-2.0.7/top.1	Fri Oct 25 00:40:16 2002
+@@ -398,7 +398,8 @@
+ The
+ .B SIZE
+ and
+-.B RSS fields don't count the page tables and the
++.B RSS
++fields don't count the page tables and the
+ .B task_struct
+ of a process; this is at least 12K of memory that is always resident.
+ .B SIZE
+@@ -423,7 +424,7 @@
+ .BR free (1),
+ .BR uptime (1),
+ .BR kill (1),
+-.BR renice (1).
++.BR renice (1)
+ .
+ .SH
+ BUGS
+@@ -447,7 +448,7 @@
+ specific processes through their ids.
+ 
+ Helmut Geyer <Helmut.Geyer@iwr.uni-heidelberg.de>
+-Heavily changed it to include support for configurable fields and other
++heavily changed it to include support for configurable fields and other
+ new options, and did further cleanup and use of the new readproc interface.
+ 
+ The "b" and "n" options contributed by George Bonser <george@captech.com> 
+@@ -455,4 +456,4 @@
+ 
+ Michael K. Johnson <johnsonm@redhat.com> is now the maintainer.
+ 
+-Please send bug reports to <procps-bugs@redhat.com>
++Please send bug reports to <procps-bugs@redhat.com>.
+--- procps-2.0.7/free.1.orig	Fri Oct 25 00:40:31 2002
++++ procps-2.0.7/free.1	Fri Oct 25 00:40:31 2002
+@@ -31,12 +31,12 @@
+ The \fB\-V\fP displays version information.
+ .SH FILES
+ .ta
+-.IR /proc/meminfo "\-\- memory information"
++.IR /proc/meminfo " \-\- memory information"
+ .fi
+ 
+ .SH "SEE ALSO"
+ .BR ps (1),
+-.BR top(1)
++.BR top (1)
+ 
+ .SH AUTHORS
+ Written by Brian Edmonds. 
