@@ -3,6 +3,7 @@ Name=Top
 Comment=Repetitive display of current process status
 Comment[pl]=Wyświetlanie aktualnego stanu procesów
 Exec=top
+Icon=xload
 Terminal=true
 Type=Application
 Categories=System;Monitor;
