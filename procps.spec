@@ -63,9 +63,12 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/{etc/X11/wmconfig,bin,lib} \
 	$RPM_BUILD_ROOT/usr/{bin,X11R6/bin,share}
 
-install -d $RPM_BUILD_ROOT%{man_dir}/{man{1,8},pl/man1}
+install -d $RPM_BUILD_ROOT%{_mandir}/{man{1,8},pl/man1}
 
-make install DESTDIR=$RPM_BUILD_ROOT BINGRP=`id -g`
+make install \
+	DESTDIR=$RPM_BUILD_ROOT BINGRP=`id -g` \
+	MAN1DIR=$RPM_BUILD_ROOT%{_mandir}/man1 \
+	MAN8DIR=$RPM_BUILD_ROOT%{_mandir}/man8
 
 install top.wmconfig $RPM_BUILD_ROOT/etc/X11/wmconfig/top
 install XConsole $RPM_BUILD_ROOT/usr/X11R6/bin
@@ -73,8 +76,6 @@ install XConsole $RPM_BUILD_ROOT/usr/X11R6/bin
 rm -f  $RPM_BUILD_ROOT%{_bindir}/snice
 ln -sf skill $RPM_BUILD_ROOT%{_bindir}/snice
 rm -f  $RPM_BUILD_ROOT/bin/kill
-
-mv $RPM_BUILD_ROOT%{_prefix}/man $RPM_BUILD_ROOT%{_datadir}
 
 rm -f $RPM_BUILD_ROOT%{_mandir}/man1/{snice,kill,oldps}.1
 rm -f $RPM_BUILD_ROOT%{_bindir}/oldps
