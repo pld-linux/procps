@@ -111,7 +111,7 @@ fi
 %attr(755, root, root) /lib/lib*.so.*.*
 %attr(755, root, root) /bin/*
 %attr(755, root, root) /usr/bin/*
-%attr(644, root,  man) /usr/man/man[18]/
+%attr(644, root,  man) /usr/man/man[18]/*
 
 %files X11
 %attr(4755, root, root) /usr/X11R6/bin/XConsole
