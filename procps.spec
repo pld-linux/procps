@@ -7,7 +7,8 @@ Summary(pt_BR):	Utilitários de monitoração de processos
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
 Version:	3.2.1
-Release:	1
+Release:	4
+Epoch:		1
 License:	GPL
 Group:		Applications/System
 Source0:	http://procps.sourceforge.net/%{name}-%{version}.tar.gz
@@ -121,7 +122,7 @@ Statyczna wersja biblioteki libproc.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p0
-#%patch4 -p1
+%patch4 -p1
 
 %build
 %{__make} \
