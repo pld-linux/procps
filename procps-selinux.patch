@@ -1,15 +1,18 @@
---- procps-3.1.15/ps/ps.1.selinux	2003-12-23 20:59:47.000000000 -0500
-+++ procps-3.1.15/ps/ps.1	2004-01-21 13:12:33.000000000 -0500
-@@ -96,6 +96,7 @@
- s            display signal format
- u            display user-oriented format
- v            display virtual memory format
-+-Z           display security context format (NSA SELinux, etc.)
- --format     user-defined format
- --context    display security context format (NSA SELinux, etc.)
+--- procps-3.2.3/ps/ps.1	2004-08-10 01:09:31.000000000 +0000
++++ procps-3.2.3.new/ps/ps.1	2004-08-15 13:40:07.562957280 +0000
+@@ -487,6 +487,10 @@
+ display virtual memory format
  
---- procps-3.2.2/ps/parser.c.orig	2004-05-25 01:49:47.000000000 +0200
-+++ procps-3.2.2/ps/parser.c	2004-07-24 20:09:38.748319504 +0200
+ .TP
++.B \-Z
++display security context format (NSA SELinux, etc.)
++
++.TP
+ .B \-y
+ Do not show flags; show rss in place of addr.
+ This option can only be used with \fB\-l\fR.
+--- procps-3.2.3/ps/parser.c	2004-08-10 00:41:10.000000000 +0000
++++ procps-3.2.3.new/ps/parser.c	2004-08-15 13:42:52.512881080 +0000
 @@ -221,7 +221,7 @@
    flagptr = ps_argv[thisarg];
    while(*++flagptr){
@@ -55,7 +58,7 @@
      case '-':
        return "Embedded '-' among SysV options makes no sense.";
        break;
-@@ -587,10 +592,17 @@
+@@ -585,10 +590,17 @@
        trace("X Old Linux i386 register format\n");
        format_flags |= FF_LX;
        break;

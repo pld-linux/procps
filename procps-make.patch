@@ -1,6 +1,6 @@
---- procps-3.2.2/Makefile.orig	2004-07-17 15:54:06.000000000 +0200
-+++ procps-3.2.2/Makefile	2004-07-24 21:06:15.129991008 +0200
-@@ -93,7 +93,7 @@
+--- procps-3.2.3/Makefile	2004-07-20 00:22:22.000000000 +0000
++++ procps-3.2.3.new/Makefile	2004-08-15 13:35:00.914574920 +0000
+@@ -90,7 +90,7 @@
    -Wstrict-prototypes -Wmissing-prototypes
  # Note that some stuff below is conditional on CFLAGS containing
  # an option that starts with "-g". (-g, -g2, -g3, -ggdb, etc.)
@@ -9,7 +9,7 @@
  ALL_CFLAGS   := $(PKG_CFLAGS) $(CFLAGS)
  
  PKG_LDFLAGS  := -Wl,-warn-common
-@@ -205,10 +205,10 @@
+@@ -202,10 +202,10 @@
  ###### install
  
  $(BINFILES) : all
@@ -22,22 +22,3 @@
  
  install: $(filter-out $(SKIP) $(addprefix $(DESTDIR),$(SKIP)),$(INSTALL))
  	cd $(usr/bin) && $(ln_f) skill snice
-@@ -219,7 +219,7 @@
- top.o : top.h
- 
- %.o : %.c
--	$(CC) $(ALL_CPPFLAGS) $(ALL_CFLAGS) $(CURSES) -c -o $@ $<
-+	$(CC) $(ALL_CPPFLAGS) $(ALL_CFLAGS) -c -o $@ $<
- 
- w.o:    w.c
- 	$(CC) $(ALL_CPPFLAGS) $(ALL_CFLAGS) $(W_SHOWFROM) -c $<
---- procps-3.2.2/proc/module.mk.orig	2004-07-15 00:19:40.000000000 +0200
-+++ procps-3.2.2/proc/module.mk	2004-07-24 21:04:40.619358808 +0200
-@@ -43,7 +43,6 @@
- proc/lib$(NAME).a: $(LIBOBJ)
- 	$(AR) rcs $@ $^
- 
--.PHONY: proc/$(SONAME)
- #proc/$(SONAME): proc/library.map
- proc/$(SONAME): $(LIBOBJ)
- 	$(CC) -shared -Wl,-soname,$(SONAME) -Wl,--version-script=proc/library.map -o $@ $^ -lc
