@@ -68,8 +68,8 @@ make install DESTDIR=$RPM_BUILD_ROOT BINGRP=`id -g`
 install top.wmconfig $RPM_BUILD_ROOT/etc/X11/wmconfig/top
 install XConsole $RPM_BUILD_ROOT/usr/X11R6/bin
 
-rm -f  $RPM_BUILD_ROOT/usr/bin/snice
-ln -sf skill $RPM_BUILD_ROOT/usr/bin/snice
+rm -f  $RPM_BUILD_ROOT%{_bindir}/snice
+ln -sf skill $RPM_BUILD_ROOT%{_bindir}/snice
 rm -f  $RPM_BUILD_ROOT/bin/kill
 
 rm -f $RPM_BUILD_ROOT%{_mandir}/man1/{snice,kill}.1
@@ -105,7 +105,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %attr(755,root,root) /lib/libproc.so.*
 %attr(755,root,root) /bin/*
-%attr(755,root,root) /usr/bin/*
+%attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) /usr/X11R6/bin/XConsole
 
 %changelog
