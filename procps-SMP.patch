@@ -1,0 +1,650 @@
+diff -urN procps-2.0.2.orig/Makefile procps-2.0.2/Makefile
+--- procps-2.0.2.orig/Makefile	Mon Aug 30 19:12:12 1999
++++ procps-2.0.2/Makefile	Mon Aug 30 19:44:33 1999
+@@ -104,9 +104,9 @@
+ # when an incompatible change is made in libproc.
+ LIBVERSION   =  2.0.0
+ ifdef MINORVERSION
+-LIBPROCPASS  =  SHARED=$(SHARED) SHLIBDIR=$(SHLIBDIR) VERSION=$(VERSION) SUBVERSION=$(SUBVERSION) MINORVERSION=$(MINORVERSION) LIBVERSION=$(LIBVERSION)
++LIBPROCPASS  =  SHARED=$(SHARED) SHLIBDIR=$(SHLIBDIR) VERSION=$(VERSION) SUBVERSION=$(SUBVERSION) MINORVERSION=$(MINORVERSION) LIBVERSION=$(LIBVERSION) 
+ else
+-LIBPROCPASS  =  SHARED=$(SHARED) SHLIBDIR=$(SHLIBDIR) VERSION=$(VERSION) SUBVERSION=$(SUBVERSION) LIBVERSION=$(LIBVERSION)
++LIBPROCPASS  =  SHARED=$(SHARED) SHLIBDIR=$(SHLIBDIR) VERSION=$(VERSION) SUBVERSION=$(SUBVERSION) LIBVERSION=$(LIBVERSION) 
+ endif
+ 
+ # libproc setup
+diff -urN procps-2.0.2.orig/oldps.c procps-2.0.2/oldps.c
+--- procps-2.0.2.orig/oldps.c	Wed Mar 17 00:06:38 1999
++++ procps-2.0.2/oldps.c	Mon Aug 30 19:44:33 1999
+@@ -60,7 +60,12 @@
+ } mode[] = {
+     { show_short,  0 , "Up", "  PID TTY STAT TIME COMMAND" },
+     { show_long,  'l', "Pp", " FLAGS   UID   PID  PPID PRI  NI   SIZE   RSS WCHAN       STA TTY TIME COMMAND" },
++
++#ifdef __SMP__
++    { show_user,  'u', "up", "USER       PID CPU %CPU %MEM  SIZE   RSS TTY STAT START   TIME COMMAND" },
++#else
+     { show_user,  'u', "up", "USER       PID %CPU %MEM  SIZE   RSS TTY STAT START   TIME COMMAND" },
++#endif
+     { show_jobs,  'j', "gPp"," PPID   PID  PGID   SID TTY TPGID  STAT  UID   TIME COMMAND" },
+     { show_sig,   's', "p",  "  UID   PID SIGNAL   BLOCKED  IGNORED  CATCHED  STAT TTY   TIME COMMAND" },
+     { show_vm,    'v', "r",  "  PID TTY STAT TIME  PAGEIN TSIZ DSIZ  RSS   LIM %MEM COMMAND" },
+@@ -440,10 +445,17 @@
+ 	0;
+     if (pcpu > 999) pcpu = 999;
+     pmem = p->rss * 1000 / (GL_main_mem >> PAGE_SHIFT);
++#ifdef __SMP__
++    sprintf(s, "%5d %3d %2u.%u %2ld.%ld %5ld %5ld %2s %s %.6s ",
++	    p->pid,p->lproc, pcpu / 10, pcpu % 10,  pmem / 10, pmem % 10,
++	    p->vsize >> 10, p->rss << (PAGE_SHIFT - 10), ttyc(p->tty,p->pid), status(p),
++	    ctime(&start) + (GL_time_now - start > 3600*24 ? 4 : 10));
++#else
+     sprintf(s, "%5d %2u.%u %2ld.%ld %5ld %5ld %3s %s %.6s ",
+ 	    p->pid,  pcpu / 10, pcpu % 10,  pmem / 10, pmem % 10,
+ 	    p->vsize >> 10, p->rss << (PAGE_SHIFT - 10), ttyc(p->tty,p->pid), status(p),
+ 	    ctime(&start) + (GL_time_now - start > 3600*24 ? 4 : 10));
++#endif
+ }
+ 
+ /* TODO: this is broken... but does anyone care? */
+diff -urN procps-2.0.2.orig/proc/ps.h procps-2.0.2/proc/ps.h
+--- procps-2.0.2.orig/proc/ps.h	Tue Sep  2 20:00:26 1997
++++ procps-2.0.2/proc/ps.h	Mon Aug 30 19:44:33 1999
+@@ -6,6 +6,9 @@
+ #include <asm/param.h>
+ 
+ /* get page info */
++#ifdef PAGE_SIZE
++#undef PAGE_SIZE
++#endif
+ #include <asm/page.h>
+ 
+ char *wchan(unsigned long);
+diff -urN procps-2.0.2.orig/proc/readproc.c procps-2.0.2/proc/readproc.c
+--- procps-2.0.2.orig/proc/readproc.c	Fri Mar 12 11:34:44 1999
++++ procps-2.0.2/proc/readproc.c	Mon Aug 30 19:44:33 1999
+@@ -162,7 +162,12 @@
+        "%ld "
+        "%lu %lu %lu %lu %lu %lu "
+        "%*s %*s %*s %*s " /* discard, no RT signals & Linux 2.1 used hex */
+-       "%lu %lu %lu",
++       "%lu %lu %lu"
++#ifdef __SMP__
++ " %d %d",
++#else
++ "",
++#endif
+        &P->state,
+        &P->ppid, &P->pgrp, &P->session, &P->tty, &P->tpgid,
+        &P->flags, &P->min_flt, &P->cmin_flt, &P->maj_flt, &P->cmaj_flt, &P->utime, &P->stime,
+@@ -171,7 +176,12 @@
+        &P->rss,
+        &P->rss_rlim, &P->start_code, &P->end_code, &P->start_stack, &P->kstk_esp, &P->kstk_eip,
+ /*     P->signal, P->blocked, P->sigignore, P->sigcatch,   */ /* can't use */
+-       &P->wchan, &P->nswap, &P->cnswap /* , &P->exit_signal  */);
++       &P->wchan, &P->nswap, &P->cnswap /* , &P->exit_signal  */
++#ifdef __SMP__
++	   ,&P->cproc, &P->lproc);
++#else
++	   );
++#endif
+ /* TODO: add &P->exit_signal support here, perhaps to identify Linux threads */
+     
+ /*    fprintf(stderr, "stat2proc converted %d fields.\n",num); */
+diff -urN procps-2.0.2.orig/proc/readproc.h procps-2.0.2/proc/readproc.h
+--- procps-2.0.2.orig/proc/readproc.h	Fri Mar 12 11:34:44 1999
++++ procps-2.0.2/proc/readproc.h	Mon Aug 30 19:44:33 1999
+@@ -76,8 +76,8 @@
+ 	maj_flt,	/* number of major page faults since process start */
+ 	cmin_flt,	/* cumulative min_flt of process and child processes */
+ 	cmaj_flt,	/* cumulative maj_flt of process and child processes */
+-	nswap,		/* ? */
+-	cnswap,		/* cumulative nswap ? */
++	nswap,		/* number of swaps */
++	cnswap,		/* cumulative number of swaps, including children */
+ 	utime,		/* user-mode CPU time accumulated by process */
+ 	stime,		/* kernel-mode CPU time accumulated by process */
+ 	start_code,	/* address of beginning of code segment */
+@@ -87,6 +87,12 @@
+ 	kstk_eip,	/* kernel stack pointer */
+ 	start_time,	/* start time of process -- seconds since 1-1-70 */
+ 	wchan;		/* address of kernel wait channel proc is sleeping in */
++/* SMP support for Linux by Felix Rauch <rauch@inf.ethz.ch> */
++#ifdef __SMP__
++     int
++        cproc,          /* current processor */
++        lproc;          /* last processor */
++#endif
+     struct proc_s *l,	/* ptrs for building arbitrary linked structs */
+                   *r;	/* (i.e. singly/doubly-linked lists and trees */
+     char
+diff -urN procps-2.0.2.orig/proc/sysinfo.c procps-2.0.2/proc/sysinfo.c
+--- procps-2.0.2.orig/proc/sysinfo.c	Sat Mar 20 21:38:48 1999
++++ procps-2.0.2/proc/sysinfo.c	Mon Aug 30 19:44:33 1999
+@@ -272,3 +272,29 @@
+     unsigned** mem;
+     return (mem = meminfo()) ? mem[meminfo_main][meminfo_total] : -1;
+ }
++
++/* Returns number of processors on SMP-system */
++int read_nr_cpus(void) {
++    int nr_cpus = 0;
++    FILE *f;
++    char str[80];
++
++    f = fopen("/proc/stat", "r");
++    if(f == NULL) {
++        perror("Couldn't fopen(\"/proc/stat\"): ");
++       return 1;
++    }
++    while(1) {
++        if(fgets(str, 79, f) == NULL) {
++           break;
++       }
++       if(str[0] == 'c' && str[1] == 'p' && str[2] == 'u' && str[3] != ' ') {
++             nr_cpus = str[3] - '0';
++             if(str[4] != ' ') {
++                 nr_cpus = 10*nr_cpus + str[5] - '0';
++             }
++       }
++    }
++    return nr_cpus + 1;
++}
++
+diff -urN procps-2.0.2.orig/proc/sysinfo.h procps-2.0.2/proc/sysinfo.h
+--- procps-2.0.2.orig/proc/sysinfo.h	Fri Mar 12 11:34:44 1999
++++ procps-2.0.2/proc/sysinfo.h	Mon Aug 30 19:44:33 1999
+@@ -20,4 +20,6 @@
+ 
+ extern unsigned read_total_main(void);
+ 
++int read_nr_cpus(void);
++
+ #endif /* SYSINFO_H */
+diff -urN procps-2.0.2.orig/ps/output.c procps-2.0.2/ps/output.c
+--- procps-2.0.2.orig/ps/output.c	Sat Mar 20 21:38:49 1999
++++ procps-2.0.2/ps/output.c	Mon Aug 30 21:16:25 1999
+@@ -97,6 +97,7 @@
+ static unsigned long time_of_boot;
+ static unsigned long bytes_main_memory;
+ static unsigned long page_shift;
++static unsigned long nr_cpus;
+ 
+ 
+ /*************************************************************************/
+@@ -414,6 +415,11 @@
+   if (pcpu > 99) pcpu = 99;
+   return sprintf(outbuf, "%2u", (unsigned)pcpu);
+ }
++#ifdef __SMP__
++static int pr_cpu(void){
++  return sprintf(outbuf, "%3d", pp->lproc);
++}
++#endif
+ static int pr_pcpu(void){
+   unsigned long total_time;   /* jiffies */
+   unsigned long pcpu = 0;
+@@ -422,8 +428,8 @@
+   if(include_dead_children) total_time += (pp->cutime + pp->cstime);
+   seconds = (seconds_since_boot
+              - ((unsigned long)pp->start_time)
+-             / Hertz);
+-  if(seconds) pcpu = (total_time * 1000 / Hertz) / seconds;
++             / (Hertz/nr_cpus));
++  if(seconds) pcpu = (total_time * 10 * 100 / Hertz) / seconds;
+   if (pcpu > 999) pcpu = 999;
+   return sprintf(outbuf, "%2u.%u", (unsigned)(pcpu/10), (unsigned)(pcpu%10));
+ }
+@@ -547,7 +553,7 @@
+ static int pr_stat(void){
+     int end = 0;
+     outbuf[end++] = pp->state;
+-    if(pp->rss == 0 && pp->state != 'Z')    outbuf[end++] = 'W';
++    if(pp->resident == 0 && pp->state != 'Z')    outbuf[end++] = 'W';
+     if(pp->nice < 0)                        outbuf[end++] = '<';
+     if(pp->nice > 0)                        outbuf[end++] = 'N';
+     if(pp->vm_lock)                         outbuf[end++] = 'L';
+@@ -708,12 +714,12 @@
+ }
+ 
+ static int pr_rss(void){
+-  return sprintf(outbuf, "%lu", pp->rss << (page_shift - 10));
++  return sprintf(outbuf, "%lu", pp->resident << (page_shift - 10));
+ }
+ 
+ static int pr_pmem(void){
+   unsigned long pmem = 0;
+-  pmem = pp->rss * 1000 / (bytes_main_memory >> page_shift);
++  pmem = pp->resident * 1000 / (bytes_main_memory >> page_shift);
+   return sprintf(outbuf, "%2u.%u", (unsigned)(pmem/10), (unsigned)(pmem%10));
+ }
+ 
+@@ -935,7 +941,11 @@
+ {"comm",      "COMMAND", pr_comm,     sr_nop,    16,   0,    U98, UNLIMITED}, /*ucomm*/
+ {"command",   "COMMAND", pr_args,     sr_nop,    16,   0,    XXX, UNLIMITED}, /*args*/
+ {"cp",        "CP",      pr_nop,      sr_nop,     2,   0,    DEC, RIGHT}, /*cpu*/
++#ifdef __SMP__
++{"cpu",       "CPU",     pr_cpu,      sr_nop,     3,   0,    BSD, RIGHT}, /* FIXME ... HP-UX wants this as the CPU number for SMP? */
++#else
+ {"cpu",       "CPU",     pr_nop,      sr_nop,     3,   0,    BSD, RIGHT}, /* FIXME ... HP-UX wants this as the CPU number for SMP? */
++#endif
+ {"cputime",   "TIME",    pr_time,     sr_nop,     8,   0,    DEC, RIGHT}, /*time*/
+ {"cstime",    "-",       pr_nop,      sr_cstime,  1,   0,    LNX, RIGHT},
+ {"cursig",    "CURSIG",  pr_nop,      sr_nop,     6,   0,    DEC, RIGHT},
+@@ -1162,7 +1172,11 @@
+ {"OL_l",     "flags,uid,pid,ppid,priority,nice,vsz,rss,wchan,stat,tname,bsdtime,args"},     /* Old Linux l */
+ {"OL_m",     "pid,tname,majflt,minflt,m_trs,m_drs,m_size,m_swap,rss,m_share,vm_lib,m_dt,args"}, /* Old Linux m */
+ {"OL_s",     "uid,pid,pending,sig_block,sig_ignore,caught,stat,tname,bsdtime,args"},  /* Old Linux s */
++#ifdef __SMP__
++{"OL_u",     "user,pid,cpu,pcpu,pmem,vsz,rss,tname,stat,start_time,bsdtime,args"},       /* Old Linux u */
++#else
+ {"OL_u",     "user,pid,pcpu,pmem,vsz,rss,tname,stat,start_time,bsdtime,args"},       /* Old Linux u */
++#endif
+ {"OL_v",     "pid,tname,stat,bsdtime,maj_flt,m_trs,m_drs,rss,pmem,args"},            /* Old Linux v */
+ 
+ {"RD_",      "pid,tname,state,bsdtime,comm"},                                       /* Real Debian default */
+@@ -1509,6 +1523,7 @@
+   seconds_since_1970 = time(NULL);
+   time_of_boot = seconds_since_1970 - seconds_since_boot;
+   bytes_main_memory = read_total_main();
++  nr_cpus = read_nr_cpus();
+   switch(getpagesize()){
+   case 65536: page_shift = 16; break;
+   case 32768: page_shift = 15; break;
+diff -urN procps-2.0.2.orig/top.1 procps-2.0.2/top.1
+--- procps-2.0.2.orig/top.1	Sat Mar 20 21:38:48 1999
++++ procps-2.0.2/top.1	Mon Aug 30 19:44:34 1999
+@@ -240,6 +240,9 @@
+ This command is not available in secure mode.
+ .It i
+ Ignore idle and zombie processes.  This is a toggle switch.
++.It I
++Toggle between Solaris and Irix views.  This is also a toggle switch.
++The switch is only valid for SMP-systems.
+ .It "n\fR or \fB#"
+ Change the number of processes to show.  You will be prompted to enter
+ the number.  This overrides automatic determination of the number of
+@@ -343,9 +346,9 @@
+ removing the lower 's' from the second line of your 
+ .IR ~/.toprc .
+ A digit specifies the delay time between updates, a capital 'S'
+-cumulative mode, a lower 'i' no-idle mode. As in interactive mode, a
+-lower 'm', 'l', and 't' suppresses the display of memory, uptime resp.
+-process and CPU state information.
++cumulative mode, a lower 'i' no-idle mode, a capital 'I' Irix view. As
++in interactive mode, a lower 'm', 'l', and 't' suppresses the display
++of memory, uptime resp. process and CPU state information.
+ Currently changing the default sorting order (by CPU usage) is not 
+ supported.
+ .
+diff -urN procps-2.0.2.orig/top.c procps-2.0.2/top.c
+--- procps-2.0.2.orig/top.c	Wed Mar 17 00:02:37 1999
++++ procps-2.0.2/top.c	Mon Aug 30 20:13:51 1999
+@@ -105,6 +105,8 @@
+ 
+ #include "top.h"  /* new header for top specific things */
+ 
++int cpu_mapping[NR_CPUS];
++
+ /*#######################################################################
+  *####  Startup routines: parse_options, get_options,      ##############
+  *####                    setup_terminal and main          ##############
+@@ -174,6 +176,9 @@
+ 	    break;
+ 	  case '\n':
+ 	    break;
++	  case 'I':
++	    Irixmode = 0;
++	    break;
+ 	  default:
+ 	    fprintf(stderr, "Wrong configuration option %c\n", i);
+ 	    exit(1);
+@@ -211,7 +216,15 @@
+     char rcfile[MAXNAMELEN];
+     char Options[256] = "";
+ 
++#ifdef __SMP__
++    int nr_cpu = 0;
++    header_lines = 7;
++    if((nr_cpu = read_nr_cpus()) > 1) {
++      header_lines += nr_cpu;
++    }
++#else
+     header_lines = 7;
++#endif
+     strcpy(rcfile, SYS_TOPRC);
+     fp = fopen(rcfile, "r");
+     if (fp != NULL) {
+@@ -303,6 +316,11 @@
+     char *cp;
+     /* The key read in. */
+     char c;
++    /* Used by cpuno.# to cpuname mapping */
++    int status;
++    FILE* file=NULL;
++    char str[130];
++    int i;
+ 
+     struct sigaction sact;
+ 
+@@ -376,6 +394,9 @@
+ 		break;
+ 	      case '-':
+ 		break;		/* Just ignore it */
++	      case 'I':
++		Irixmode = 0;
++		break;
+ 	      default:
+ 		fprintf(stderr, PROGNAME ": Unknown argument `%c'\n", *cp);
+ 		exit(1);
+@@ -385,6 +406,33 @@
+     breakargv:
+     }
+     
++    /* read cpuname */
++    for (i=0; i<NR_CPUS; i++) cpu_mapping[i]=i;
++    if ((file=fopen("/proc/cpuinfo", "r"))==NULL) printf("Couldn't get CPU-name\n");
++    else {
++        for (i=0; i<read_nr_cpus(); i++) {
++            while (1) {
++                if (!fgets(str, 128, file)) {
++                    if (ferror(file)) {
++                        fprintf(stderr, "fgets failed on /proc/cpuinfo\n");
++                        i=NR_CPUS+1;
++                    }
++                    break;
++		}
++
++		if (!strncmp(str, "processor", 9)) {
++		    status=sscanf(str, "processor : %i", &cpu_mapping[i]);
++		    if (status==EOF) {
++			fprintf(stderr, "sscanf failed on /proc/cpuinfo\n");
++			cpu_mapping[i]=i;
++		    }
++		    break;
++		}
++	    }
++        }
++        fclose(file);
++    }
++
+     /* set to PCPU sorting */
+     register_sort_function( -1, (cmp_t)pcpu_sort);
+     
+@@ -518,7 +566,7 @@
+ 
+     j = 0;
+     for (i = 0; i < strlen(Fields); i++) {
+-	if (isupper(Fields[i])) {
++        if (Fields[i] < 'a') {
+ 	    pflags[j++] = Fields[i] - 'A';
+ 	}
+     }
+@@ -904,6 +952,18 @@
+ 	  case P_PCPU:
+ 	    sprintf(tmp, "%4.1f ", (float)task->pcpu / 10);
+ 	    break;
++#ifdef __SMP__
++	  case P_LCPU:
++	    sprintf(tmp, "%2d ", task->lproc);
++	    break;
++	  case P_CCPU:
++	    if(task->cproc >= 0) {
++	      sprintf(tmp, "%2d ", task->cproc);
++	    } else {
++	      sprintf(tmp, " * ");
++	    }
++	    break;
++#endif
+ 	  case P_PMEM:
+ 	    sprintf(tmp, "%4.1f ", (float)pmem / 10);
+ 	    break;
+@@ -1163,13 +1223,34 @@
+ void do_stats(proc_t** p, float elapsed_time, int pass)
+ {
+     proc_t *this;
+-    int index, total_time, i, n = 0;
++    int index, total_time, i, cpumap, n = 0;
+     int sleeping = 0, stopped = 0, zombie = 0, running = 0;
++#ifdef __SMP__
++    unsigned long system_ticks = 0, user_ticks = 0, nice_ticks = 0, idle_ticks;
++#else
+     unsigned long system_ticks = 0, user_ticks = 0, nice_ticks = 0, idle_ticks = 1000;
++#endif
+     static int prev_count = 0;
+     int stime, utime;
+     static struct save_hist save_history[NR_TASKS];
+     struct save_hist New_save_hist[NR_TASKS];
++#ifdef __SMP__
++    static int nr_cpu = 0;
++    static int *s_ticks_o = NULL, *u_ticks_o = NULL,
++               *n_ticks_o = NULL, *i_ticks_o = NULL;
++    int s_ticks, u_ticks, n_ticks, i_ticks, t_ticks;
++    char str[128];
++    FILE *file;
++
++    if(nr_cpu == 0) {
++      nr_cpu = read_nr_cpus();
++      s_ticks_o = (int *)malloc(nr_cpu * sizeof(int));
++      u_ticks_o = (int *)malloc(nr_cpu * sizeof(int));
++      n_ticks_o = (int *)malloc(nr_cpu * sizeof(int));
++      i_ticks_o = (int *)malloc(nr_cpu * sizeof(int));
++    }
++    idle_ticks = 1000 * nr_cpu;
++#endif
+ 
+     /*
+      * Make a pass through the data to get stats.
+@@ -1236,6 +1317,14 @@
+ 	if (this->nice > 0)
+ 	    nice_ticks += this->pcpu;
+ 
++	/*
++	 * If in Sun-mode, adjust cpu percentage not only for
++	 * the cpu the process is running on, but for all cpu together.
++	 */
++	if(!Irixmode) {
++	  this->pcpu /= nr_cpu;
++	}
++
+ 	index++;
+ 	n++;
+ 	if (n > NR_TASKS) {
+@@ -1270,6 +1359,23 @@
+ 	  idle_ticks   = (idle_ticks   * 1000) / sum;
+ 	}while(0);
+ 	/* END EXPERIMENTAL CODE */
++#ifdef __SMP__
++	if (Irixmode) {
++   	    printf("CPU  states: %2d.%d%% user, %2d.%d%% system,"
++	           " %2d.%d%% nice, %2d.%d%% idle",
++	           user_ticks / 10, user_ticks % 10,
++	           system_ticks / 10, system_ticks % 10,
++	           nice_ticks / 10, nice_ticks % 10,
++	           idle_ticks / 10, idle_ticks % 10);
++        } else {
++   	    printf("CPU  states: %2d.%d%% user, %2d.%d%% system,"
++	           " %2d.%d%% nice, %2d.%d%% idle",
++	           (user_ticks/nr_cpu) / 10, (user_ticks/nr_cpu) % 10,
++	           (system_ticks/nr_cpu)/ 10, (system_ticks/nr_cpu) % 10,
++	           (nice_ticks/nr_cpu) / 10, (nice_ticks/nr_cpu) % 10,
++	           (idle_ticks/nr_cpu) / 10, (idle_ticks/nr_cpu) % 10);
++        }
++#else
+ 	printf("CPU states:"
+ 	    " %2ld.%ld%% user, %2ld.%ld%% system,"
+ 	    " %2ld.%ld%% nice, %2ld.%ld%% idle",
+@@ -1278,8 +1384,74 @@
+             nice_ticks   / 10UL,   nice_ticks   % 10UL,
+             idle_ticks   / 10UL,   idle_ticks   % 10UL
+ 	);
++#endif
+ 	PUTP(top_clrtoeol);
+ 	putchar('\n');
++#ifdef __SMP__
++       /*
++        * Calculate stats for all cpus
++        */
++       if(nr_cpu > 1) {
++         file = fopen("/proc/stat", "r");
++         if(file == NULL) {
++           puts("open");
++         }
++         if(fgets(str, 128, file) == NULL) {
++           fprintf(stderr, "fgets failed on /proc/stat\n");
++         }
++         for(i = 0; i < nr_cpu; i++) {
++           if(fscanf(file, "cpu%*d %d %d %d %d\n",
++                     &u_ticks, &n_ticks, &s_ticks, &i_ticks) != 4) {
++             fprintf(stderr, "fscanf failed on /proc/stat for cpu %d\n", i);
++           }
++
++           t_ticks = (u_ticks + s_ticks + i_ticks + n_ticks)
++             - (u_ticks_o[i] + s_ticks_o[i] + i_ticks_o[i] + n_ticks_o[i]);
++	   if (Irixmode) cpumap=i;
++	   else cpumap=cpu_mapping[i];
++           printf ("CPU%d states: %2d.%-d%% user, %2d.%-d%% system,"
++                   " %2d.%-d%% nice, %2d.%-d%% idle",
++                   cpumap,
++                   (u_ticks - u_ticks_o[i] + n_ticks - n_ticks_o[i]) * 100 / t_ticks,
++                   (u_ticks - u_ticks_o[i]) * 100 % t_ticks / 100,
++                   (s_ticks - s_ticks_o[i]) * 100 / t_ticks,
++                   (s_ticks - s_ticks_o[i]) * 100 % t_ticks / 100,
++                   (n_ticks - n_ticks_o[i]) * 100 / t_ticks,
++                   (n_ticks - n_ticks_o[i]) * 100 % t_ticks / 100,
++                   (i_ticks - i_ticks_o[i]) * 100 / t_ticks,
++                   (i_ticks - i_ticks_o[i]) * 100 % t_ticks / 100);
++           s_ticks_o[i] = s_ticks;
++           u_ticks_o[i] = u_ticks;
++           n_ticks_o[i] = n_ticks;
++           i_ticks_o[i] = i_ticks;
++           PUTP (top_clrtoeol);
++           putchar ('\n');
++         }
++         fclose(file);
++       }
++    } else {
++      /*
++       * During the first pass, get the information for the
++       * different CPUs.
++       */
++      if(nr_cpu > 1) {
++       file = fopen("/proc/stat", "r");
++       if(file == NULL) {
++         puts("open");
++       }
++       if(fgets(str, 128, file) == NULL) {
++         fprintf(stderr, "fgets failed on /proc/stat\n");
++       }
++       for(i = 0; i < nr_cpu; i++) {
++         if(fscanf(file, "cpu%*d %d %d %d %d\n",
++                   &u_ticks_o[i], &n_ticks_o[i], &s_ticks_o[i],
++                   &i_ticks_o[i]) != 4) {
++           fprintf(stderr, "fscanf failed on /proc/stat for cpu %d\n", i);
++         }
++       }
++       fclose(file);
++      }
++#endif
+     }
+     /*
+      * Save this frame's information.
+@@ -1315,7 +1487,13 @@
+     else if (c == 12) {
+ 	clear_screen();
+ 	return;
++#ifdef __SMP__
++    } else if (c == 'I') {
++	Irixmode=(Irixmode) ? 0 : 1;
++	return;
++#endif
+     }
++
+     /*
+      * Switch the terminal to normal mode.  (Will the original
+      * attributes always be normal?  Does it matter?  I suppose the
+@@ -1355,7 +1533,7 @@
+ 	break;
+       case 'u':
+ 	SHOWMESSAGE(("Which User (Blank for All): "));
+-	strcpy(CurrUser,getstr());
++	strcpy((char*)CurrUser,getstr());
+ 	break;
+       case 'k':
+ 	if (Secure)
+@@ -1519,6 +1697,8 @@
+ 		    fprintf(fp, "%c", 'l');
+ 		if (!show_stats)
+ 		    fprintf(fp, "%c", 't');
++		if (!Irixmode)
++		    fprintf(fp, "%c", 'I');
+ 		fprintf(fp, "\n");
+ 		fclose(fp);
+ 		SHOWMESSAGE(("Wrote configuration to %s", rcfile));
+diff -urN procps-2.0.2.orig/top.h procps-2.0.2/top.h
+--- procps-2.0.2.orig/top.h	Wed Mar 17 00:02:37 1999
++++ procps-2.0.2/top.h	Mon Aug 30 19:44:34 1999
+@@ -53,8 +53,14 @@
+  * specified
+  */
+ #ifndef DEFAULT_SHOW
++#ifdef __SMP__
++/*                       0         1         2         3 */
++/*                       0123456789012345678901234567890 */
++#define DEFAULT_SHOW    "AbcDgHIjklMnoTP|qrsuzYV{EFWX"
++#else
+ #define DEFAULT_SHOW    "AbcDgHIjklMnoTPqrsuzVYEFWX"
+ #endif
++#endif
+ char Fields[256] = "";
+ 
+ 
+@@ -92,6 +98,7 @@
+ 	/* for opening/closing the system map */
+ int psdbsucc = 0;
+ 	/* Mode flags. */
++int Irixmode = 1;
+ int Secure = 0;
+ int Cumulative = 0;
+ int Noidle = 0;
+@@ -120,7 +127,11 @@
+     P_SIZE, P_TRS, P_SWAP, P_SHARE,
+     P_A, P_WP, P_DT, P_RSS,
+     P_WCHAN, P_STAT, P_TIME, P_COMMAND,
++#ifdef __SMP__
++    P_LCPU, P_CCPU, P_LTR, P_FLAGS, P_END
++#else
+     P_LTR, P_FLAGS, P_END
++#endif
+ };
+ /* corresponding headers */
+ char *headers[] =
+@@ -133,6 +144,9 @@
+     "SHARE ", "  A ", " WP ",
+     "  D ", " RSS ", "WCHAN     ",
+     "STAT ", "  TIME ", "COMMAND",
++#ifdef __SMP__
++    "LC ", "CC ",
++#endif
+     " LIB ", "   FLAGS "
+ };
+ /* corresponding field desciptions */
+@@ -146,6 +160,10 @@
+     "Shared Pages (kb)", "Accessed Page count", "Write Protected Pages",
+     "Dirty Pages", "Resident Set Size (kb)", "Sleeping in Function",
+     "Process Status", "CPU Time", "Command",
++#ifdef __SMP__
++    "Last used CPU",
++    "Currently used CPU",
++#endif
+     "Shared Library Pages used (kb) - does not work for ELF!!",
+     "Task Flags (see linux/sched.h)"
+ };
+@@ -164,6 +182,7 @@
+ h or ?\tPrint this list\n\
+ S\tToggle cumulative mode\n\
+ i\tToggle display of idle proceses\n\
++I\tToggle between Irix and Solaris views (SMP-only)\n\
+ c\tToggle display of command name/line\n\
+ l\tToggle display of load average\n\
+ m\tToggle display of memory information\n\
