@@ -5,16 +5,15 @@ Summary(pl):	Narzêdzia do monitorowania procesów
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
 Version:	2.0
-#%define		date	981104
 Release:	1
 Copyright:	GPL
 Group:		Utilities/System
-Group(pl):	U¿ytki/System
+Group(pl):	Narzêdzia/System
 URL:		http://www.cs.uml.edu/~acahalan/linux
 Source:		%{name}-%{version}.tar.gz
 Patch0:		%{name}-opt.patch
 Patch1:		%{name}-install.patch
-Patch3:		%{name}-w.patch
+Patch2:		%{name}-w.patch
 Buildroot:	/tmp/%{name}-%{version}-root
 
 %description
@@ -50,7 +49,7 @@ Summary(fr):	Utilitaires de surveillance des processus sous X
 Summary(pl):	Narzêdzia do monitorowania procesów pod X Window
 Summary(tr):	X tabanlý süreç izleme araçlarý
 Group:		X11/Utilities
-Group(pl):	X11/U¿ytki
+Group(pl):	X11/Narzêzia
 Requires:	%{name} = %{version}  
 
 %description X11
@@ -100,14 +99,15 @@ install top.wmconfig $RPM_BUILD_ROOT/etc/X11/wmconfig/top
 
 rm -f  $RPM_BUILD_ROOT/usr/bin/snice
 ln -sf skill $RPM_BUILD_ROOT/usr/bin/snice
+rm -f  $RPM_BUILD_ROOT/bin/kill
 
-rm -f $RPM_BUILD_ROOT/usr/man/man1/snice.1
+rm -f $RPM_BUILD_ROOT/usr/man/man1/{snice,kill}.1
 echo .so skill.1 > $RPM_BUILD_ROOT/usr/man/man1/snice.1
 
 strip $RPM_BUILD_ROOT/lib/*.so.*.*
 
-gzip -9fn $RPM_BUILD_ROOT/usr/man/{man1/*,man8/*}
-gzip -9fn NEWS BUGS 
+gzip -9fn $RPM_BUILD_ROOT/usr/man/man[18]/*
+bzip2 -9  NEWS BUGS 
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -122,19 +122,26 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc {NEWS,BUGS}.gz
+%doc {NEWS,BUGS}.bz2
 
 %config(missingok) /etc/X11/wmconfig/top
 
-%attr(755,root,root) /lib/*.so.*
+%attr(755,root,root) /lib/lib*.so.*
 %attr(755,root,root) /bin/*
 %attr(755,root,root) /usr/bin/*
-%attr(644,root, man) /usr/man/man[18]/*
+/usr/man/man[18]/*
 
 %files X11
 %attr(755,root,root) /usr/X11R6/bin/XConsole
 
 %changelog
+* Sat Mar 13 1999 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
+- fixed Group(pl),
+- bzipping documentation,
+- removed man group from man pages,
+- removed /bin/kill & /usr/man/man1/kill.1 -- provides by util-linux,
+- cosmetic changes.
+
 * Sat Feb 06 1999 Marek Druzd <raven@lo14.szczecin.pl>
   [1.9.0-2d]
 - fixed idle time (w-patch),
@@ -154,9 +161,7 @@ fi
 * Sun Sep 13 1998 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
   [1.2.8-1d]
 - changed Buildroot to /var/tmp/%%{name}-%%{version}-%%{release}-root,
-- fixed files permission,
-- build against GNU libc-2.1,
-- removed striping shared libraries.
+- fixed files permission.
 
 * Fri Sep 11 1998 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
   [1.2.8-4]
@@ -171,10 +176,6 @@ fi
 * Wed Sep 09 1998 Wojtek ¦lusarczyk <wojtek@SHADOW.EU.ORG>
   [1.2.7-2]
 - added pl translation,
-- build from non root's account.
-
-* Fri Aug 21 1998 Jeff Johnson <jbj@redhat.com>
-- no writable strings patch (problem #856)
-
-* Wed Jun 03 1998 Prospector System <bugs@redhat.com>
-- translations modified for de, fr, tr
+- build from non root's account,
+- build against GNU libc-2.1,
+- start at incorrect RH spec file.
