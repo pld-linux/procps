@@ -5,7 +5,7 @@ Summary(pl):	Narzêdzia do monitorowania procesów
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
 Version:	2.0.7
-Release:	3
+Release:	4
 License:	GPL
 Group:		Utilities/System
 Group(pl):	Narzêdzia/System
@@ -116,10 +116,7 @@ install %{SOURCE1} $RPM_BUILD_ROOT%{_mandir}/pl/man1/free.1
 install %{SOURCE2} $RPM_BUILD_ROOT%{_mandir}/pl/man1/uptime.1
 install %{SOURCE3} $RPM_BUILD_ROOT%{_mandir}/pl/man1/ps.1
 
-strip --strip-unneeded $RPM_BUILD_ROOT/lib/*.so.*.*
-
-gzip -9nf $RPM_BUILD_ROOT%{_mandir}/{man*/*,pl/man*/*} \
-	NEWS BUGS TODO
+gzip -9nf NEWS BUGS TODO
 
 %post 
 /sbin/ldconfig
