@@ -18,6 +18,7 @@ Patch0:		procps-opt.patch
 Patch1:		procps-install.patch
 Patch2:		procps-w2.patch
 Patch3:		procps-man5.patch
+Patch4:		procps-SMP.patch
 BuildRequires:	ncurses-devel >= 5.0
 URL:		http://www.cs.uml.edu/~acahalan/linux/
 Obsoletes:	procps-X11
@@ -80,11 +81,13 @@ bildirir.
 %patch1 -p1 
 %patch2 -p1 
 %patch3 -p1 
+#%patch4 -p1 
 
 %build
 PATH=/usr/X11R6/bin:$PATH
 
-make OPT="$RPM_OPT_FLAGS -pipe" 
+#make OPT="$RPM_OPT_FLAGS -pipe -D__SMP__" 
+make OPT="$RPM_OPT_FLAGS -pipe"
 
 %install
 rm -rf $RPM_BUILD_ROOT
