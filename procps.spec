@@ -10,7 +10,7 @@ Version:	2.0.7
 Release:	14
 License:	GPL
 Group:		Applications/System
-Source0:	ftp://metalab.unc.edu/pub/Linux/system/status/ps/%{name}-%{version}.tar.gz
+Source0:	http://surriel.com/procps/%{name}-%{version}.tar.gz
 Source1:	top.desktop
 Source2:	%{name}-non-english-man-pages.tar.bz2
 Patch0:		%{name}-w2.patch
@@ -24,7 +24,7 @@ Patch7:		%{name}-biguid.patch
 Patch8:		%{name}-bigbuff.patch
 Patch9:		%{name}-aix.patch
 Patch10:	%{name}-hz.patch
-URL:		http://www.cs.uml.edu/~acahalan/linux/
+URL:		http://surriel.com/procps/
 BuildRequires:	ncurses-devel >= 5.1
 Prereq:		fileutils
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
