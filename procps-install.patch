@@ -1,5 +1,5 @@
 --- Makefile.orig	Wed Aug 16 21:12:48 2000
-+++ Makefile	Wed Aug 16 21:13:09 2000
++++ Makefile	Wed Aug 16 21:19:47 2000
 @@ -4,7 +4,7 @@
  export PREFIX     =  #proc# prefix for program names
  
@@ -9,3 +9,12 @@
  export MAN1DIR    =  $(DESTDIR)$(MANDIR)/man1
  export MAN5DIR    =  $(DESTDIR)$(MANDIR)/man5
  export MAN8DIR    =  $(DESTDIR)$(MANDIR)/man8
+@@ -14,7 +14,7 @@
+ export USRBINDIR  =  $(DESTDIR)/usr/bin
+ export PROCDIR    =  $(DESTDIR)/usr/bin# /usr/proc/bin for Solaris devotees
+ export APPLNK     =  $(DESTDIR)/etc/X11/applnk/Utilities
+-export OWNERGROUP =  --owner 0 --group 0
++export OWNERGROUP =
+ export INSTALLBIN =  install --mode a=rx --strip
+ export INSTALLSCT =  install --mode a=rx
+ export INSTALLMAN =  install --mode a=r
