@@ -123,16 +123,18 @@ Statyczna wersja biblioteki libproc.
 %build
 %{__make} \
 	CC="%{__cc}" \
-	OPT="%{rpmcflags}" \
+	%{!?_with_selinux:OPT="%{rpmcflags}"} \
+	%{?_with_selinux:OPT="%{rpmcflags} -DFLASK_LINUX"} \
 	LDFLAGS="%{rpmldflags}" \
-	%{?_with_selinux:SELIB="-lselinux"} \
+	%{?_with_selinux:SELIB="-lsecure"} \
 	SHARED=1
 
 %{__make} \
 	CC="%{__cc}" \
-	OPT="%{rpmcflags}" \
+	%{!?_with_selinux:OPT="%{rpmcflags}"} \
+	%{?_with_selinux:OPT="%{rpmcflags} -DFLASK_LINUX"} \
 	LDFLAGS="%{rpmldflags}" \
-	%{?_with_selinux:SELIB="-lselinux"} \
+	%{?_with_selinux:SELIB="-lsecure"} \
 	SHARED=0
 
 %install
