@@ -1,16 +1,6 @@
-diff -urN procps-3.2.4.orig/ps/parser.c procps-3.2.4/ps/parser.c
---- procps-3.2.4.orig/ps/parser.c	2004-11-05 10:12:38.993641616 +0100
-+++ procps-3.2.4/ps/parser.c	2004-11-05 10:18:54.991481256 +0100
-@@ -226,7 +226,7 @@
-     // This list of options is ONLY for those defined by the
-     // "IEEE Std 1003.1, 2004 Edition", "ISO/IEC 9945:2003",
-     // or "Version 2 of the Single Unix Specification".
--    if(!strchr("aAdefgGlnoptuU", *flagptr)) not_pure_unix = 1;
-+    if(!strchr("aAdefgGlnoptuUzZ", *flagptr)) not_pure_unix = 1;
- 
-     switch(*flagptr){
-     case 'A':
-@@ -331,12 +331,19 @@
+--- procps-3.2.5/ps/parser.c.orig	2005-01-14 20:10:21.000000000 +0100
++++ procps-3.2.5/ps/parser.c	2005-02-06 03:29:19.477738552 +0100
+@@ -336,12 +336,19 @@
        exclusive("-V");
        display_version();
        exit(0);
@@ -30,23 +20,21 @@ diff -urN procps-3.2.4.orig/ps/parser.c procps-3.2.4/ps/parser.c
      case 'a':
        trace("-a select all with a tty, but omit session leaders.\n");
        simple_select |= SS_U_a;
-@@ -467,13 +474,11 @@
+@@ -472,12 +479,12 @@
        trace("-y Print lnone info in UID/USER column or do Sun -l hack.\n");
        format_modifiers |= FM_y;
        break;
 -#if 0
      // This must be verified against SVR4-MP (UnixWare or Powermax)
      case 'z':     /* alias of Mandatory Access Control level info */
--      trace("-z shows aliased MAC info\n");
--      format_modifiers |= FM_M;
-+      trace("-z shows full MAC info\n");
-+      format_modifiers |= FF_Fc;
+       trace("-z shows aliased MAC info\n");
+       format_modifiers |= FM_M;
        break;
--#endif
-     case '-':
-       return "Embedded '-' among SysV options makes no sense.";
-       break;
-@@ -591,10 +596,17 @@
++#if 0
+     // Solaris 10 does this
+     case 'z':     /* select by zone */
+       trace("-z secects by zone\n");
+@@ -605,10 +612,17 @@
        trace("X Old Linux i386 register format\n");
        format_flags |= FF_LX;
        break;
@@ -64,17 +52,15 @@ diff -urN procps-3.2.4.orig/ps/parser.c procps-3.2.4/ps/parser.c
      case 'a':
        trace("a Select all w/tty, including other users\n");
        simple_select |= SS_B_a;
-diff -urN procps-3.2.4.orig/ps/ps.1 procps-3.2.4/ps/ps.1
---- procps-3.2.4.orig/ps/ps.1	2004-11-05 10:12:38.996641160 +0100
-+++ procps-3.2.4/ps/ps.1	2004-11-05 10:14:16.035888952 +0100
-@@ -491,6 +491,10 @@
- display virtual memory format
- 
- .TP
-+.B \-Z
-+display security context format (NSA SELinux, etc.)
-+
-+.TP
- .B \-y
+--- procps-3.2.5/ps/ps.1.orig	2004-12-02 18:39:04.000000000 +0100
++++ procps-3.2.5/ps/ps.1	2005-02-06 03:30:51.666723696 +0100
+@@ -446,6 +446,9 @@
  Do not show flags; show rss in place of addr.
  This option can only be used with \fB\-l\fR.
+ 
++.opt \-Z
++display security context format (NSA SELinux, etc.)
++
+ .opt \-\-format \ format
+ user\-defined format.  Identical to \fB\-o\fR and \fBo\fR.
+ 
