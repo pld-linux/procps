@@ -5,7 +5,7 @@ Summary(pl):	Narzêdzia do monitorowania procesów
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
 Version:	2.0.6
-Release:	2
+Release:	3
 Copyright:	GPL
 Group:		Utilities/System
 Group(pl):	Narzêdzia/System
@@ -23,7 +23,7 @@ URL:		http://www.cs.uml.edu/~acahalan/linux/
 Obsoletes:	procps-X11
 Buildroot:	/tmp/%{name}-%{version}-root
 
-%define		_sysconfdir	/etc/X11
+%define		_applnkdir	/usr/X11R6/share/applnk
 
 %description
 The procps package contains a set of system utilities which provide system
@@ -91,7 +91,7 @@ rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT/{bin,sbin,lib,usr/X11R6/bin} \
 	$RPM_BUILD_ROOT{%{_bindir},%{_datadir},%{_mandir}/{man{1,5,8},pl/man1}} \
-	$RPM_BUILD_ROOT%{_sysconfdir}/applnk/Administration
+	$RPM_BUILD_ROOT%{_applnkdir}/Administration
 
 make install \
 	DESTDIR=$RPM_BUILD_ROOT BINGRP=`id -g` \
@@ -99,7 +99,7 @@ make install \
 	MAN5DIR=$RPM_BUILD_ROOT%{_mandir}/man5 \
 	MAN8DIR=$RPM_BUILD_ROOT%{_mandir}/man8
 
-install %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/applnk/Administration
+install %{SOURCE4} $RPM_BUILD_ROOT%{_applnkdir}/Administration
 install XConsole   $RPM_BUILD_ROOT/usr/X11R6/bin
 
 rm -f  $RPM_BUILD_ROOT%{_bindir}/snice
@@ -145,4 +145,4 @@ rm -rf $RPM_BUILD_ROOT
 %lang(pl) %{_mandir}/pl/man*/*
 %{_mandir}/man*/*
 
-%{_sysconfdir}/applnk/Administration/top.desktop
+%{_applnkdir}/Administration/top.desktop
