@@ -3,7 +3,7 @@ Summary(de):	Utilities zum Ueberwachen Ihres Systems und der Prozesse
 Summary(es):	Utilitarios de monitoración de procesos
 Summary(fr):	Utilitaires de surveillance des processus
 Summary(pl):	Narzêdzia do monitorowania procesów
-Summary(pt_BR):Utilitários de monitoração de processos
+Summary(pt_BR):	Utilitários de monitoração de processos
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
 Version:	2.0.7
