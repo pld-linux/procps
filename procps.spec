@@ -5,7 +5,7 @@ Summary(pl):	Narzêdzia do monitorowania procesów
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
 Version:	2.0.6
-Release:	14
+Release:	15
 License:	GPL
 Group:		Utilities/System
 Group(pl):	Narzêdzia/System
@@ -100,8 +100,7 @@ kullanýcýlarý bildirir.
 %build
 PATH=%{_prefix}/X11R6/bin:$PATH
 
-#make OPT="$RPM_OPT_FLAGS -pipe -D__SMP__" 
-%{__make} OPT="$RPM_OPT_FLAGS -pipe"
+%{__make} OPT="$RPM_OPT_FLAGS -pipe -D__SMP__" 
 
 %install
 rm -rf $RPM_BUILD_ROOT
