@@ -17,7 +17,7 @@ wysy³any jest sygna³ TERM. Sygna³ TERM koñczy te procesy, które go nie
 przechwytuj±. Dla innych procesów niezbêdne mo¿e siê okazaæ u¿ycie sygna³u
 KILL (9), poniewa¿ nie mo¿e on zostaæ przechwycony.
 
-Wiêkszo¶æ nowoczesnych shelli posiada wbudowane polecenie kill.
+Wiêkszo¶æ nowoczesnych pow³ok posiada wbudowane polecenie kill.
 .SH OPCJE
 .TP
 .BR "pid ..."
