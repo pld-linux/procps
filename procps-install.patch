@@ -5,7 +5,7 @@
  install: $(patsubst %,install_%,$(BUILD) $(MAN1) $(MAN8))
  ifeq ($(SHARED),1)
 -	install --owner 0 --group 0 --mode a=rx $(LIB_TGT) $(SHLIBDIR)
-+	install --mode a=rx $(LIB_TGT) $(SHLIBDIR)
++	install $(LIB_TGT) $(SHLIBDIR)
  endif
  
  # INSTALL LIBRARIES + HEADERS (OPTIONAL)
@@ -43,8 +43,8 @@
  install: ps
 -	-install --owner 0 --group 0 --mode a=rx --strip ps ${DESTDIR}/bin/ps
 -	-install --owner 0 --group 0 --mode a=r ps.1 ${DESTDIR}$(MAN1DIR)/ps.1
-+	-install --mode a=rx --strip ps ${DESTDIR}/bin/ps
-+	-install --mode a=r ps.1 ${DESTDIR}$(MAN1DIR)/ps.1
++	-install --strip ps ${DESTDIR}/bin/ps
++	-install ps.1 ${DESTDIR}$(MAN1DIR)/ps.1
  	rm -f ${DESTDIR}/var/catman/cat1/ps.1.gz ${DESTDIR}/var/man/cat1/ps.1.gz
  
  clean:
