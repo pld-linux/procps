@@ -1,28 +1,16 @@
---- procps-3.2.3/ps/ps.1	2004-08-10 01:09:31.000000000 +0000
-+++ procps-3.2.3.new/ps/ps.1	2004-08-15 13:40:07.562957280 +0000
-@@ -487,6 +487,10 @@
- display virtual memory format
- 
- .TP
-+.B \-Z
-+display security context format (NSA SELinux, etc.)
-+
-+.TP
- .B \-y
- Do not show flags; show rss in place of addr.
- This option can only be used with \fB\-l\fR.
---- procps-3.2.3/ps/parser.c	2004-08-10 00:41:10.000000000 +0000
-+++ procps-3.2.3.new/ps/parser.c	2004-08-15 13:42:52.512881080 +0000
-@@ -221,7 +221,7 @@
-   flagptr = ps_argv[thisarg];
-   while(*++flagptr){
-     /* Find any excuse to ignore stupid Unix98 misfeatures. */
+diff -urN procps-3.2.4.orig/ps/parser.c procps-3.2.4/ps/parser.c
+--- procps-3.2.4.orig/ps/parser.c	2004-11-05 10:12:38.993641616 +0100
++++ procps-3.2.4/ps/parser.c	2004-11-05 10:18:54.991481256 +0100
+@@ -226,7 +226,7 @@
+     // This list of options is ONLY for those defined by the
+     // "IEEE Std 1003.1, 2004 Edition", "ISO/IEC 9945:2003",
+     // or "Version 2 of the Single Unix Specification".
 -    if(!strchr("aAdefgGlnoptuU", *flagptr)) not_pure_unix = 1;
 +    if(!strchr("aAdefgGlnoptuUzZ", *flagptr)) not_pure_unix = 1;
+ 
      switch(*flagptr){
      case 'A':
-       trace("-A selects all processes.\n");
-@@ -325,12 +325,19 @@
+@@ -331,12 +331,19 @@
        exclusive("-V");
        display_version();
        exit(0);
@@ -42,7 +30,7 @@
      case 'a':
        trace("-a select all with a tty, but omit session leaders.\n");
        simple_select |= SS_U_a;
-@@ -461,13 +468,11 @@
+@@ -467,13 +474,11 @@
        trace("-y Print lnone info in UID/USER column or do Sun -l hack.\n");
        format_modifiers |= FM_y;
        break;
@@ -58,7 +46,7 @@
      case '-':
        return "Embedded '-' among SysV options makes no sense.";
        break;
-@@ -585,10 +590,17 @@
+@@ -591,10 +596,17 @@
        trace("X Old Linux i386 register format\n");
        format_flags |= FF_LX;
        break;
@@ -76,3 +64,17 @@
      case 'a':
        trace("a Select all w/tty, including other users\n");
        simple_select |= SS_B_a;
+diff -urN procps-3.2.4.orig/ps/ps.1 procps-3.2.4/ps/ps.1
+--- procps-3.2.4.orig/ps/ps.1	2004-11-05 10:12:38.996641160 +0100
++++ procps-3.2.4/ps/ps.1	2004-11-05 10:14:16.035888952 +0100
+@@ -491,6 +491,10 @@
+ display virtual memory format
+ 
+ .TP
++.B \-Z
++display security context format (NSA SELinux, etc.)
++
++.TP
+ .B \-y
+ Do not show flags; show rss in place of addr.
+ This option can only be used with \fB\-l\fR.
