@@ -22,9 +22,7 @@ Patch4:		procps-SMP.patch
 BuildRequires:	ncurses-devel >= 5.0
 URL:		http://www.cs.uml.edu/~acahalan/linux/
 Obsoletes:	procps-X11
-Buildroot:	/tmp/%{name}-%{version}-root
-
-%define		_applnkdir	/usr/X11R6/share/applnk
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 The procps package contains a set of system utilities which provide system
