@@ -9,7 +9,9 @@ Release:	1
 Copyright:	GPL
 Group:		Utilities/System
 Group(pl):	Narzêdzia/System
-Source:		ftp://tsx-11.mit.edu/pub/linux/sources/usr.bin/%{name}-%{version}.tar.gz
+Source0:	ftp://tsx-11.mit.edu/pub/linux/sources/usr.bin/%{name}-%{version}.tar.gz
+Source1:	free.1.pl
+Source2:	uptime.1.pl
 Patch0:		procps-opt.patch
 Patch1:		procps-install.patch
 Patch2:		procps-w.patch
@@ -91,7 +93,7 @@ make OPT="$RPM_OPT_FLAGS -pipe"
 rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT/{etc/X11/wmconfig,bin,lib} \
-	$RPM_BUILD_ROOT/usr/{bin,man/{man1,man8}}
+	$RPM_BUILD_ROOT/usr/{bin,man/{man1,man8,pl/man1}}
 
 make install DESTDIR=$RPM_BUILD_ROOT BINGRP=`id -g`
 
@@ -106,7 +108,10 @@ echo .so skill.1 > $RPM_BUILD_ROOT/usr/man/man1/snice.1
 
 strip --strip-unneeded $RPM_BUILD_ROOT/lib/*.so.*.*
 
-gzip -9fn $RPM_BUILD_ROOT/usr/man/man[18]/* NEWS BUGS 
+install %{SOURCE1} $RPM_BUILD_ROOT/usr/man/pl/man1/free.1
+install %{SOURCE2} $RPM_BUILD_ROOT/usr/man/pl/man1/uptime.1
+
+gzip -9fn $RPM_BUILD_ROOT/usr/man/{man*/*,pl/man*/*} NEWS BUGS 
 
 %post 
 /sbin/ldconfig
@@ -129,7 +134,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /lib/lib*.so.*
 %attr(755,root,root) /bin/*
 %attr(755,root,root) /usr/bin/*
-/usr/man/man[18]/*
+
+/usr/man/man*/*
+%lang(pl) /usr/man/pl/man*/*
 
 %files X11
 %attr(755,root,root) /usr/X11R6/bin/XConsole
@@ -137,6 +144,7 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Fri Mar 19 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
   [2.0-1]
+- added free(1), uptime(1) pl man pages,
 - added "rm -f /etc/psdevtab /etc/psdatabase" to %post,
 - strip with --strip-unneeded shared libraries.
 
