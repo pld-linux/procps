@@ -77,7 +77,7 @@ kullanýcýlarý bildirir.
 %setup -q 
 %patch0 -p1 
 %patch1 -p1 
-%patch2 -p1 
+%patch2 -p0 
 
 %build
 PATH=%{_prefix}/X11R6/bin:$PATH
