@@ -63,7 +63,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/{etc/X11/wmconfig,bin,lib} \
 	$RPM_BUILD_ROOT/usr/{bin,X11R6/bin,share}
 
-install -d $RPM_BUILD_ROOT/usr/man/{man{1,8},pl/man1}
+install -d $RPM_BUILD_ROOT%{man_dir}/{man{1,8},pl/man1}
 
 make install DESTDIR=$RPM_BUILD_ROOT BINGRP=`id -g`
 
