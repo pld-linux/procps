@@ -4,7 +4,7 @@ Summary(fr):	Utilitaires de surveillance des processus.
 Summary(pl):	Narzêdzia do monitorowania procesów
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
-Version:	2.0.1
+Version:	2.0.2
 Release:	1
 Copyright:	GPL
 Group:		Utilities/System
@@ -16,6 +16,7 @@ Patch0:		procps-opt.patch
 Patch1:		procps-install.patch
 Patch2:		procps-w.patch
 URL:		http://www.cs.uml.edu/~acahalan/linux/
+Obsoletes:	procps-X11
 Buildroot:	/tmp/%{name}-%{version}-root
 
 %description
@@ -44,40 +45,6 @@ Sistemin durumunu rapor eden araçlar paketidir. Koþan süreçlerin durumunu,
 kullanýlabilir bellek miktarýný, ve o an için sisteme girmiþ kullanýcýlarý
 bildirir.
 
-%package	X11
-Summary:	X-based process monitoring utilities
-Summary(de):	Prozeßüberwachungs-Dienstprogramme für X
-Summary(fr):	Utilitaires de surveillance des processus sous X
-Summary(pl):	Narzêdzia do monitorowania procesów pod X Window
-Summary(tr):	X tabanlý süreç izleme araçlarý
-Group:		X11/Utilities
-Group(pl):	X11/Narzêdzia
-Requires:	%{name} = %{version}  
-
-%description X11
-A package of X-based utilities which report on the state of the system.
-These utilities generally provide graphical presentations of information
-available from tools in the procps suite.
-
-%description -l de X11
-Ein Utility-Paket auf X-Basis, die über den Systemstatus orientieren. 
-Dabei werden die von den Tools aus der procps-Suite gelieferten Daten 
-n grafischer Weise dargestellt.
-
-%description -l fr X11
-Paquetage d'utilitaires X rapportant l'état du système. Ces utilitaires
-offrent généralement des représentations graphiques des informations
-disponibles à partir d'outils de la suite procps.
-
-%description -l pl X11
-Pakiet zawiera narzêdzia do monitorowania systemu pod X Window. Inmformacje
-o stanie systemu s± prezentowane w sposób graficzny.
-
-%description -l tr X11
-Sistemin durumunu gösteren, X tabanlý araçlar. Bu araçlar, genellikle
-procps paketinde yer alan araçlarla edinebileceðiniz bilgileri grafik olarak
-görüntülerler.
-
 %prep
 %setup  -q 
 %patch0 -p1 
@@ -93,11 +60,12 @@ make OPT="$RPM_OPT_FLAGS -pipe"
 rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT/{etc/X11/wmconfig,bin,lib} \
-	$RPM_BUILD_ROOT/usr/{bin,man/{man1,man8,pl/man1}}
+	$RPM_BUILD_ROOT/usr/{bin,X11R6/bin,man/{man1,man8,pl/man1}}
 
 make install DESTDIR=$RPM_BUILD_ROOT BINGRP=`id -g`
 
 install top.wmconfig $RPM_BUILD_ROOT/etc/X11/wmconfig/top
+install XConsole $RPM_BUILD_ROOT/usr/X11R6/bin
 
 rm -f  $RPM_BUILD_ROOT/usr/bin/snice
 ln -sf skill $RPM_BUILD_ROOT/usr/bin/snice
@@ -131,19 +99,24 @@ rm -rf $RPM_BUILD_ROOT
 
 %config(missingok) /etc/X11/wmconfig/top
 
-%attr(755,root,root) /lib/lib*.so.*
+%attr(755,root,root) /lib/libproc.so.*
 %attr(755,root,root) /bin/*
 %attr(755,root,root) /usr/bin/*
+%attr(755,root,root) /usr/X11R6/bin/XConsole
 
 /usr/man/man*/*
 %lang(pl) /usr/man/pl/man*/*
 
-%files X11
-%attr(755,root,root) /usr/X11R6/bin/XConsole
-
 %changelog
+* Sun Apr  4 1999 Piotr Czerwiñski <pius@pld.org.pl>
+  [2.0.2-1]
+- removed separate X11 subpackage (the only thing left there was XConsole
+  shell script which is now in the main package),
+- changed BuildRoot to /tmp/%%{name}-%%{version}-root,
+- minor changes.
+
 * Fri Mar 19 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
-  [2.0-1]
+  [2.0.1-1]
 - added free(1), uptime(1) pl man pages,
 - added "rm -f /etc/psdevtab /etc/psdatabase" to %post,
 - strip with --strip-unneeded shared libraries.
