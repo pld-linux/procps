@@ -6,25 +6,17 @@ Summary(pl):	Narzêdzia do monitorowania procesów
 Summary(pt_BR):	Utilitários de monitoração de processos
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
-Version:	2.0.7
-Release:	15
+Version:	2.0.10
+Release:	1
 License:	GPL
 Group:		Applications/System
-Source0:	http://surriel.com/procps/%{name}-%{version}.tar.gz
-Source1:	top.desktop
-Source2:	%{name}-non-english-man-pages.tar.bz2
+Source0:	http://surriel.com/procps/%{name}-%{version}.tar.bz2
+Source1:	%{name}-non-english-man-pages.tar.bz2
 Patch0:		%{name}-w2.patch
 Patch1:		%{name}-sig.patch
 Patch2:		%{name}-install.patch
-Patch3:		%{name}-locale.patch
-Patch4:		%{name}-negvalue.patch
-Patch5:		%{name}-retcode.patch
-Patch6:		%{name}-sysctl-error.patch
-Patch7:		%{name}-biguid.patch
-Patch8:		%{name}-bigbuff.patch
-Patch9:		%{name}-aix.patch
-Patch10:	%{name}-hz.patch
-Patch11:	%{name}-man.patch
+Patch3:		%{name}-man.patch
+Patch4:		%{name}-desktop.patch
 URL:		http://surriel.com/procps/
 BuildRequires:	ncurses-devel >= 5.1
 Prereq:		fileutils
@@ -125,13 +117,6 @@ Statyczna wersja biblioteki libproc.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
-%patch5 -p1
-%patch6 -p1
-%patch7 -p1
-%patch8 -p1
-%patch9 -p1
-%patch10 -p1
-%patch11 -p1
 
 %build
 PATH=%{_prefix}/X11R6/bin:$PATH
@@ -146,9 +131,9 @@ install -d $RPM_BUILD_ROOT/{bin,sbin,usr/X11R6/bin} \
 	$RPM_BUILD_ROOT%{_applnkdir}/System
 
 %{__make} install libinstall \
-	DESTDIR=$RPM_BUILD_ROOT
+	DESTDIR=$RPM_BUILD_ROOT \
+	APPLNK=%{_applnkdir}/System
 
-install %{SOURCE1} $RPM_BUILD_ROOT%{_applnkdir}/System
 install XConsole   $RPM_BUILD_ROOT%{_prefix}/X11R6/bin
 
 rm -f  $RPM_BUILD_ROOT%{_bindir}/snice
@@ -160,7 +145,7 @@ rm -f $RPM_BUILD_ROOT%{_bindir}/{oldps,kill}
 
 echo ".so skill.1" > $RPM_BUILD_ROOT%{_mandir}/man1/snice.1
 
-bzcat -dc %{SOURCE2} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
+bzcat -dc %{SOURCE1} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
 rm -f $RPM_BUILD_ROOT%{_mandir}/*/man1/{kill,oldps}.1
 
 %clean
