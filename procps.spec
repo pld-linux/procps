@@ -85,7 +85,7 @@ kullanýcýlarý bildirir.
 %build
 PATH=%{_prefix}/X11R6/bin:$PATH
 
-%{__make} OPT="%{?debug:-O0 -g}%{!?debug:$RPM_OPT_FLAGS} -pipe -D__SMP__" \
+%{__make} OPT="%{rpmcflags} -pipe -D__SMP__" \
 	LDFLAGS="%{!?debug:-s}"
 
 %install
