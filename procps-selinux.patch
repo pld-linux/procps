@@ -1,44 +1,61 @@
-diff -Nur procps-3.1.9/Makefile procps-3.1.9.new/Makefile
---- procps-3.1.9/Makefile	2003-06-06 03:39:56.000000000 +0200
-+++ procps-3.1.9.new/Makefile	2003-06-06 03:41:49.000000000 +0200
-@@ -156,13 +156,13 @@
- ############ prog.o --> prog
+--- procps-3.1.15/ps/ps.1.selinux	2003-12-23 20:59:47.000000000 -0500
++++ procps-3.1.15/ps/ps.1	2004-01-21 13:12:33.000000000 -0500
+@@ -96,6 +96,7 @@
+ s            display signal format
+ u            display user-oriented format
+ v            display virtual memory format
++-Z           display security context format (NSA SELinux, etc.)
+ --format     user-defined format
+ --context    display security context format (NSA SELinux, etc.)
  
- pmap w uptime tload free sysctl vmstat utmp pgrep skill: % : %.o $(LIBPROC)
--	$(CC) $(LDFLAGS) -o $@ $^
-+	$(CC) $(LDFLAGS) -o $@ $^ $(SELIB)
- 
- top:   % : %.o $(LIBPROC)
--	$(CC) $(LDFLAGS) -o $@ $^ $(CURSESLIB)
-+	$(CC) $(LDFLAGS) -o $@ $^ $(CURSESLIB) $(SELIB)
- 
- watch: % : %.o
--	$(CC) $(LDFLAGS) -o $@ $^ $(CURSESLIB)
-+	$(CC) $(LDFLAGS) -o $@ $^ $(CURSESLIB) $(SELIB)
- 
- ############ progX --> progY
- 
-diff -Nur procps-3.1.9/proc/readproc.c procps-3.1.9.new/proc/readproc.c
---- procps-3.1.9/proc/readproc.c	2003-05-31 17:09:13.000000000 +0200
-+++ procps-3.1.9.new/proc/readproc.c	2003-06-06 03:41:49.000000000 +0200
-@@ -758,6 +758,8 @@
-     else
- 	PT = openproc(flags);
-     va_end(ap);
-+    if (!PT)
-+      return 0;
-     do {					/* read table: */
- 	tab = xrealloc(tab, (n+1)*sizeof(proc_t*));/* realloc as we go, using */
- 	tab[n] = readproc_direct(PT, NULL);     /* final null to terminate */
-diff -Nur procps-3.1.9/ps/module.mk procps-3.1.9.new/ps/module.mk
---- procps-3.1.9/ps/module.mk	2003-03-30 22:04:07.000000000 +0200
-+++ procps-3.1.9.new/ps/module.mk	2003-06-06 03:41:49.000000000 +0200
-@@ -20,7 +20,7 @@
- TARFILES += $(PSSRC) $(addprefix ps/,$(PS_X))
- 
- ps/ps: $(PSOBJ) $(LIBPROC)
--	$(CC) $(LDFLAGS) -o $@ $^
-+	$(CC) $(LDFLAGS) -o $@ $^ $(SELIB)
- 
- # This just adds the stacktrace code
- ps/debug: $(PSOBJ) stacktrace.o $(LIBPROC)
+--- procps-3.1.15/ps/parser.c.selinux	2003-12-23 18:58:06.000000000 -0500
++++ procps-3.1.15/ps/parser.c	2004-01-22 23:57:36.238303681 -0500
+@@ -224,7 +224,7 @@
+   flagptr = ps_argv[thisarg];
+   while(*++flagptr){
+     /* Find any excuse to ignore stupid Unix98 misfeatures. */
+-    if(!strchr("aAdefgGlnoptuU", *flagptr)) not_pure_unix = 1;
++    if(!strchr("aAdefgGlnoptuUzZ", *flagptr)) not_pure_unix = 1;
+     switch(*flagptr){
+     case 'A':
+       trace("-A selects all processes.\n");
+@@ -315,12 +315,10 @@
+       exclusive("-V");
+       display_version();
+       exit(0);
+-#if 0
+     case 'Z':     /* full Mandatory Access Control level info */
+       trace("-Z shows full MAC info\n");
+-      return "Don't understand MAC on Linux.";
++      format_flags |= FF_Fc;
+       break;
+-#endif
+     case 'a':
+       trace("-a select all with a tty, but omit session leaders.\n");
+       simple_select |= SS_U_a;
+@@ -443,12 +441,10 @@
+       trace("-y Print lnone info in UID/USER column or do Sun -l hack.\n");
+       format_modifiers |= FM_y;
+       break;
+-#if 0
+     case 'z':     /* alias of Mandatory Access Control level info */
+-      trace("-z shows aliased MAC info\n");
+-      return "Don't understand MAC on Linux.";
++      trace("-Z shows full MAC info\n");
++      format_flags |= FF_Fc;
+       break;
+-#endif
+     case '-':
+       return "Embedded '-' among SysV options makes no sense.";
+       break;
+@@ -568,6 +564,10 @@
+       trace("X Old Linux i386 register format\n");
+       format_flags |= FF_LX;
+       break;
++    case 'Z':
++      trace("SElinux Security Context format\n");
++      format_flags |= FF_Fc;
++      break;
+     case 'a':
+       trace("a Select all w/tty, including other users\n");
+       simple_select |= SS_B_a;
