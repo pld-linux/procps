@@ -101,7 +101,7 @@ rm -rf $RPM_BUILD_ROOT
 %lang(pl) /usr/man/pl/man*/*
 /usr/man/man*/*
 
-%config(missingok) /etc/X11/wmconfig/top
+/etc/X11/wmconfig/top
 
 %attr(755,root,root) /lib/libproc.so.*
 %attr(755,root,root) /bin/*
