@@ -146,7 +146,8 @@ Statyczna wersja biblioteki libproc.
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/{bin,sbin,lib} \
 	$RPM_BUILD_ROOT{%{_includedir}/proc,%{_libdir},%{_applnkdir}/System} \
-	$RPM_BUILD_ROOT{%{_bindir},%{_mandir}/man{1,5,8}}
+	$RPM_BUILD_ROOT{%{_bindir},%{_mandir}/man{1,5,8}} \
+	$RPM_BUILD_ROOT%{_prefix}/X11R6/bin
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
@@ -155,7 +156,7 @@ install -d $RPM_BUILD_ROOT/{bin,sbin,lib} \
 install proc/*.a $RPM_BUILD_ROOT%{_libdir}
 install proc/*.h $RPM_BUILD_ROOT%{_includedir}/proc
 install %{SOURCE2} $RPM_BUILD_ROOT%{_applnkdir}/System
-install %{SOURCE3} $RPM_BUILD_ROOT%{_bindir}/XConsole
+install %{SOURCE3} $RPM_BUILD_ROOT%{_prefix}/X11R6/bin/XConsole
 
 rm -f $RPM_BUILD_ROOT/bin/kill
 rm -f $RPM_BUILD_ROOT%{_mandir}/man1/{snice,kill,oldps}.1
@@ -185,6 +186,7 @@ rm -f %{_sysconfdir}/psdevtab %{_sysconfdir}/psdatabase
 %attr(755,root,root) /bin/*
 %attr(755,root,root) /sbin/sysctl
 %attr(755,root,root) %{_bindir}/*
+%attr(755,root,root) %{_prefix}/X11R6/bin/XConsole
 %{_applnkdir}/System/top.desktop
 %{_mandir}/man*/*
 %lang(cs) %{_mandir}/cs/man*/*
