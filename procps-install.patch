@@ -31,7 +31,7 @@
  ELF_CAPABLE = #-DELF_CAPABLE
  LIBBFD = -lbfd -liberty
 -MAN1DIR = /usr/man/man1
-+MAN1DIR = $(DESTDIR)/usr/man/man1
++MAN1DIR = $(DESTDIR)/usr/share/man/man1
  
  all: ps
  
