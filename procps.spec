@@ -1,6 +1,4 @@
 #
-# Conditional build:
-# _with_selinux - selinux support
 #
 Summary:	Utilities for monitoring your system and processes on your system
 Summary(de):	Utilities zum Ueberwachen Ihres Systems und der Prozesse
@@ -10,12 +8,12 @@ Summary(pl):	Narzêdzia do monitorowania procesów
 Summary(pt_BR):	Utilitários de monitoração de processos
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
-Version:	3.1.14
+Version:	3.1.15
 Release:	1
 License:	GPL
 Group:		Applications/System
 Source0:	http://procps.sourceforge.net/%{name}-%{version}.tar.gz
-# Source0-md5:	e146860df435f863811206e4f9d3becf
+# Source0-md5:	496d9f87be5eaebcd1080bb5b9999da4
 Source1:	http://atos.wmid.amu.edu.pl/~undefine/%{name}-non-english-man-pages.tar.bz2
 # Source1-md5:	60d24720b76c10553ed4abf68b76e079
 Source2:	top.desktop
@@ -23,11 +21,9 @@ Source3:	XConsole.sh
 Patch0:		%{name}-make.patch
 Patch1:		%{name}-sysctl_stdin.patch
 Patch2:		%{name}-global.patch
-Patch3:		%{name}-selinux.patch
-Patch4:		%{name}-FILLBUG_backport.patch
+Patch3:		%{name}-FILLBUG_backport.patch
 URL:		http://procps.sourceforge.net/
 BuildRequires:	ncurses-devel >= 5.1
-%{?_with_selinux:BuildRequires:	selinux-libs-devel}
 PreReq:		fileutils
 Obsoletes:	procps-X11
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -124,24 +120,19 @@ Statyczna wersja biblioteki libproc.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%{?_with_selinux:%patch3 -p1}
-%patch4 -p0
+%patch3 -p0
 
 %build
 %{__make} \
 	CC="%{__cc}" \
-	%{!?_with_selinux:OPT="%{rpmcflags}"} \
-	%{?_with_selinux:OPT="%{rpmcflags} -DFLASK_LINUX"} \
+	OPT="%{rpmcflags}" \
 	LDFLAGS="%{rpmldflags}" \
-	%{?_with_selinux:SELIB="-lsecure"} \
 	SHARED=1
 
 %{__make} \
 	CC="%{__cc}" \
-	%{!?_with_selinux:OPT="%{rpmcflags}"} \
-	%{?_with_selinux:OPT="%{rpmcflags} -DFLASK_LINUX"} \
+	OPT="%{rpmcflags}" \
 	LDFLAGS="%{rpmldflags}" \
-	%{?_with_selinux:SELIB="-lsecure"} \
 	SHARED=0
 
 %install
