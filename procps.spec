@@ -7,7 +7,7 @@ Summary(pt_BR):	Utilitários de monitoração de processos
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
 Version:	2.0.7
-Release:	14
+Release:	15
 License:	GPL
 Group:		Applications/System
 Source0:	http://surriel.com/procps/%{name}-%{version}.tar.gz
@@ -24,6 +24,7 @@ Patch7:		%{name}-biguid.patch
 Patch8:		%{name}-bigbuff.patch
 Patch9:		%{name}-aix.patch
 Patch10:	%{name}-hz.patch
+Patch11:	%{name}-man.patch
 URL:		http://surriel.com/procps/
 BuildRequires:	ncurses-devel >= 5.1
 Prereq:		fileutils
@@ -130,6 +131,7 @@ Statyczna wersja biblioteki libproc.
 %patch8 -p1
 %patch9 -p1
 %patch10 -p1
+%patch11 -p1
 
 %build
 PATH=%{_prefix}/X11R6/bin:$PATH
