@@ -20,6 +20,8 @@ Patch0:		%{name}-make.patch
 Patch1:		%{name}-sysctl_stdin.patch
 Patch2:		%{name}-global.patch
 Patch3:		%{name}-FILLBUG_backport.patch
+# http://www.nsa.gov/selinux/patches/procps-selinux.patch.gz
+Patch4:		%{name}-selinux.patch
 URL:		http://procps.sourceforge.net/
 BuildRequires:	ncurses-devel >= 5.1
 PreReq:		fileutils
@@ -119,6 +121,7 @@ Statyczna wersja biblioteki libproc.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p0
+%patch4 -p1
 
 %build
 %{__make} \
