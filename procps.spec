@@ -27,7 +27,7 @@ Patch3:		%{name}-selinux.patch
 Patch4:		%{name}-FILLBUG_backport.patch
 URL:		http://procps.sourceforge.net/
 BuildRequires:	ncurses-devel >= 5.1
-%{?_with_selinux:BuildRequires: selinux-libs-devel}
+%{?_with_selinux:BuildRequires:	selinux-libs-devel}
 PreReq:		fileutils
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	procps-X11
