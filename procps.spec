@@ -4,17 +4,16 @@ Summary(fr):	Utilitaires de surveillance des processus.
 Summary(pl):	Narzêdzia do monitorowania procesów
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
-Version:	1.9.0
-%define		date	981104
-Release:	2d
+Version:	2.0
+#%define		date	981104
+Release:	1
 Copyright:	GPL
 Group:		Utilities/System
 Group(pl):	U¿ytki/System
 URL:		http://www.cs.uml.edu/~acahalan/linux
-Source:		%{name}-%{date}.tar.gz
+Source:		%{name}-%{version}.tar.gz
 Patch0:		%{name}-opt.patch
 Patch1:		%{name}-install.patch
-Patch2:		%{name}-ps.patch
 Patch3:		%{name}-w.patch
 Buildroot:	/tmp/%{name}-%{version}-root
 
@@ -79,11 +78,10 @@ procps paketinde yer alan araçlarla edinebileceðiniz bilgileri grafik olarak
 görüntülerler.
 
 %prep
-%setup -q -n %{name}-%{date}
+%setup  -q 
 %patch0 -p1 
 %patch1 -p1 
 %patch2 -p1 
-%patch3 -p1 
 
 %build
 PATH=/usr/X11R6/bin:$PATH
@@ -109,7 +107,7 @@ echo .so skill.1 > $RPM_BUILD_ROOT/usr/man/man1/snice.1
 strip $RPM_BUILD_ROOT/lib/*.so.*.*
 
 gzip -9fn $RPM_BUILD_ROOT/usr/man/{man1/*,man8/*}
-bzip2 -9 NEWS BUGS 
+gzip -9fn NEWS BUGS 
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -124,7 +122,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc {NEWS,BUGS}.bz2 
+%doc {NEWS,BUGS}.gz
 
 %config(missingok) /etc/X11/wmconfig/top
 
