@@ -6,18 +6,14 @@ Summary(pl):	Narzêdzia do monitorowania procesów
 Summary(pt_BR):	Utilitários de monitoração de processos
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
-Version:	2.0.10
+Version:	3.1.0
 Release:	1
 License:	GPL
 Group:		Applications/System
-Source0:	http://surriel.com/procps/%{name}-%{version}.tar.bz2
+Source0:	http://procps.sourceforge.net/%{name}-3.1.0.tar.gz
 Source1:	%{name}-non-english-man-pages.tar.bz2
-Patch0:		%{name}-w2.patch
-Patch1:		%{name}-sig.patch
-Patch2:		%{name}-install.patch
-Patch3:		%{name}-man.patch
-Patch4:		%{name}-desktop.patch
-URL:		http://surriel.com/procps/
+Patch0:		%{name}-make.patch
+URL:		http://procps.sourceforge.net/
 BuildRequires:	ncurses-devel >= 5.1
 Prereq:		fileutils
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -113,31 +109,32 @@ Statyczna wersja biblioteki libproc.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
 
 %build
-PATH=%{_prefix}/X11R6/bin:$PATH
+%{__make} \
+	CC="%{__cc}" \
+	OPT="%{rpmcflags}" \
+	LDFLAGS="%{rpmldflags}" \
+	SHARED=1
 
-%{__make} OPT="%{rpmcflags} -pipe -D__SMP__" \
-	LDFLAGS="%{rpmldflags}"
+%{__make} \
+	CC="%{__cc}" \
+	OPT="%{rpmcflags}" \
+	LDFLAGS="%{rpmldflags}" \
+	SHARED=0
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/{bin,sbin,usr/X11R6/bin} \
-	$RPM_BUILD_ROOT{%{_bindir},%{_mandir}/man{1,5,8}} \
-	$RPM_BUILD_ROOT%{_applnkdir}/System
+install -d $RPM_BUILD_ROOT/{bin,sbin,lib} \
+	$RPM_BUILD_ROOT{%{_includedir}/proc,%{_libdir}} \
+	$RPM_BUILD_ROOT{%{_bindir},%{_mandir}/man{1,5,8}}
 
-%{__make} install libinstall \
+%{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
-	APPLNK=%{_applnkdir}/System
+	install=install
 
-install XConsole   $RPM_BUILD_ROOT%{_prefix}/X11R6/bin
-
-rm -f  $RPM_BUILD_ROOT%{_bindir}/snice
-ln -sf skill $RPM_BUILD_ROOT%{_bindir}/snice
+install proc/*.a $RPM_BUILD_ROOT%{_libdir}
+install proc/*.h $RPM_BUILD_ROOT%{_includedir}/proc
 
 rm -f $RPM_BUILD_ROOT/bin/kill
 rm -f $RPM_BUILD_ROOT%{_mandir}/man1/{snice,kill,oldps}.1
@@ -167,7 +164,6 @@ rm -f %{_sysconfdir}/psdevtab %{_sysconfdir}/psdatabase
 %attr(755,root,root) /bin/*
 %attr(755,root,root) /sbin/sysctl
 %attr(755,root,root) %{_bindir}/*
-%attr(755,root,root) %{_prefix}/X11R6/bin/XConsole
 %{_mandir}/man*/*
 %lang(cs) %{_mandir}/cs/man*/*
 %lang(de) %{_mandir}/de/man*/*
@@ -180,11 +176,10 @@ rm -f %{_sysconfdir}/psdevtab %{_sysconfdir}/psdatabase
 %lang(ko) %{_mandir}/ko/man*/*
 %lang(nl) %{_mandir}/nl/man*/*
 %lang(pl) %{_mandir}/pl/man*/*
-%{_applnkdir}/System/top.desktop
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libproc.so
+%attr(755,root,root) /lib/libproc.so
 %{_includedir}/proc
 
 %files static
