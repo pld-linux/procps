@@ -1,15 +1,15 @@
-Summary:	Process monitoring utilities
-Summary(de):	Dienstprogramm zur Prozeßüberwachung
+Summary:	Utilities for monitoring your system and processes on your system
+Summary(de):	Utilities zum Ueberwachen Ihres Systems und der Prozesse
 Summary(fr):	Utilitaires de surveillance des processus.
 Summary(pl):	Narzêdzia do monitorowania procesów
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
-Version:	2.0.3
-Release:	2
+Version:	2.0.4
+Release:	1
 Copyright:	GPL
 Group:		Utilities/System
 Group(pl):	Narzêdzia/System
-Source0:	ftp://tsx-11.mit.edu/pub/linux/sources/usr.bin/%{name}-%{version}.tar.gz
+Source0:	ftp://metalab.unc.edu/pub/Linux/system/status/ps/%{name}-%{version}.tar.gz
 Source1:	free.1.pl
 Source2:	uptime.1.pl
 Source3:	ps.1.pl
@@ -26,14 +26,37 @@ Buildroot:	/tmp/%{name}-%{version}-root
 %define		_sysconfdir	/etc/X11
 
 %description
-A package of utilities which report on the state of the system,
-including the states of running processes, amount of memory available,
-and currently-logged-in users.
+The procps package contains a set of system utilities which provide system
+information. Procps includes ps, free, skill, snice, tload, top, uptime,
+vmstat, w, and watch. The ps command displays a snapshot of running
+processes. The top command provides a repetitive update of the statuses of
+running processes. The free command displays the amounts of free and used
+memory on your system. The skill command sends a terminate command (or
+another specified signal) to a specified set of processes. The snice command
+is used to change the scheduling priority of specified processes. The tload
+command prints a graph of the current system load average to a specified
+tty. The uptime command displays the current time, how long the system has
+been running, how many users are logged on and system load averages for the
+past one, five and fifteen minutes. The w command displays a list of the
+users who are currently logged on and what they're running.  The watch
+program watches a running program. The vmstat command displays virtual
+memory statistics about processes, memory, paging, block I/O, traps and CPU
+activity.
 
 %description -l de
-Ein Paket mit Utilities, die den Status des Systems melden, 
-einschließlich des Status laufender Prozesse, der Menge des 
-verfügbaren Speicherplatzes und der momentan angemeldeten Benutzer.
+Das procps-Paket enthält System-Utilities, die Systeminformationen anzeigen.
+Procps enthält ps, free, skill, snice, tload, top, uptime, vmstat, w und
+watch. ps zeigt an, welche Prozesse gerade laufen. Top zeigt in regelmäßigen
+Abständen eine Prozessliste an. Free zeigt an, wieviel Speicher frei ist,
+und wieviel Speicher benutzt wird. Skill schickt den Terminierungsbefehl
+(oder ein anderes angegebenes Signal) an angegebene Prozesse. Snice ändert
+die Priorität von angegebenen Prozessen. tload zeigt einen Graphen der
+aktuellen Systemauslastung an. Uptime zeigt an, wie lange das System am
+laufen ist, wieviele User eingeloggt sind, und die Auslastungswerte der
+letzten Minute, der letzten 5 Minuten, und 15 Minuten. Der w-Befehl zeigt
+eine Liste der User an, die gerade eingeloggt sind, und welches Programm sie
+benutzen. Vmstat zeigt Statistiken über den virtuellen Speicher, Prozesse,
+Paging, Block I/O, Traps, und CPU-Aktivität.
 
 %description -l fr
 Paquetage d'utilitaires donnant des informations sur l'état du système,
