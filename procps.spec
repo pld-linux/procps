@@ -1,30 +1,40 @@
 Summary:	Utilities for monitoring your system and processes on your system
 Summary(de):	Utilities zum Ueberwachen Ihres Systems und der Prozesse
+Summary(es):	Utilitarios de monitoración de procesos
 Summary(fr):	Utilitaires de surveillance des processus
 Summary(pl):	Narzêdzia do monitorowania procesów
+Summary(pt_BR):Utilitários de monitoração de processos
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
 Version:	2.0.7
-Release:	6
+Release:	11
 License:	GPL
 Group:		Applications/System
 Group(de):	Applikationen/System
 Group(pl):	Aplikacje/System
 Source0:	ftp://metalab.unc.edu/pub/Linux/system/status/ps/%{name}-%{version}.tar.gz
-Source1:	free.1.pl
-Source2:	uptime.1.pl
+Source1:	top.desktop
+Source2:	free.1.pl
 Source3:	ps.1.pl
-Source4:	top.desktop
-Source5:	top.1.pl
+Source4:	top.1.pl
+Source5:	uptime.1.pl
+Source6:	w.1.pl
 Patch0:		%{name}-w2.patch
 Patch1:		%{name}-sig.patch
 Patch2:		%{name}-install.patch
 Patch3:		%{name}-locale.patch
+Patch4:		%{name}-negvalue.patch
+Patch5:		%{name}-retcode.patch
+Patch6:		%{name}-sysctl-error.patch
+Patch7:		%{name}-biguid.patch
+Patch8:		%{name}-bigbuff.patch
+Patch9:		%{name}-aix.patch
+Patch10:	%{name}-hz.patch
+URL:		http://www.cs.uml.edu/~acahalan/linux/
 BuildRequires:	ncurses-devel >= 5.1
 Prereq:		fileutils
-URL:		http://www.cs.uml.edu/~acahalan/linux/
-Obsoletes:	procps-X11
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+Obsoletes:	procps-X11
 
 %description
 The procps package contains a set of system utilities which provide
@@ -61,6 +71,11 @@ User an, die gerade eingeloggt sind, und welches Programm sie
 benutzen. Vmstat zeigt Statistiken über den virtuellen Speicher,
 Prozesse, Paging, Block I/O, Traps, und CPU-Aktivität.
 
+%description -l es
+Un paquete de utilitarios que relatan el estado del sistema. Se da
+énfasis a los procesos en ejecución, total de memoria disponible y a
+los usuarios que están "logados" en el sistema.
+
 %description -l fr
 Paquetage d'utilitaires donnant des informations sur l'état du
 système, dont les états des processus en cours, le total de mémoire
@@ -71,6 +86,11 @@ Pakiet zawiera podstawowe narzêdzia do monitorowania pracy systemu.
 Dziêki tym programom bêdziesz móg³ na bie¿±co kontrolowaæ jakie
 procesy s± w danej chwili uruchomione, ilo¶æ wolnej pamiêci, kto jest
 w danej chwili zalogowany, jakie jest aktualne obci±¿enie systemu itp.
+
+%description -l pt_BR
+Um pacote de utilitários que relatam o estado do sistema. É dado
+ênfase aos processos em execução, total de memória disponível e aos
+usuários que estão logados no sistema.
 
 %description -l tr
 Sistemin durumunu rapor eden araçlar paketidir. Koþan süreçlerin
@@ -83,6 +103,13 @@ kullanýcýlarý bildirir.
 %patch1 -p1 
 %patch2 -p0 
 %patch3 -p1
+%patch4 -p1
+%patch5 -p1
+%patch6 -p1
+%patch7 -p1
+%patch8 -p1
+%patch9 -p1
+%patch10 -p1
 
 %build
 PATH=%{_prefix}/X11R6/bin:$PATH
@@ -92,7 +119,6 @@ PATH=%{_prefix}/X11R6/bin:$PATH
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
 install -d $RPM_BUILD_ROOT/{bin,sbin,lib,usr/X11R6/bin} \
 	$RPM_BUILD_ROOT{%{_bindir},%{_datadir},%{_mandir}/{man{1,5,8},pl/man1}} \
 	$RPM_BUILD_ROOT%{_applnkdir}/System
@@ -103,7 +129,7 @@ install -d $RPM_BUILD_ROOT/{bin,sbin,lib,usr/X11R6/bin} \
 	MAN5DIR=$RPM_BUILD_ROOT%{_mandir}/man5 \
 	MAN8DIR=$RPM_BUILD_ROOT%{_mandir}/man8
 
-install %{SOURCE4} $RPM_BUILD_ROOT%{_applnkdir}/System
+install %{SOURCE1} $RPM_BUILD_ROOT%{_applnkdir}/System
 install XConsole   $RPM_BUILD_ROOT%{_prefix}/X11R6/bin
 
 rm -f  $RPM_BUILD_ROOT%{_bindir}/snice
@@ -113,12 +139,14 @@ rm -f $RPM_BUILD_ROOT/bin/kill
 rm -f $RPM_BUILD_ROOT%{_mandir}/man1/{snice,kill,oldps}.1
 rm -f $RPM_BUILD_ROOT%{_bindir}/{oldps,kill}
 
-echo .so skill.1 > $RPM_BUILD_ROOT%{_mandir}/man1/snice.1
+echo ".so skill.1" > $RPM_BUILD_ROOT%{_mandir}/man1/snice.1
 
-install %{SOURCE1} $RPM_BUILD_ROOT%{_mandir}/pl/man1/free.1
-install %{SOURCE2} $RPM_BUILD_ROOT%{_mandir}/pl/man1/uptime.1
+install %{SOURCE2} $RPM_BUILD_ROOT%{_mandir}/pl/man1/free.1
 install %{SOURCE3} $RPM_BUILD_ROOT%{_mandir}/pl/man1/ps.1
-install %{SOURCE5} $RPM_BUILD_ROOT%{_mandir}/pl/man1/top.1
+install %{SOURCE4} $RPM_BUILD_ROOT%{_mandir}/pl/man1/top.1
+install %{SOURCE5} $RPM_BUILD_ROOT%{_mandir}/pl/man1/uptime.1
+install %{SOURCE6} $RPM_BUILD_ROOT%{_mandir}/pl/man1/w.1
+echo ".so skill.1" > $RPM_BUILD_ROOT%{_mandir}/pl/man1/snice.1
 
 gzip -9nf NEWS BUGS TODO
 
