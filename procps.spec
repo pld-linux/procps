@@ -5,7 +5,7 @@ Summary(pl):	Narzêdzia do monitorowania procesów
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
 Version:	2.0.2
-Release:	2
+Release:	3
 Copyright:	GPL
 Group:		Utilities/System
 Group(pl):	Narzêdzia/System
@@ -61,7 +61,9 @@ make OPT="$RPM_OPT_FLAGS -pipe"
 rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT/{etc/X11/wmconfig,bin,lib} \
-	$RPM_BUILD_ROOT/usr/{bin,X11R6/bin,man/{man1,man8,pl/man1}}
+	$RPM_BUILD_ROOT/usr/{bin,X11R6/bin,share}
+
+install -d $RPM_BUILD_ROOT/usr/man/{man{1,8},pl/man1}
 
 make install DESTDIR=$RPM_BUILD_ROOT BINGRP=`id -g`
 
@@ -72,8 +74,13 @@ rm -f  $RPM_BUILD_ROOT%{_bindir}/snice
 ln -sf skill $RPM_BUILD_ROOT%{_bindir}/snice
 rm -f  $RPM_BUILD_ROOT/bin/kill
 
-rm -f $RPM_BUILD_ROOT%{_mandir}/man1/{snice,kill}.1
+mv $RPM_BUILD_ROOT%{_prefix}/man $RPM_BUILD_ROOT%{_datadir}
+
+rm -f $RPM_BUILD_ROOT%{_mandir}/man1/{snice,kill,oldps}.1
+rm -f $RPM_BUILD_ROOT%{_bindir}/oldps
+
 echo .so skill.1 > $RPM_BUILD_ROOT%{_mandir}/man1/snice.1
+install ps/ps.1 $RPM_BUILD_ROOT%{_mandir}/man1
 
 strip --strip-unneeded $RPM_BUILD_ROOT/lib/*.so.*.*
 
@@ -109,6 +116,11 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /usr/X11R6/bin/XConsole
 
 %changelog
+* Sat May 22 1999 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
+  [2.0.2-3]
+- fixes for correct build,
+- removed old ps.
+
 * Wed Apr 21 1999 Piotr Czerwiñski <pius@pld.org.pl>
   [2.0.2-2]
 - replacements in %files,
@@ -171,4 +183,4 @@ rm -rf $RPM_BUILD_ROOT
 - added pl translation,
 - build from non root's account,
 - build against GNU libc-2.1,
-- start at incorrect RH spec file.
+- start at RH spec file.
