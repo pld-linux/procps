@@ -15,6 +15,7 @@ Source1:	free.1.pl
 Source2:	uptime.1.pl
 Source3:	ps.1.pl
 Source4:	top.desktop
+Source5:	top.1.pl
 Patch0:		%{name}-w2.patch
 Patch1:		%{name}-sig.patch
 Patch2:		%{name}-install.patch
@@ -117,6 +118,7 @@ echo .so skill.1 > $RPM_BUILD_ROOT%{_mandir}/man1/snice.1
 install %{SOURCE1} $RPM_BUILD_ROOT%{_mandir}/pl/man1/free.1
 install %{SOURCE2} $RPM_BUILD_ROOT%{_mandir}/pl/man1/uptime.1
 install %{SOURCE3} $RPM_BUILD_ROOT%{_mandir}/pl/man1/ps.1
+install %{SOURCE5} $RPM_BUILD_ROOT%{_mandir}/pl/man1/top.1
 
 gzip -9nf NEWS BUGS TODO
 
