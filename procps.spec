@@ -72,15 +72,15 @@ rm -f  $RPM_BUILD_ROOT/usr/bin/snice
 ln -sf skill $RPM_BUILD_ROOT/usr/bin/snice
 rm -f  $RPM_BUILD_ROOT/bin/kill
 
-rm -f $RPM_BUILD_ROOT/usr/man/man1/{snice,kill}.1
-echo .so skill.1 > $RPM_BUILD_ROOT/usr/man/man1/snice.1
+rm -f $RPM_BUILD_ROOT%{_mandir}/man1/{snice,kill}.1
+echo .so skill.1 > $RPM_BUILD_ROOT%{_mandir}/man1/snice.1
 
 strip --strip-unneeded $RPM_BUILD_ROOT/lib/*.so.*.*
 
-install %{SOURCE1} $RPM_BUILD_ROOT/usr/man/pl/man1/free.1
-install %{SOURCE2} $RPM_BUILD_ROOT/usr/man/pl/man1/uptime.1
+install %{SOURCE1} $RPM_BUILD_ROOT%{_mandir}/pl/man1/free.1
+install %{SOURCE2} $RPM_BUILD_ROOT%{_mandir}/pl/man1/uptime.1
 
-gzip -9fn $RPM_BUILD_ROOT/usr/man/{man*/*,pl/man*/*} NEWS BUGS 
+gzip -9fn $RPM_BUILD_ROOT%{_mandir}/{man*/*,pl/man*/*} NEWS BUGS 
 
 %post 
 /sbin/ldconfig
@@ -98,8 +98,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc {NEWS,BUGS}.gz
 
-%lang(pl) /usr/man/pl/man*/*
-/usr/man/man*/*
+%lang(pl) %{_mandir}/pl/man*/*
+%{_mandir}/man*/*
 
 /etc/X11/wmconfig/top
 
@@ -132,7 +132,7 @@ rm -rf $RPM_BUILD_ROOT
 - fixed Group(pl),
 - bzipping documentation,
 - removed man group from man pages,
-- removed /bin/kill & /usr/man/man1/kill.1 -- provides by util-linux,
+- removed /bin/kill & %{_mandir}/man1/kill.1 -- provides by util-linux,
 - cosmetic changes.
 
 * Sat Feb 06 1999 Marek Druzd <raven@lo14.szczecin.pl>
