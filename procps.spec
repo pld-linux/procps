@@ -7,8 +7,9 @@ Name:		procps
 Version:	2.0.7
 Release:	6
 License:	GPL
-Group:		Utilities/System
-Group(pl):	Narzêdzia/System
+Group:		Applications/System
+Group(de):	Applikationen/System
+Group(pl):	Aplikacje/System
 Source0:	ftp://metalab.unc.edu/pub/Linux/system/status/ps/%{name}-%{version}.tar.gz
 Source1:	free.1.pl
 Source2:	uptime.1.pl
@@ -86,7 +87,7 @@ kullanýcýlarý bildirir.
 PATH=%{_prefix}/X11R6/bin:$PATH
 
 %{__make} OPT="%{rpmcflags} -pipe -D__SMP__" \
-	LDFLAGS="%{!?debug:-s}"
+	LDFLAGS="%{rpmldflags}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
