@@ -4,8 +4,8 @@ Summary(fr):	Utilitaires de surveillance des processus
 Summary(pl):	Narzêdzia do monitorowania procesów
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
-Version:	2.0.6
-Release:	15
+Version:	2.0.7
+Release:	1
 License:	GPL
 Group:		Utilities/System
 Group(pl):	Narzêdzia/System
@@ -14,18 +14,9 @@ Source1:	free.1.pl
 Source2:	uptime.1.pl
 Source3:	ps.1.pl
 Source4:	top.desktop
-Patch0:		%{name}-opt.patch
-Patch1:		%{name}-install.patch
-Patch2:		%{name}-w2.patch
-Patch3:		%{name}-man5.patch
-Patch4:		%{name}-SMP.patch
-Patch5:		%{name}-longlong.patch
-Patch6:		%{name}-sysctl.patch
-Patch7:		%{name}-sysmap.patch
-Patch8:		%{name}-biggerbuf.patch
-Patch9:		%{name}-pagesize.patch
-Patch10:	%{name}-sig.patch
-Patch11:	%{name}-smp.patch
+Patch0:		%{name}-w2.patch
+Patch1:		%{name}-sig.patch
+Patch2:		%{name}-install.patch
 BuildRequires:	ncurses-devel >= 5.1
 URL:		http://www.cs.uml.edu/~acahalan/linux/
 Obsoletes:	procps-X11
@@ -87,15 +78,6 @@ kullanýcýlarý bildirir.
 %patch0 -p1 
 %patch1 -p1 
 %patch2 -p1 
-%patch3 -p1 
-#%patch4 -p1 
-%patch5 -p1 
-%patch6 -p1 
-%patch7 -p1 
-%patch8 -p1 
-%patch9 -p1 
-%patch10 -p1 
-%patch11 -p1 
 
 %build
 PATH=%{_prefix}/X11R6/bin:$PATH
