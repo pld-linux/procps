@@ -85,7 +85,7 @@ make LDFLAGS="-s"
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/{etc/X11/wmconfig,bin,lib,usr/{bin,sbin,man/man1,man/man8}}
 
-make install DESTDIR=$RPM_BUILD_ROOT BINGRP=$USER
+make install DESTDIR=$RPM_BUILD_ROOT BINGRP=`id -u`
 
 install top.wmconfig $RPM_BUILD_ROOT/etc/X11/wmconfig/top
 
