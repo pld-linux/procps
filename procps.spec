@@ -1,5 +1,3 @@
-#
-#
 Summary:	Utilities for monitoring your system and processes on your system
 Summary(de):	Utilities zum Ueberwachen Ihres Systems und der Prozesse
 Summary(es):	Utilitarios de monitoración de procesos
@@ -125,26 +123,28 @@ Statyczna wersja biblioteki libproc.
 %build
 %{__make} \
 	CC="%{__cc}" \
-	OPT="%{rpmcflags}" \
+	CFLAGS="%{rpmcflags}" \
 	LDFLAGS="%{rpmldflags}" \
 	SHARED=1
 
 %{__make} \
 	CC="%{__cc}" \
-	OPT="%{rpmcflags}" \
+	CFLAGS="%{rpmcflags}" \
 	LDFLAGS="%{rpmldflags}" \
 	SHARED=0
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/{bin,sbin,%{_lib}} \
-	$RPM_BUILD_ROOT{%{_includedir}/proc,%{_libdir},%{_desktopdir}} \
-	$RPM_BUILD_ROOT{%{_bindir},%{_mandir}/man{1,5,8}}
+install -d $RPM_BUILD_ROOT{%{_includedir}/proc,%{_libdir},%{_desktopdir}}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
 	lib=$RPM_BUILD_ROOT/%{_lib} \
-	install=install
+	install="install -D" \
+	ldconfig=true
+
+ln -sf /%{_lib}/$(cd $RPM_BUILD_ROOT/%{_lib}; echo libproc.so.*.*.*) \
+	$RPM_BUILD_ROOT%{_libdir}/libproc.so
 
 install proc/*.a $RPM_BUILD_ROOT%{_libdir}
 install proc/*.h $RPM_BUILD_ROOT%{_includedir}/proc
@@ -195,7 +195,7 @@ rm -f %{_sysconfdir}/psdevtab %{_sysconfdir}/psdatabase
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) /%{_lib}/libproc.so
+%attr(755,root,root) %{_libdir}/libproc.so
 %{_includedir}/proc
 
 %files static
