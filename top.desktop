@@ -5,4 +5,5 @@ Comment[pl]=Wyświetlanie aktualnego stanu procesów
 Exec=top
 Terminal=true
 Type=Application
+Categories=System
 # vi: encoding=utf-8
