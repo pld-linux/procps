@@ -93,7 +93,7 @@ rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT/{bin,sbin,lib,usr/X11R6/bin} \
 	$RPM_BUILD_ROOT{%{_bindir},%{_datadir},%{_mandir}/{man{1,5,8},pl/man1}} \
-	$RPM_BUILD_ROOT%{_applnkdir}/Administration
+	$RPM_BUILD_ROOT%{_applnkdir}/System
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT BINGRP=`id -g` \
@@ -101,7 +101,7 @@ install -d $RPM_BUILD_ROOT/{bin,sbin,lib,usr/X11R6/bin} \
 	MAN5DIR=$RPM_BUILD_ROOT%{_mandir}/man5 \
 	MAN8DIR=$RPM_BUILD_ROOT%{_mandir}/man8
 
-install %{SOURCE4} $RPM_BUILD_ROOT%{_applnkdir}/Administration
+install %{SOURCE4} $RPM_BUILD_ROOT%{_applnkdir}/System
 install XConsole   $RPM_BUILD_ROOT%{_prefix}/X11R6/bin
 
 rm -f  $RPM_BUILD_ROOT%{_bindir}/snice
@@ -144,4 +144,4 @@ rm -rf $RPM_BUILD_ROOT
 %lang(pl) %{_mandir}/pl/man*/*
 %{_mandir}/man*/*
 
-%{_applnkdir}/Administration/top.desktop
+%{_applnkdir}/System/top.desktop
