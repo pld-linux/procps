@@ -4,8 +4,8 @@ Summary(fr):	Utilitaires de surveillance des processus.
 Summary(pl):	Narzêdzia do monitorowania procesów
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
-Version:	2.0.4
-Release:	2
+Version:	2.0.5
+Release:	1
 Copyright:	GPL
 Group:		Utilities/System
 Group(pl):	Narzêdzia/System
