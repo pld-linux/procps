@@ -12,7 +12,7 @@ License:	GPL
 Group:		Applications/System
 Source0:	ftp://metalab.unc.edu/pub/Linux/system/status/ps/%{name}-%{version}.tar.gz
 Source1:	top.desktop
-Source2:	procps-non-english-man-pages.tar.bz2
+Source2:	%{name}-non-english-man-pages.tar.bz2
 Patch0:		%{name}-w2.patch
 Patch1:		%{name}-sig.patch
 Patch2:		%{name}-install.patch
@@ -92,10 +92,10 @@ durumunu, kullanýlabilir bellek miktarýný, ve o an için sisteme girmiþ
 kullanýcýlarý bildirir.
 
 %prep
-%setup -q 
-%patch0 -p1 
-%patch1 -p1 
-%patch2 -p0 
+%setup -q
+%patch0 -p1
+%patch1 -p1
+%patch2 -p0
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
@@ -140,7 +140,7 @@ rm -f $RPM_BUILD_ROOT%{_mandir}/*/man1/{kill,oldps}.1
 
 gzip -9nf NEWS BUGS TODO
 
-%post 
+%post
 /sbin/ldconfig
 if [ -f /proc/uptime ] ; then
 	/bin/ps </dev/null >/dev/null 2>&1
