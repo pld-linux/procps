@@ -124,6 +124,7 @@ fi
 - added %postun -p /sbin/ldconfig,
 - simplification in %files,
 - procps is now linked with libncurse instead libtermcap,
+- fixed passing $RPM_OPT_FALGS (procps-rpm_opt_flags.patch),
 - added striping shared libraries.
 
 * Wed Sep 09 1998 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
