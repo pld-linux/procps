@@ -14,19 +14,19 @@ Source1:	free.1.pl
 Source2:	uptime.1.pl
 Source3:	ps.1.pl
 Source4:	top.desktop
-Patch0:		procps-opt.patch
-Patch1:		procps-install.patch
-Patch2:		procps-w2.patch
-Patch3:		procps-man5.patch
-Patch4:		procps-SMP.patch
-Patch5:		procps-longlong.patch
-Patch6:		procps-sysctl.patch
-Patch7:		procps-sysmap.patch
-Patch8:		procps-biggerbuf.patch
-Patch9:		procps-pagesize.patch
-Patch10:	procps-sig.patch
-Patch11:	procps-smp.patch
-BuildRequires:	ncurses-devel >= 5.0
+Patch0:		%{name}-opt.patch
+Patch1:		%{name}-install.patch
+Patch2:		%{name}-w2.patch
+Patch3:		%{name}-man5.patch
+Patch4:		%{name}-SMP.patch
+Patch5:		%{name}-longlong.patch
+Patch6:		%{name}-sysctl.patch
+Patch7:		%{name}-sysmap.patch
+Patch8:		%{name}-biggerbuf.patch
+Patch9:		%{name}-pagesize.patch
+Patch10:	%{name}-sig.patch
+Patch11:	%{name}-smp.patch
+BuildRequires:	ncurses-devel >= 5.1
 URL:		http://www.cs.uml.edu/~acahalan/linux/
 Obsoletes:	procps-X11
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
