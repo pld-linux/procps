@@ -7,7 +7,7 @@ Summary(pt_BR):	Utilitários de monitoração de processos
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
 Version:	3.2.1
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/System
 Source0:	http://procps.sourceforge.net/%{name}-%{version}.tar.gz
@@ -27,6 +27,8 @@ BuildRequires:	ncurses-devel >= 5.1
 PreReq:		fileutils
 Obsoletes:	procps-X11
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		_desktopdir	%{_applnkdir}/System
 
 %description
 The procps package contains a set of system utilities which provide
@@ -138,7 +140,7 @@ Statyczna wersja biblioteki libproc.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_includedir}/proc,%{_libdir},%{_desktopdir}}
+install -d $RPM_BUILD_ROOT{%{_includedir}/proc,%{_libdir},%{_desktopdir},%{_prefix}/X11R6/bin}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
@@ -152,7 +154,7 @@ ln -sf /%{_lib}/$(cd $RPM_BUILD_ROOT/%{_lib}; echo libproc.so.*.*.*) \
 install proc/*.a $RPM_BUILD_ROOT%{_libdir}
 install proc/*.h $RPM_BUILD_ROOT%{_includedir}/proc
 install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}
-install %{SOURCE3} $RPM_BUILD_ROOT%{_bindir}/XConsole
+install %{SOURCE3} $RPM_BUILD_ROOT%{_prefix}/X11R6/bin/XConsole
 
 rm -f $RPM_BUILD_ROOT/bin/kill
 rm -f $RPM_BUILD_ROOT%{_mandir}/man1/{snice,kill,oldps}.1
@@ -182,6 +184,7 @@ rm -f %{_sysconfdir}/psdevtab %{_sysconfdir}/psdatabase
 %attr(755,root,root) /bin/*
 %attr(755,root,root) /sbin/sysctl
 %attr(755,root,root) %{_bindir}/*
+%attr(755,root,root) %{_prefix}/X11R6/bin/XConsole
 %{_desktopdir}/top.desktop
 %{_mandir}/man*/*
 %lang(cs) %{_mandir}/cs/man*/*
