@@ -1,0 +1,35 @@
+--- procps-2.0.7/proc/sysinfo.c.orig	Mon May 14 16:06:12 2001
++++ procps-2.0.7/proc/sysinfo.c	Mon May 14 16:26:16 2001
+@@ -152,22 +152,28 @@
+   jiffies = user_j + nice_j + sys_j + other_j;
+   seconds = (up_1 + up_2) / 2;
+   h = (unsigned long)( (double)jiffies/seconds );
++  /* actual values used by 2.4 kernels: 32 64 100 128 1000 1024 1200 */
+   switch(h){
++  case   18 ...   22 :  Hertz =   20; break; /* User Mode Linux */
++  case   30 ...   34 :  Hertz =   32; break; /* ia64 emulator */
+   case   48 ...   52 :  Hertz =   50; break;
+   case   58 ...   62 :  Hertz =   60; break;
++  case   63 ...   65 :  Hertz =   64; break; /* StrongARM /Shark */
+   case   95 ...  105 :  Hertz =  100; break; /* normal Linux */
+-  case  124 ...  132 :  Hertz =  128; break;
++  case  124 ...  132 :  Hertz =  128; break; /* MIPS, ARM */
+   case  195 ...  204 :  Hertz =  200; break; /* normal << 1 */
+   case  253 ...  260 :  Hertz =  256; break;
+   case  393 ...  408 :  Hertz =  400; break; /* normal << 2 */
+   case  790 ...  808 :  Hertz =  800; break; /* normal << 3 */
+-  case  990 ... 1010 :  Hertz = 1000; break;
+-  case 1015 ... 1035 :  Hertz = 1024; break; /* Alpha */
++  case  990 ... 1010 :  Hertz = 1000; break; /* ARM */
++  case 1015 ... 1035 :  Hertz = 1024; break; /* Alpha, ia64 */
++  case 1180 ... 1220 :  Hertz = 1200; break; /* Alpha */
+   default:
+ #ifdef HZ
+     Hertz = (unsigned long)HZ;    /* <asm/param.h> */
+ #else
+-    Hertz = (sizeof(long)==sizeof(int)) ? 100UL : 1024UL;
++    /* If 32-bit or big-endian (not Alpha or ia64), assume HZ is 100. */
++    Hertz = (sizeof(long)==sizeof(int) || htons(999)==999) ? 100UL : 1024UL;
+ #endif
+ #if 0 /* This ends up causing more harm than good.  :-( */
+     fprintf(stderr, "Unknown HZ value! (%ld) Assume %ld.\n", h, Hertz);
