@@ -6,12 +6,12 @@ Summary(pl):	Narzêdzia do monitorowania procesów
 Summary(pt_BR):	Utilitários de monitoração de processos
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
-Version:	3.2.1
-Release:	3
+Version:	3.2.2
+Release:	1
 License:	GPL
 Group:		Applications/System
 Source0:	http://procps.sourceforge.net/%{name}-%{version}.tar.gz
-# Source0-md5:	2672014ec05deb20680713a7b750cb16
+# Source0-md5:	ef88b94da3f181f2be1f6963820b00ab
 Source1:	http://atos.wmid.amu.edu.pl/~undefine/%{name}-non-english-man-pages.tar.bz2
 # Source1-md5:	60d24720b76c10553ed4abf68b76e079
 Source2:	top.desktop
@@ -120,21 +120,22 @@ Statyczna wersja biblioteki libproc.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p0
+%patch3 -p1
 %patch4 -p1
 
 %build
-%{__make} \
+%{__make} proc/libproc.a \
 	CC="%{__cc}" \
-	CFLAGS="%{rpmcflags}" \
+	ALL_CFLAGS="%{rpmcflags} -Wall -ffast-math" \
 	LDFLAGS="%{rpmldflags}" \
-	SHARED=1
+	SHARED=0
+mv -f proc/libproc.a .
+%{__make} clean
 
 %{__make} \
 	CC="%{__cc}" \
-	CFLAGS="%{rpmcflags}" \
-	LDFLAGS="%{rpmldflags}" \
-	SHARED=0
+	ALL_CFLAGS="%{rpmcflags} -Wall -ffast-math" \
+	LDFLAGS="%{rpmldflags}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -142,14 +143,14 @@ install -d $RPM_BUILD_ROOT{%{_includedir}/proc,%{_libdir},%{_desktopdir}}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
-	lib=$RPM_BUILD_ROOT/%{_lib} \
+	lib64=%{_lib} \
 	install="install -D" \
 	ldconfig=true
 
 ln -sf /%{_lib}/$(cd $RPM_BUILD_ROOT/%{_lib}; echo libproc.so.*.*.*) \
 	$RPM_BUILD_ROOT%{_libdir}/libproc.so
 
-install proc/*.a $RPM_BUILD_ROOT%{_libdir}
+install libproc.a $RPM_BUILD_ROOT%{_libdir}
 install proc/*.h $RPM_BUILD_ROOT%{_includedir}/proc
 install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}
 install %{SOURCE3} $RPM_BUILD_ROOT%{_bindir}/XConsole
