@@ -105,7 +105,7 @@ diff -Nur procps-2.0.7.orig/proc/Makefile procps-2.0.7/proc/Makefile
 -	if ! [ -d $(HDRDIR) ] ; then mkdir $(HDRDIR) ; fi
 -	$(INSTALL) $(HDROWN) $(HDR) $(TOPDIR)/include/$(NAME)
 -	$(INSTALL) $(LIBOWN) lib$(NAME).a $(LIBDIR)
-+	if ! [ -d $(HDRDIR) ] ; then install -d $(DESTDIR)$(HDRDIR) ; fi
++	if ! [ -d $(DESTDIR)$(HDRDIR) ] ; then install -d $(DESTDIR)$(HDRDIR) ; fi
 +	$(INSTALL) $(HDROWN) $(HDR) $(DESTDIR)$(TOPDIR)/include/$(NAME)
 +	install -d $(DESTDIR)$(LIBDIR)
 +	$(INSTALL) $(LIBOWN) lib$(NAME).a $(DESTDIR)$(LIBDIR)
