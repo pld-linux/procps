@@ -5,13 +5,15 @@ Summary(pl):	Narzêdzia do monitorowania procesów
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
 Version:	2.0.2
-Release:	3
+Release:	4
 Copyright:	GPL
 Group:		Utilities/System
 Group(pl):	Narzêdzia/System
 Source0:	ftp://tsx-11.mit.edu/pub/linux/sources/usr.bin/%{name}-%{version}.tar.gz
 Source1:	free.1.pl
 Source2:	uptime.1.pl
+Source3:	ps.1.pl
+Source4:	kill.1.pl
 Patch0:		procps-opt.patch
 Patch1:		procps-install.patch
 Patch2:		procps-w.patch
@@ -87,6 +89,8 @@ strip --strip-unneeded $RPM_BUILD_ROOT/lib/*.so.*.*
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_mandir}/pl/man1/free.1
 install %{SOURCE2} $RPM_BUILD_ROOT%{_mandir}/pl/man1/uptime.1
+install %{SOURCE3} $RPM_BUILD_ROOT%{_mandir}/pl/man1/ps.1
+install %{SOURCE4} $RPM_BUILD_ROOT%{_mandir}/pl/man1/kill.1
 
 gzip -9fn $RPM_BUILD_ROOT%{_mandir}/{man*/*,pl/man*/*} NEWS BUGS 
 
@@ -111,7 +115,7 @@ rm -rf $RPM_BUILD_ROOT
 
 /etc/X11/wmconfig/top
 
-%attr(755,root,root) /lib/libproc.so.*
+%attr(755,root,root) /lib/libproc.so.*.*
 %attr(755,root,root) /bin/*
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) /usr/X11R6/bin/XConsole
