@@ -1,6 +1,7 @@
-
+#
+# Conditional build:
 # _with_selinux - selinux support
-
+#
 Summary:	Utilities for monitoring your system and processes on your system
 Summary(de):	Utilities zum Ueberwachen Ihres Systems und der Prozesse
 Summary(es):	Utilitarios de monitoración de procesos
@@ -10,7 +11,7 @@ Summary(pt_BR):	Utilitários de monitoração de processos
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
 Version:	3.1.9
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/System
 # Source0-md5:	2b0d8ba21a20699439cdb1f272dd67cf
@@ -19,7 +20,8 @@ Source0:	http://procps.sourceforge.net/%{name}-%{version}.tar.gz
 Source1:	http://atos.wmid.amu.edu.pl/~undefine/%{name}-non-english-man-pages.tar.bz2
 Patch0:		%{name}-make.patch
 Patch1:		%{name}-sysctl_stdin.patch
-Patch2:		%{name}-selinux.patch
+Patch2:		%{name}-global.patch
+Patch3:		%{name}-selinux.patch
 URL:		http://procps.sourceforge.net/
 BuildRequires:	ncurses-devel >= 5.1
 %{?_with_selinux:BuildRequires: selinux-libs-devel}
@@ -118,7 +120,8 @@ Statyczna wersja biblioteki libproc.
 %setup -q
 %patch0 -p1
 %patch1 -p1
-%{?_with_selinux:%patch2 -p1}
+%patch2 -p1
+%{?_with_selinux:%patch3 -p1}
 
 %build
 %{__make} \
