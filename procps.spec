@@ -7,7 +7,7 @@ Summary(pt_BR):	Utilitários de monitoração de processos
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
 Version:	3.2.1
-Release:	4
+Release:	5
 Epoch:		1
 License:	GPL
 Group:		Applications/System
@@ -95,7 +95,7 @@ Summary:	libproc header files
 Summary(pl):	Pliki nag³ówkowe libproc
 License:	LGPL
 Group:		Development/Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name} = %{epoch}:%{version}-%{release}
 
 %description devel
 libproc header files.
@@ -108,7 +108,7 @@ Summary:	Static libproc library
 Summary(pl):	Statyczna biblioteka libproc
 License:	LGPL
 Group:		Development/Libraries
-Requires:	%{name}-devel = %{version}-%{release}
+Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
 
 %description static
 Static version of libproc library.
