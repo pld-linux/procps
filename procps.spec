@@ -1,17 +1,22 @@
-Summary:     Process monitoring utilities
-Summary(de): Dienstprogramm zur Prozeßüberwachung
-Summary(fr): Utilitaires de surveillance des processus.
-Summary(pl): Narzêdzia do monitorowania procesów
-Summary(tr): Süreç izleme araçlarý
-Name:        procps
-Version:     1.2.8
-Release:     4
-Copyright:   GPL
-Group:       Utilities/System
-Source:      ftp://tsx-11.mit.edu/pub/linux/sources/usr.bin/%{name}-%{version}.tar.gz
-Patch0:      procps-1.2.8-jbj.patch
-Patch1:      procps-rpm_opt_flags.patch
-Buildroot:   /tmp/%{name}-%{version}-root
+Summary:	Process monitoring utilities
+Summary(de):	Dienstprogramm zur Prozeßüberwachung
+Summary(fr):	Utilitaires de surveillance des processus.
+Summary(pl):	Narzêdzia do monitorowania procesów
+Summary(tr):	Süreç izleme araçlarý
+Name:		procps
+Version:	1.9.0
+%define		date	981104
+Release:	2d
+Copyright:	GPL
+Group:		Utilities/System
+Group(pl):	U¿ytki/System
+URL:		http://www.cs.uml.edu/~acahalan/linux
+Source:		%{name}-%{date}.tar.gz
+Patch0:		%{name}-opt.patch
+Patch1:		%{name}-install.patch
+Patch2:		%{name}-ps.patch
+Patch3:		%{name}-w.patch
+Buildroot:	/tmp/%{name}-%{version}-root
 
 %description
 A package of utilities which report on the state of the system,
@@ -39,13 +44,15 @@ Sistemin durumunu rapor eden araçlar paketidir. Koþan süreçlerin durumunu,
 kullanýlabilir bellek miktarýný, ve o an için sisteme girmiþ kullanýcýlarý
 bildirir.
 
-%package X11
-Summary:     X-based process monitoring utilities
-Summary(de): Prozeßüberwachungs-Dienstprogramme für X
-Summary(fr): Utilitaires de surveillance des processus sous X
-Summary(pl): Narzêdzia do monitorowania procesów pod X Window
-Summary(tr): X tabanlý süreç izleme araçlarý
-Group:       X11/Utilities
+%package	X11
+Summary:	X-based process monitoring utilities
+Summary(de):	Prozeßüberwachungs-Dienstprogramme für X
+Summary(fr):	Utilitaires de surveillance des processus sous X
+Summary(pl):	Narzêdzia do monitorowania procesów pod X Window
+Summary(tr):	X tabanlý süreç izleme araçlarý
+Group:		X11/Utilities
+Group(pl):	X11/U¿ytki
+Requires:	%{name} = %{version}  
 
 %description X11
 A package of X-based utilities which report on the state of the system.
@@ -72,32 +79,43 @@ procps paketinde yer alan araçlarla edinebileceðiniz bilgileri grafik olarak
 görüntülerler.
 
 %prep
-%setup -q
-%patch0 -p1 -b .jbj
-%patch1 -p1
+%setup -q -n %{name}-%{date}
+%patch0 -p1 
+%patch1 -p1 
+%patch2 -p1 
+%patch3 -p1 
 
 %build
 PATH=/usr/X11R6/bin:$PATH
 
-make LDFLAGS="-s"
+make OPT="$RPM_OPT_FLAGS -pipe" 
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/{etc/X11/wmconfig,bin,lib,usr/{bin,sbin,man/man1,man/man8}}
 
-make install DESTDIR=$RPM_BUILD_ROOT BINGRP=`id -u`
+install -d $RPM_BUILD_ROOT/{etc/X11/wmconfig,bin,lib}
+install -d $RPM_BUILD_ROOT/usr/{bin,man/{man1,man8}}
+
+make install DESTDIR=$RPM_BUILD_ROOT BINGRP=`id -g`
 
 install top.wmconfig $RPM_BUILD_ROOT/etc/X11/wmconfig/top
 
-strip $RPM_BUILD_ROOT/lib/lib*.so.*.*
+rm -f  $RPM_BUILD_ROOT/usr/bin/snice
+ln -sf skill $RPM_BUILD_ROOT/usr/bin/snice
+
+rm -f $RPM_BUILD_ROOT/usr/man/man1/snice.1
+echo .so skill.1 > $RPM_BUILD_ROOT/usr/man/man1/snice.1
+
+strip $RPM_BUILD_ROOT/lib/*.so.*.*
+
+gzip -9fn $RPM_BUILD_ROOT/usr/man/{man1/*,man8/*}
+bzip2 -9 NEWS BUGS 
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
-# add libproc to the cache
+%post 
 /sbin/ldconfig
-# ask ps to set up /etc/psdevtab if /proc is mounted
 if [ -f /proc/uptime ] ; then
   /bin/ps </dev/null >/dev/null 2>&1
 fi
@@ -105,18 +123,43 @@ fi
 %postun -p /sbin/ldconfig
 
 %files
-%defattr(644, root, root, 755)
-%doc NEWS BUGS TODO
+%defattr(644,root,root,755)
+%doc {NEWS,BUGS}.bz2 
+
 %config(missingok) /etc/X11/wmconfig/top
-%attr(755, root, root) /lib/lib*.so.*.*
-%attr(755, root, root) /bin/*
-%attr(755, root, root) /usr/bin/*
-%attr(644, root,  man) /usr/man/man[18]/*
+
+%attr(755,root,root) /lib/*.so.*
+%attr(755,root,root) /bin/*
+%attr(755,root,root) /usr/bin/*
+%attr(644,root, man) /usr/man/man[18]/*
 
 %files X11
-%attr(4755, root, root) /usr/X11R6/bin/XConsole
+%attr(755,root,root) /usr/X11R6/bin/XConsole
 
 %changelog
+* Sat Feb 06 1999 Marek Druzd <raven@lo14.szczecin.pl>
+  [1.9.0-2d]
+- fixed idle time (w-patch),
+- gziping man pages,
+- added Group(pl).
+
+* Wed Dec 30 1998 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
+  [981104]
+- final build for PLD,
+- stripping shared libraries.
+
+* Sun Oct 25 1998 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
+  [1.2.9-1d]
+- updated to 1.2.9,
+- major changes.
+
+* Sun Sep 13 1998 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
+  [1.2.8-1d]
+- changed Buildroot to /var/tmp/%%{name}-%%{version}-%%{release}-root,
+- fixed files permission,
+- build against GNU libc-2.1,
+- removed striping shared libraries.
+
 * Fri Sep 11 1998 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
   [1.2.8-4]
 - changed Buildroot to /tmp/%%{name}-%%{version}-root,
@@ -125,9 +168,9 @@ fi
 - simplification in %files,
 - procps is now linked with libncurse instead libtermcap,
 - fixed passing $RPM_OPT_FALGS (procps-rpm_opt_flags.patch),
-- added stripping shared libraries.
+- added striping shared libraries.
 
-* Wed Sep 09 1998 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
+* Wed Sep 09 1998 Wojtek ¦lusarczyk <wojtek@SHADOW.EU.ORG>
   [1.2.7-2]
 - added pl translation,
 - build from non root's account.
