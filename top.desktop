@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=top
+Comment=Repetitive display of current process status
+Comment[pl]=Wy¶wietlanie aktualnego statusu procesów
+Exec=xterm -e top
+Terminal=0
+Type=Application
