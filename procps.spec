@@ -1,3 +1,6 @@
+
+# _with_selinux - selinux support
+
 Summary:	Utilities for monitoring your system and processes on your system
 Summary(de):	Utilities zum Ueberwachen Ihres Systems und der Prozesse
 Summary(es):	Utilitarios de monitoración de procesos
@@ -16,8 +19,10 @@ Source1:	%{name}-non-english-man-pages.tar.bz2
 # Source1-md5: f6f441ea8bba8b692649761ebeceb943
 Patch0:		%{name}-make.patch
 Patch1:		%{name}-sysctl_stdin.patch
+Patch2:		%{name}-selinux.patch
 URL:		http://procps.sourceforge.net/
 BuildRequires:	ncurses-devel >= 5.1
+%{?_with_selinux:BuildRequires: selinux-libs-devel}
 PreReq:		fileutils
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	procps-X11
@@ -113,18 +118,21 @@ Statyczna wersja biblioteki libproc.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%{?_with_selinux:%patch2 -p1}
 
 %build
 %{__make} \
 	CC="%{__cc}" \
 	OPT="%{rpmcflags}" \
 	LDFLAGS="%{rpmldflags}" \
+	%{?_with_selinux:SELIB="-lselinux"} \
 	SHARED=1
 
 %{__make} \
 	CC="%{__cc}" \
 	OPT="%{rpmcflags}" \
 	LDFLAGS="%{rpmldflags}" \
+	%{?_with_selinux:SELIB="-lselinux"} \
 	SHARED=0
 
 %install
