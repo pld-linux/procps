@@ -13,7 +13,6 @@ Source0:	ftp://tsx-11.mit.edu/pub/linux/sources/usr.bin/%{name}-%{version}.tar.g
 Source1:	free.1.pl
 Source2:	uptime.1.pl
 Source3:	ps.1.pl
-Source4:	kill.1.pl
 Patch0:		procps-opt.patch
 Patch1:		procps-install.patch
 Patch2:		procps-w.patch
@@ -80,7 +79,7 @@ ln -sf skill $RPM_BUILD_ROOT%{_bindir}/snice
 rm -f  $RPM_BUILD_ROOT/bin/kill
 
 rm -f $RPM_BUILD_ROOT%{_mandir}/man1/{snice,kill,oldps}.1
-rm -f $RPM_BUILD_ROOT%{_bindir}/oldps
+rm -f $RPM_BUILD_ROOT%{_bindir}/{oldps,kill}
 
 echo .so skill.1 > $RPM_BUILD_ROOT%{_mandir}/man1/snice.1
 install ps/ps.1 $RPM_BUILD_ROOT%{_mandir}/man1
@@ -90,7 +89,6 @@ strip --strip-unneeded $RPM_BUILD_ROOT/lib/*.so.*.*
 install %{SOURCE1} $RPM_BUILD_ROOT%{_mandir}/pl/man1/free.1
 install %{SOURCE2} $RPM_BUILD_ROOT%{_mandir}/pl/man1/uptime.1
 install %{SOURCE3} $RPM_BUILD_ROOT%{_mandir}/pl/man1/ps.1
-install %{SOURCE4} $RPM_BUILD_ROOT%{_mandir}/pl/man1/kill.1
 
 gzip -9fn $RPM_BUILD_ROOT%{_mandir}/{man*/*,pl/man*/*} NEWS BUGS 
 
