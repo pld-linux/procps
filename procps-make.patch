@@ -1,7 +1,7 @@
-diff -urN procps-3.1.0.org/Makefile procps-3.1.0/Makefile
---- procps-3.1.0.org/Makefile	Sat Nov  9 13:42:22 2002
-+++ procps-3.1.0/Makefile	Sat Nov  9 13:58:35 2002
-@@ -61,11 +61,13 @@
+diff -burN procps-3.1.12.orig/Makefile procps-3.1.12/Makefile
+--- procps-3.1.12.orig/Makefile	2003-09-15 09:23:49.108280728 +0200
++++ procps-3.1.12/Makefile	2003-09-15 09:29:20.682873728 +0200
+@@ -61,7 +61,8 @@
              uptime.c tload.c free.c w.c top.c vmstat.c watch.c skill.c \
              sysctl.c pgrep.c top.h pmap.c
  
@@ -9,44 +9,47 @@ diff -urN procps-3.1.0.org/Makefile procps-3.1.0/Makefile
 +CURSESINC := -I/usr/include/ncurses
 +CURSESLIB := -lncurses
  
- LDFLAGS := -Wl,-warn-common
- 
--CFLAGS := -D_GNU_SOURCE -O2 -g3 -fno-common -ffast-math -I proc \
-+OPT := -O2
-+CFLAGS := $(OPT) -D_GNU_SOURCE -g3 -fno-common -ffast-math -I proc \
+ # Preprocessor flags.
+ PKG_CPPFLAGS := -D_GNU_SOURCE -I proc
+@@ -80,7 +81,8 @@
    -W -Wall -Wshadow -Wcast-align -Wredundant-decls \
    -Wbad-function-cast -Wcast-qual -Wwrite-strings -Waggregate-return \
- #  -Wpadded -Wunreachable-code -Wdisabled-optimization \
-@@ -141,6 +143,12 @@
- %.o : %.c
- 	$(CC) $(CFLAGS) -c -o $@ $^
+   -Wstrict-prototypes -Wmissing-prototypes
+-CFLAGS := -O2 -g3
++OPT := -O2
++CFLAGS := $(OPT) -g3
+ ALL_CFLAGS := $(PKG_CFLAGS) $(CFLAGS)
+ 
+ PKG_LDFLAGS := -Wl,-warn-common
+@@ -163,16 +165,22 @@
+ w.o:    w.c
+ 	$(CC) $(ALL_CPPFLAGS) $(ALL_CFLAGS) $(W_SHOWFROM) -c $<
  
 +top.o : top.c
-+	$(CC) $(CFLAGS) -c -o $@ $^ $(CURSESINC)
++	$(CC) $(ALL_CPPFLAGS) $(ALL_CFLAGS) -c -o $@ $< $(CURSESINC)
 +
 +watch.o : watch.c
-+	$(CC) $(CFLAGS) -c -o $@ $^ $(CURSESINC)
++	$(CC) $(ALL_CPPFLAGS) $(ALL_CFLAGS) -c -o $@ $< $(CURSESINC)
 +
- w.o:    w.c
- 	$(CC) $(CFLAGS) $(W_SHOWFROM) -c $<
+ ############ prog.o --> prog
  
-@@ -150,10 +158,10 @@
- 	$(CC) $(LDFLAGS) -o $@ $^
+ pmap w uptime tload free sysctl vmstat utmp pgrep skill: % : %.o $(LIBPROC)
+ 	$(CC) $(ALL_CFLAGS) $(ALL_LDFLAGS) -o $@ $^
  
  top:   % : %.o $(LIBPROC)
--	$(CC) $(LDFLAGS) -o $@ $^ $(CURSES)
-+	$(CC) $(LDFLAGS) -o $@ $^ $(CURSESLIB)
+-	$(CC) $(ALL_CFLAGS) $(ALL_LDFLAGS) -o $@ $^ $(CURSES)
++	$(CC) $(ALL_CFLAGS) $(ALL_LDFLAGS) -o $@ $^ $(CURSESLIB)
  
  watch: % : %.o
--	$(CC) $(LDFLAGS) -o $@ $^ $(CURSES)
-+	$(CC) $(LDFLAGS) -o $@ $^ $(CURSESLIB)
+-	$(CC) $(ALL_CFLAGS) $(ALL_LDFLAGS) -o $@ $^ $(CURSES)
++	$(CC) $(ALL_CFLAGS) $(ALL_LDFLAGS) -o $@ $^ $(CURSESLIB)
  
  ############ progX --> progY
  
-diff -urN procps-3.1.0.org/proc/module.mk procps-3.1.0/proc/module.mk
---- procps-3.1.0.org/proc/module.mk	Sat Nov  9 13:42:22 2002
-+++ procps-3.1.0/proc/module.mk	Sat Nov  9 14:02:00 2002
-@@ -59,7 +59,7 @@
+diff -burN procps-3.1.12.orig/proc/module.mk procps-3.1.12/proc/module.mk
+--- procps-3.1.12.orig/proc/module.mk	2003-09-15 09:23:49.104281336 +0200
++++ procps-3.1.12/proc/module.mk	2003-09-15 09:29:57.364297304 +0200
+@@ -63,7 +63,7 @@
  $(lib)/$(SONAME) : proc/$(SONAME)
  	$(install) --mode a=rx --strip $< $@
  	cd $(lib) && $(ln_sf) $(SONAME) lib$(NAME).so
