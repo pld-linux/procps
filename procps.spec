@@ -11,13 +11,15 @@ Summary(pt_BR):	Utilitários de monitoração de processos
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
 Version:	3.1.11
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/System
 Source0:	http://procps.sourceforge.net/%{name}-%{version}.tar.gz
 # Source0-md5:	18d6c40c61fd8a94b315c07e949837ab
 Source1:	http://atos.wmid.amu.edu.pl/~undefine/%{name}-non-english-man-pages.tar.bz2
 # Source1-md5:	60d24720b76c10553ed4abf68b76e079
+Source2:	top.desktop
+Source3:	XConsole.sh
 Patch0:		%{name}-make.patch
 Patch1:		%{name}-sysctl_stdin.patch
 Patch2:		%{name}-global.patch
@@ -143,7 +145,7 @@ Statyczna wersja biblioteki libproc.
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/{bin,sbin,lib} \
-	$RPM_BUILD_ROOT{%{_includedir}/proc,%{_libdir}} \
+	$RPM_BUILD_ROOT{%{_includedir}/proc,%{_libdir},%{_applnkdir}/System} \
 	$RPM_BUILD_ROOT{%{_bindir},%{_mandir}/man{1,5,8}}
 
 %{__make} install \
@@ -152,6 +154,8 @@ install -d $RPM_BUILD_ROOT/{bin,sbin,lib} \
 
 install proc/*.a $RPM_BUILD_ROOT%{_libdir}
 install proc/*.h $RPM_BUILD_ROOT%{_includedir}/proc
+install %{SOURCE2} $RPM_BUILD_ROOT%{_applnkdir}/System
+install %{SOURCE3} $RPM_BUILD_ROOT%{_bindir}/XConsole
 
 rm -f $RPM_BUILD_ROOT/bin/kill
 rm -f $RPM_BUILD_ROOT%{_mandir}/man1/{snice,kill,oldps}.1
@@ -181,6 +185,7 @@ rm -f %{_sysconfdir}/psdevtab %{_sysconfdir}/psdatabase
 %attr(755,root,root) /bin/*
 %attr(755,root,root) /sbin/sysctl
 %attr(755,root,root) %{_bindir}/*
+%{_applnkdir}/System/top.desktop
 %{_mandir}/man*/*
 %lang(cs) %{_mandir}/cs/man*/*
 %lang(de) %{_mandir}/de/man*/*
