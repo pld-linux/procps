@@ -5,7 +5,7 @@ Summary(pl):	Narzêdzia do monitorowania procesów
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
 Version:	2.0.7
-Release:	4
+Release:	5
 License:	GPL
 Group:		Utilities/System
 Group(pl):	Narzêdzia/System
@@ -19,6 +19,7 @@ Patch1:		%{name}-sig.patch
 Patch2:		%{name}-install.patch
 Patch3:		%{name}-locale.patch
 BuildRequires:	ncurses-devel >= 5.1
+Prereq:		fileutils
 URL:		http://www.cs.uml.edu/~acahalan/linux/
 Obsoletes:	procps-X11
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
