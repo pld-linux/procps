@@ -7,7 +7,7 @@ Summary(pt_BR):	Utilitários de monitoração de processos
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
 Version:	3.2.1
-Release:	3
+Release:	4
 Epoch:		1
 License:	GPL
 Group:		Applications/System
