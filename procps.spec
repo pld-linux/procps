@@ -8,6 +8,7 @@ Summary(tr):	Süreç izleme araçlarý
 Name:		procps
 Version:	3.2.1
 Release:	3
+Epoch:		1
 License:	GPL
 Group:		Applications/System
 Source0:	http://procps.sourceforge.net/%{name}-%{version}.tar.gz
