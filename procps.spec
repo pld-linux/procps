@@ -5,7 +5,7 @@ Summary(pl):	Narzêdzia do monitorowania procesów
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
 Version:	2.0.6
-Release:	13
+Release:	14
 License:	GPL
 Group:		Utilities/System
 Group(pl):	Narzêdzia/System
