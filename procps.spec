@@ -10,12 +10,12 @@ Summary(pl):	Narzêdzia do monitorowania procesów
 Summary(pt_BR):	Utilitários de monitoração de processos
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
-Version:	3.1.12
+Version:	3.1.13
 Release:	1
 License:	GPL
 Group:		Applications/System
 Source0:	http://procps.sourceforge.net/%{name}-%{version}.tar.gz
-# Source0-md5:	419b312699ac01b25259769a1bfb7ca4
+# Source0-md5:	459a361ad73ecb4cf4346b8d3ce7a27f
 Source1:	http://atos.wmid.amu.edu.pl/~undefine/%{name}-non-english-man-pages.tar.bz2
 # Source1-md5:	60d24720b76c10553ed4abf68b76e079
 Source2:	top.desktop
@@ -29,8 +29,8 @@ URL:		http://procps.sourceforge.net/
 BuildRequires:	ncurses-devel >= 5.1
 %{?_with_selinux:BuildRequires:	selinux-libs-devel}
 PreReq:		fileutils
-BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	procps-X11
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 The procps package contains a set of system utilities which provide
