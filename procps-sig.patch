@@ -16,149 +16,146 @@
 -
 --- procps-2.0.6/proc/signals.c.sig	Fri Mar 12 02:34:44 1999
 +++ procps-2.0.6/proc/signals.c	Tue Jan 11 17:41:49 2000
-@@ -23,8 +23,143 @@ typedef struct {
- 
+@@ -23,7 +23,141 @@ typedef struct {
+ } SIGNAME;
  
  static SIGNAME signals[] = {
--#include "signames.h" /* should be in same dir as this file */
--  { 0,NULL }};
+-#include "signames.h"		/* should be in same dir as this file */
 +#ifdef SIGHUP
-+  { SIGHUP, "HUP" },
++	{ SIGHUP, "HUP" },
 +#endif
 +#ifdef SIGINT
-+  { SIGINT, "INT" },
++	{ SIGINT, "INT" },
 +#endif
 +#ifdef SIGQUIT
-+  { SIGQUIT, "QUIT" },
++	{ SIGQUIT, "QUIT" },
 +#endif
 +#ifdef SIGILL
-+  { SIGILL, "ILL" },
++	{ SIGILL, "ILL" },
 +#endif
 +#ifdef SIGTRAP
-+  { SIGTRAP, "TRAP" },
++	{ SIGTRAP, "TRAP" },
 +#endif
 +#ifdef SIGABRT
-+  { SIGABRT, "ABRT" },
++	{ SIGABRT, "ABRT" },
 +#endif
 +#ifdef SIGIOT
-+  { SIGIOT, "IOT" },
++	{ SIGIOT, "IOT" },
 +#endif
 +#ifdef SIGBUS
-+  { SIGBUS, "BUS" },
++	{ SIGBUS, "BUS" },
 +#endif
 +#ifdef SIGFPE
-+  { SIGFPE, "FPE" },
++	{ SIGFPE, "FPE" },
 +#endif
 +#ifdef SIGKILL
-+  { SIGKILL, "KILL" },
++	{ SIGKILL, "KILL" },
 +#endif
 +#ifdef SIGUSR1
-+  { SIGUSR1, "USR1" },
++	{ SIGUSR1, "USR1" },
 +#endif
 +#ifdef SIGSEGV
-+  { SIGSEGV, "SEGV" },
++	{ SIGSEGV, "SEGV" },
 +#endif
 +#ifdef SIGUSR2
-+  { SIGUSR2, "USR2" },
++	{ SIGUSR2, "USR2" },
 +#endif
 +#ifdef SIGPIPE
-+  { SIGPIPE, "PIPE" },
++	{ SIGPIPE, "PIPE" },
 +#endif
 +#ifdef SIGALRM
-+  { SIGALRM, "ALRM" },
++	{ SIGALRM, "ALRM" },
 +#endif
 +#ifdef SIGTERM
-+  { SIGTERM, "TERM" },
++	{ SIGTERM, "TERM" },
 +#endif
 +#ifdef SIGSTKFLT
-+  { SIGSTKFLT, "STKFLT" },
++	{ SIGSTKFLT, "STKFLT" },
 +#endif
 +#ifdef SIGCHLD
-+  { SIGCHLD, "CHLD" },
++	{ SIGCHLD, "CHLD" },
 +#endif
 +#ifdef SIGCONT
-+  { SIGCONT, "CONT" },
++	{ SIGCONT, "CONT" },
 +#endif
 +#ifdef SIGSTOP
-+  { SIGSTOP, "STOP" },
++	{ SIGSTOP, "STOP" },
 +#endif
 +#ifdef SIGTSTP
-+  { SIGTSTP, "TSTP" },
++	{ SIGTSTP, "TSTP" },
 +#endif
 +#ifdef SIGTTIN
-+  { SIGTTIN, "TTIN" },
++	{ SIGTTIN, "TTIN" },
 +#endif
 +#ifdef SIGTOU
-+  { SIGTOU, "TOU" },
++	{ SIGTOU, "TOU" },
 +#endif
 +#ifdef SIGURG
-+  { SIGURG, "URG" },
++	{ SIGURG, "URG" },
 +#endif
 +#ifdef SIGXCPU
-+  { SIGXCPU, "XCPU" },
++	{ SIGXCPU, "XCPU" },
 +#endif
 +#ifdef SIGXFSZ
-+  { SIGXFSZ, "XFSZ" },
++	{ SIGXFSZ, "XFSZ" },
 +#endif
 +#ifdef SIGVTALRM
-+  { SIGVTALRM, "VTALRM" },
++	{ SIGVTALRM, "VTALRM" },
 +#endif
 +#ifdef SIGPROF
-+  { SIGPROF, "PROF" },
++	{ SIGPROF, "PROF" },
 +#endif
 +#ifdef SIGWINCH
-+  { SIGWINCH, "WINCH" },
++	{ SIGWINCH, "WINCH" },
 +#endif
 +#ifdef SIGIO
-+  { SIGIO, "IO" },
++	{ SIGIO, "IO" },
 +#endif
 +#ifdef SIGPWR
-+  { SIGPWR, "PWR" },
++	{ SIGPWR, "PWR" },
 +#endif
 +#ifdef SIGUNUSED
-+  { SIGUNUSED, "UNUSED" },
++	{ SIGUNUSED, "UNUSED" },
 +#endif
 +#ifdef SIGEMT
-+  { SIGEMT, "EMT" },
++	{ SIGEMT, "EMT" },
 +#endif
 +#ifdef SIGSYS
-+  { SIGSYS, "SYS" },
++	{ SIGSYS, "SYS" },
 +#endif
 +#ifdef SIGWIND
-+  { SIGWIND, "WIND" },
++	{ SIGWIND, "WIND" },
 +#endif
 +#ifdef SIGPHONE
-+  { SIGPHONE, "PHONE" },
++	{ SIGPHONE, "PHONE" },
 +#endif
 +#ifdef SIGLOST
-+  { SIGLOST, "LOST" },
++	{ SIGLOST, "LOST" },
 +#endif
 +#ifdef SIGWAITING
-+  { SIGWAITING, "WAITING" },
++	{ SIGWAITING, "WAITING" },
 +#endif
 +#ifdef SIGLWP
-+  { SIGLWP, "LWP" },
++	{ SIGLWP, "LWP" },
 +#endif
 +#ifdef SIGDANGER
-+  { SIGDANGER, "DANGER" },
++	{ SIGDANGER, "DANGER" },
 +#endif
 +#ifdef SIGGRANT
-+  { SIGGRANT, "GRANT" },
++	{ SIGGRANT, "GRANT" },
 +#endif
 +#ifdef SIGRETRACT
-+  { SIGRETRACT, "RETRACT" },
++	{ SIGRETRACT, "RETRACT" },
 +#endif
 +#ifdef SIGMSG
-+  { SIGMSG, "MSG" },
++	{ SIGMSG, "MSG" },
 +#endif
 +#ifdef SIGSOUND
-+  { SIGSOUND, "SOUND" },
++	{ SIGSOUND, "SOUND" },
 +#endif
 +#ifdef SIGSAK
-+  { SIGSAK, "SAK" },
++	{ SIGSAK, "SAK" },
 +#endif
-+  { 0,NULL }
-+};
+ 	{0, NULL}
+ };
  
- 
- void list_signals(void)

@@ -1,11 +1,10 @@
 diff -Nur procps-2.0.7.orig/Makefile procps-2.0.7/Makefile
 --- procps-2.0.7.orig/Makefile	Thu Jul 13 22:22:58 2000
 +++ procps-2.0.7/Makefile	Mon Aug 26 22:25:26 2002
-@@ -4,18 +4,18 @@
- export PREFIX     =  #proc# prefix for program names
+@@ -5,17 +5,17 @@
  
- export DESTDIR    = /
--export MANDIR     =  /usr/man
+ export DESTDIR    =
+ export MANDIR     =  /usr/share/man
 -export MAN1DIR    =  $(DESTDIR)$(MANDIR)/man1
 -export MAN5DIR    =  $(DESTDIR)$(MANDIR)/man5
 -export MAN8DIR    =  $(DESTDIR)$(MANDIR)/man8
@@ -17,7 +16,6 @@ diff -Nur procps-2.0.7.orig/Makefile procps-2.0.7/Makefile
 -export APPLNK     =  $(DESTDIR)/etc/X11/applnk/Utilities
 -export OWNERGROUP =  --owner 0 --group 0
 -export INSTALLBIN =  install --mode a=rx --strip
-+export MANDIR     =  /usr/share/man
 +export MAN1DIR    =  $(MANDIR)/man1
 +export MAN5DIR    =  $(MANDIR)/man5
 +export MAN8DIR    =  $(MANDIR)/man8
@@ -32,15 +30,15 @@ diff -Nur procps-2.0.7.orig/Makefile procps-2.0.7/Makefile
  export INSTALLSCT =  install --mode a=rx
  export INSTALLMAN =  install --mode a=r
  
-@@ -39,7 +39,7 @@
- export CFLAGS     =  -D_GNU_SOURCE $(OPT) -I$(shell pwd) $(INCDIRS) -Wall -Wno-unused
- 
+@@ -38,7 +38,7 @@
+ export OPT        =  -O3
+ export CFLAGS     =  -D_GNU_SOURCE $(OPT) $(GCC_WARN) -I$(shell pwd) $(INCDIRS)
  export SHARED     =  1# build/install both a static and ELF shared library
 -export SHLIBDIR   =  $(DESTDIR)/lib# where to install the shared library
 +export SHLIBDIR   =  /lib# where to install the shared library
- 
  export LDFLAGS    =  -Wl,-warn-common #-s	recommended for ELF systems
  #LDFLAGS    =  -qmagic -s#		recommended for a.out systems
+ #LDFLAGS    =  -Xlinker -qmagic -s#	older a.out systems may need this
 @@ -71,7 +71,8 @@
  # INSTALL PROGRAMS + DOCS
  install: $(patsubst %,install_%,$(BUILD) $(XSCPT) $(MAN1) $(MAN5) $(MAN8))
@@ -79,8 +77,8 @@ diff -Nur procps-2.0.7.orig/Makefile procps-2.0.7/Makefile
 -	$(INSTALLMAN) $< $(MAN8DIR)/$(PREFIX)$<
 +	$(INSTALLMAN) $< $(DESTDIR)$(MAN8DIR)/$(PREFIX)$<
  $(patsubst %,install_%,$(DESKTOP)) : install_%: %
--	$(INSTALLSCT $< $(APPLNK)/$(PREFIX)$<
-+	$(INSTALLSCT $< $(DESTDIR)$(APPLNK)/$(PREFIX)$<
+-	$(INSTALLSCT) $< $(APPLNK)/$(PREFIX)$<
++	$(INSTALLSCT) $< $(DESTDIR)$(APPLNK)/$(PREFIX)$<
  
  # special case install rules
  install_snice: snice install_skill
