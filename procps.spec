@@ -6,12 +6,12 @@ Summary(pl):	Narzêdzia do monitorowania procesów
 Summary(pt_BR):	Utilitários de monitoração de processos
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
-Version:	3.1.15
-Release:	2
+Version:	3.2.0
+Release:	1
 License:	GPL
 Group:		Applications/System
 Source0:	http://procps.sourceforge.net/%{name}-%{version}.tar.gz
-# Source0-md5:	496d9f87be5eaebcd1080bb5b9999da4
+# Source0-md5:	abaecc6774ee308f4911ea8e862030a9
 Source1:	http://atos.wmid.amu.edu.pl/~undefine/%{name}-non-english-man-pages.tar.bz2
 # Source1-md5:	60d24720b76c10553ed4abf68b76e079
 Source2:	top.desktop
@@ -92,7 +92,7 @@ Summary:	libproc header files
 Summary(pl):	Pliki nag³ówkowe libproc
 License:	LGPL
 Group:		Development/Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description devel
 libproc header files.
@@ -105,7 +105,7 @@ Summary:	Static libproc library
 Summary(pl):	Statyczna biblioteka libproc
 License:	LGPL
 Group:		Development/Libraries
-Requires:	%{name}-devel = %{version}
+Requires:	%{name}-devel = %{version}-%{release}
 
 %description static
 Static version of libproc library.
