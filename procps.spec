@@ -7,18 +7,14 @@ Summary(pt_BR):	Utilitários de monitoração de processos
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
 Version:	2.0.7
-Release:	11
+Release:	12
 License:	GPL
 Group:		Applications/System
 Group(de):	Applikationen/System
 Group(pl):	Aplikacje/System
 Source0:	ftp://metalab.unc.edu/pub/Linux/system/status/ps/%{name}-%{version}.tar.gz
 Source1:	top.desktop
-Source2:	free.1.pl
-Source3:	ps.1.pl
-Source4:	top.1.pl
-Source5:	uptime.1.pl
-Source6:	w.1.pl
+Source2:	procps-non-english-man-pages.tar.bz2
 Patch0:		%{name}-w2.patch
 Patch1:		%{name}-sig.patch
 Patch2:		%{name}-install.patch
@@ -141,12 +137,8 @@ rm -f $RPM_BUILD_ROOT%{_bindir}/{oldps,kill}
 
 echo ".so skill.1" > $RPM_BUILD_ROOT%{_mandir}/man1/snice.1
 
-install %{SOURCE2} $RPM_BUILD_ROOT%{_mandir}/pl/man1/free.1
-install %{SOURCE3} $RPM_BUILD_ROOT%{_mandir}/pl/man1/ps.1
-install %{SOURCE4} $RPM_BUILD_ROOT%{_mandir}/pl/man1/top.1
-install %{SOURCE5} $RPM_BUILD_ROOT%{_mandir}/pl/man1/uptime.1
-install %{SOURCE6} $RPM_BUILD_ROOT%{_mandir}/pl/man1/w.1
-echo ".so skill.1" > $RPM_BUILD_ROOT%{_mandir}/pl/man1/snice.1
+bzcat -dc %{SOURCE2} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
+rm -f $RPM_BUILD_ROOT%{_mandir}/*/man1/{kill,oldps}.1
 
 gzip -9nf NEWS BUGS TODO
 
@@ -172,7 +164,18 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_prefix}/X11R6/bin/XConsole
 
-%lang(pl) %{_mandir}/pl/man*/*
 %{_mandir}/man*/*
+%lang(cs) %{_mandir}/cs/man*/*
+%lang(da) %{_mandir}/da/man*/*
+%lang(de) %{_mandir}/de/man*/*
+%lang(es) %{_mandir}/es/man*/*
+%lang(fi) %{_mandir}/fi/man*/*
+%lang(fr) %{_mandir}/fr/man*/*
+%lang(hu) %{_mandir}/hu/man*/*
+%lang(it) %{_mandir}/it/man*/*
+%lang(ja) %{_mandir}/ja/man*/*
+%lang(ko) %{_mandir}/ko/man*/*
+%lang(nl) %{_mandir}/nl/man*/*
+%lang(pl) %{_mandir}/pl/man*/*
 
 %{_applnkdir}/System/top.desktop
