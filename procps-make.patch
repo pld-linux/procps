@@ -1,51 +1,43 @@
---- procps-3.2.0/Makefile.orig	Mon Feb 23 18:21:20 2004
-+++ procps-3.2.0/Makefile	Tue Feb 24 11:52:39 2004
-@@ -69,7 +69,8 @@
- # plus the top-level Makefile to make it work stand-alone.
- _TARFILES := Makefile
+--- procps-3.2.2/Makefile.orig	2004-07-17 15:54:06.000000000 +0200
++++ procps-3.2.2/Makefile	2004-07-24 21:06:15.129991008 +0200
+@@ -93,7 +93,7 @@
+   -Wstrict-prototypes -Wmissing-prototypes
+ # Note that some stuff below is conditional on CFLAGS containing
+ # an option that starts with "-g". (-g, -g2, -g3, -ggdb, etc.)
+-CFLAGS       := -O2 -s
++CFLAGS       := -O2
+ ALL_CFLAGS   := $(PKG_CFLAGS) $(CFLAGS)
  
--CURSES := -I/usr/include/ncurses -lncurses
-+CURSESINC := -I/usr/include/ncurses
-+CURSESLIB := -lncurses
+ PKG_LDFLAGS  := -Wl,-warn-common
+@@ -205,10 +205,10 @@
+ ###### install
  
- # Preprocessor flags.
- PKG_CPPFLAGS := -D_GNU_SOURCE -I proc
-@@ -198,16 +199,25 @@
+ $(BINFILES) : all
+-	$(install) --mode a=rx $(notdir $@) $@
++	$(install) --mode 755 $(notdir $@) $@
+ 
+ $(MANFILES) : all
+-	$(install) --mode a=r $(notdir $@) $@
++	$(install) --mode 644 $(notdir $@) $@
+ 
+ install: $(filter-out $(SKIP) $(addprefix $(DESTDIR),$(SKIP)),$(INSTALL))
+ 	cd $(usr/bin) && $(ln_f) skill snice
+@@ -219,7 +219,7 @@
+ top.o : top.h
+ 
+ %.o : %.c
+-	$(CC) $(ALL_CPPFLAGS) $(ALL_CFLAGS) $(CURSES) -c -o $@ $<
++	$(CC) $(ALL_CPPFLAGS) $(ALL_CFLAGS) -c -o $@ $<
+ 
  w.o:    w.c
  	$(CC) $(ALL_CPPFLAGS) $(ALL_CFLAGS) $(W_SHOWFROM) -c $<
+--- procps-3.2.2/proc/module.mk.orig	2004-07-15 00:19:40.000000000 +0200
++++ procps-3.2.2/proc/module.mk	2004-07-24 21:04:40.619358808 +0200
+@@ -43,7 +43,6 @@
+ proc/lib$(NAME).a: $(LIBOBJ)
+ 	$(AR) rcs $@ $^
  
-+slabtop.o : slabtop.c
-+	$(CC) $(ALL_CPPFLAGS) $(ALL_CFLAGS) -c -o $@ $< $(CURSESINC)
-+
-+top.o : top.c
-+	$(CC) $(ALL_CPPFLAGS) $(ALL_CFLAGS) -c -o $@ $< $(CURSESINC)
-+
-+watch.o : watch.c
-+	$(CC) $(ALL_CPPFLAGS) $(ALL_CFLAGS) -c -o $@ $< $(CURSESINC)
-+
- ############ prog.o --> prog
- 
- pmap w uptime tload free sysctl vmstat utmp pgrep skill: % : %.o $(LIBPROC)
- 	$(CC) $(ALL_CFLAGS) $^ $(ALL_LDFLAGS) -o $@
- 
- slabtop top: % : %.o $(LIBPROC)
--	$(CC) $(ALL_CFLAGS) $^ $(ALL_LDFLAGS) -o $@ $(CURSES)
-+	$(CC) $(ALL_CFLAGS) $^ $(ALL_LDFLAGS) -o $@ $(CURSESLIB)
- 
- watch: % : %.o
--	$(CC) $(ALL_CFLAGS) $^ $(ALL_LDFLAGS) -o $@ $(CURSES)
-+	$(CC) $(ALL_CFLAGS) $^ $(ALL_LDFLAGS) -o $@ $(CURSESLIB)
- 
- ############ progX --> progY
- 
---- procps-3.1.12.orig/proc/module.mk	2003-09-15 09:23:49.104281336 +0200
-+++ procps-3.1.12/proc/module.mk	2003-09-15 09:29:57.364297304 +0200
-@@ -63,7 +63,7 @@
- $(lib)/$(SONAME) : proc/$(SONAME)
- 	$(install) --mode a=rx --strip $< $@
- 	cd $(lib) && $(ln_sf) $(SONAME) lib$(NAME).so
--	$(ldconfig)
-+	-$(ldconfig)
- 
- #$(usr/lib)/lib$(NAME).a : proc/lib$(NAME).a
- #	$(install) --mode a=r --strip $< $@
+-.PHONY: proc/$(SONAME)
+ #proc/$(SONAME): proc/library.map
+ proc/$(SONAME): $(LIBOBJ)
+ 	$(CC) -shared -Wl,-soname,$(SONAME) -Wl,--version-script=proc/library.map -o $@ $^ -lc
