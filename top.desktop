@@ -6,4 +6,5 @@ Exec=top
 Terminal=true
 Type=Application
 Categories=System
+Encoding=UTF-8
 # vi: encoding=utf-8
