@@ -93,7 +93,7 @@ kullanýcýlarý bildirir.
 PATH=%{_prefix}/X11R6/bin:$PATH
 
 #make OPT="$RPM_OPT_FLAGS -pipe -D__SMP__" 
-make OPT="$RPM_OPT_FLAGS -pipe"
+%{__make} OPT="$RPM_OPT_FLAGS -pipe"
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -102,7 +102,7 @@ install -d $RPM_BUILD_ROOT/{bin,sbin,lib,usr/X11R6/bin} \
 	$RPM_BUILD_ROOT{%{_bindir},%{_datadir},%{_mandir}/{man{1,5,8},pl/man1}} \
 	$RPM_BUILD_ROOT%{_applnkdir}/Administration
 
-make install \
+%{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT BINGRP=`id -g` \
 	MAN1DIR=$RPM_BUILD_ROOT%{_mandir}/man1 \
 	MAN5DIR=$RPM_BUILD_ROOT%{_mandir}/man5 \
