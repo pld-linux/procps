@@ -10,8 +10,6 @@ Version:	2.0.7
 Release:	13
 License:	GPL
 Group:		Applications/System
-Group(de):	Applikationen/System
-Group(pl):	Aplikacje/System
 Source0:	ftp://metalab.unc.edu/pub/Linux/system/status/ps/%{name}-%{version}.tar.gz
 Source1:	top.desktop
 Source2:	procps-non-english-man-pages.tar.bz2
