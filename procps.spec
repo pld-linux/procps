@@ -15,7 +15,7 @@ Source2:	uptime.1.pl
 Patch0:		procps-opt.patch
 Patch1:		procps-install.patch
 Patch2:		procps-w.patch
-BuildPrereq:	ncurses-devel
+BuildRequires:	ncurses-devel
 URL:		http://www.cs.uml.edu/~acahalan/linux/
 Obsoletes:	procps-X11
 Buildroot:	/tmp/%{name}-%{version}-root
