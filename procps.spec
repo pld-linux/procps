@@ -6,27 +6,34 @@ Summary(pl):	Narzêdzia do monitorowania procesów
 Summary(pt_BR):	Utilitários de monitoração de processos
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
-Version:	2.0.10
-Release:	1
+Version:	3.2.1
+Release:	2
 License:	GPL
 Group:		Applications/System
-Source0:	http://surriel.com/procps/%{name}-%{version}.tar.bz2
-Source1:	%{name}-non-english-man-pages.tar.bz2
-Patch0:		%{name}-w2.patch
-Patch1:		%{name}-sig.patch
-Patch2:		%{name}-install.patch
-Patch3:		%{name}-man.patch
-Patch4:		%{name}-desktop.patch
-URL:		http://surriel.com/procps/
+Source0:	http://procps.sourceforge.net/%{name}-%{version}.tar.gz
+# Source0-md5:	2672014ec05deb20680713a7b750cb16
+Source1:	http://atos.wmid.amu.edu.pl/~undefine/%{name}-non-english-man-pages.tar.bz2
+# Source1-md5:	60d24720b76c10553ed4abf68b76e079
+Source2:	top.desktop
+Source3:	XConsole.sh
+Patch0:		%{name}-make.patch
+Patch1:		%{name}-sysctl_stdin.patch
+Patch2:		%{name}-global.patch
+Patch3:		%{name}-FILLBUG_backport.patch
+# http://www.nsa.gov/selinux/patches/procps-selinux.patch.gz
+Patch4:		%{name}-selinux.patch
+URL:		http://procps.sourceforge.net/
 BuildRequires:	ncurses-devel >= 5.1
-Prereq:		fileutils
-BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+PreReq:		fileutils
 Obsoletes:	procps-X11
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		_desktopdir	%{_applnkdir}/System
 
 %description
 The procps package contains a set of system utilities which provide
 system information. Procps includes ps, free, skill, snice, tload,
-top, uptime, vmstat, w, and watch. The ps command displays a snapshot
+top, uptime, vmstat, w and watch. The ps command displays a snapshot
 of running processes. The top command provides a repetitive update of
 the statuses of running processes. The free command displays the
 amounts of free and used memory on your system. The skill command
@@ -89,7 +96,7 @@ Summary:	libproc header files
 Summary(pl):	Pliki nag³ówkowe libproc
 License:	LGPL
 Group:		Development/Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description devel
 libproc header files.
@@ -102,7 +109,7 @@ Summary:	Static libproc library
 Summary(pl):	Statyczna biblioteka libproc
 License:	LGPL
 Group:		Development/Libraries
-Requires:	%{name}-devel = %{version}
+Requires:	%{name}-devel = %{version}-%{release}
 
 %description static
 Static version of libproc library.
@@ -115,29 +122,39 @@ Statyczna wersja biblioteki libproc.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
+%patch3 -p0
 %patch4 -p1
 
 %build
-PATH=%{_prefix}/X11R6/bin:$PATH
+%{__make} \
+	CC="%{__cc}" \
+	CFLAGS="%{rpmcflags}" \
+	LDFLAGS="%{rpmldflags}" \
+	SHARED=1
 
-%{__make} OPT="%{rpmcflags} -pipe -D__SMP__" \
-	LDFLAGS="%{rpmldflags}"
+%{__make} \
+	CC="%{__cc}" \
+	CFLAGS="%{rpmcflags}" \
+	LDFLAGS="%{rpmldflags}" \
+	SHARED=0
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/{bin,sbin,usr/X11R6/bin} \
-	$RPM_BUILD_ROOT{%{_bindir},%{_mandir}/man{1,5,8}} \
-	$RPM_BUILD_ROOT%{_applnkdir}/System
+install -d $RPM_BUILD_ROOT{%{_includedir}/proc,%{_libdir},%{_desktopdir},%{_prefix}/X11R6/bin}
 
-%{__make} install libinstall \
+%{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
-	APPLNK=%{_applnkdir}/System
+	lib=$RPM_BUILD_ROOT/%{_lib} \
+	install="install -D" \
+	ldconfig=true
 
-install XConsole   $RPM_BUILD_ROOT%{_prefix}/X11R6/bin
+ln -sf /%{_lib}/$(cd $RPM_BUILD_ROOT/%{_lib}; echo libproc.so.*.*.*) \
+	$RPM_BUILD_ROOT%{_libdir}/libproc.so
 
-rm -f  $RPM_BUILD_ROOT%{_bindir}/snice
-ln -sf skill $RPM_BUILD_ROOT%{_bindir}/snice
+install proc/*.a $RPM_BUILD_ROOT%{_libdir}
+install proc/*.h $RPM_BUILD_ROOT%{_includedir}/proc
+install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}
+install %{SOURCE3} $RPM_BUILD_ROOT%{_prefix}/X11R6/bin/XConsole
 
 rm -f $RPM_BUILD_ROOT/bin/kill
 rm -f $RPM_BUILD_ROOT%{_mandir}/man1/{snice,kill,oldps}.1
@@ -163,11 +180,12 @@ rm -f %{_sysconfdir}/psdevtab %{_sysconfdir}/psdatabase
 %files
 %defattr(644,root,root,755)
 %doc NEWS BUGS TODO
-%attr(755,root,root) /lib/libproc.so.*.*
+%attr(755,root,root) /%{_lib}/libproc.so.*.*
 %attr(755,root,root) /bin/*
 %attr(755,root,root) /sbin/sysctl
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_prefix}/X11R6/bin/XConsole
+%{_desktopdir}/top.desktop
 %{_mandir}/man*/*
 %lang(cs) %{_mandir}/cs/man*/*
 %lang(de) %{_mandir}/de/man*/*
@@ -180,7 +198,6 @@ rm -f %{_sysconfdir}/psdevtab %{_sysconfdir}/psdatabase
 %lang(ko) %{_mandir}/ko/man*/*
 %lang(nl) %{_mandir}/nl/man*/*
 %lang(pl) %{_mandir}/pl/man*/*
-%{_applnkdir}/System/top.desktop
 
 %files devel
 %defattr(644,root,root,755)

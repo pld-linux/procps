@@ -1,0 +1,11 @@
+--- procps-3.1.9/proc/library.map.orig	Sat May 31 02:17:59 2003
++++ procps-3.1.9/proc/library.map	Fri Jul  4 17:01:27 2003
+@@ -4,7 +4,7 @@
+ 
+   readproc; readproctab; ps_readproc; look_up_our_self; escape_command;
+   escape_str; escape_strlist;
+-  openproc; closeproc;
++  openproc; closeproc; freeproc;
+   tty_to_dev; dev_to_tty; open_psdb_message; open_psdb; wchan;
+   display_version; procps_version; linux_version_code;
+   Hertz; smp_num_cpus;
