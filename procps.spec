@@ -6,12 +6,12 @@ Summary(pl):	Narzêdzia do monitorowania procesów
 Summary(pt_BR):	Utilitários de monitoração de processos
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
-Version:	3.2.2
+Version:	3.2.3
 Release:	1
 License:	GPL
 Group:		Applications/System
 Source0:	http://procps.sourceforge.net/%{name}-%{version}.tar.gz
-# Source0-md5:	ef88b94da3f181f2be1f6963820b00ab
+# Source0-md5:	5389800bf413e70365d982bac9438d31
 Source1:	http://atos.wmid.amu.edu.pl/~undefine/%{name}-non-english-man-pages.tar.bz2
 # Source1-md5:	60d24720b76c10553ed4abf68b76e079
 Source2:	top.desktop
@@ -179,7 +179,7 @@ rm -f %{_sysconfdir}/psdevtab %{_sysconfdir}/psdatabase
 %files
 %defattr(644,root,root,755)
 %doc NEWS BUGS TODO
-%attr(755,root,root) /%{_lib}/libproc.so.*.*
+%attr(755,root,root) /%{_lib}/libproc*.*so
 %attr(755,root,root) /bin/*
 %attr(755,root,root) /sbin/sysctl
 %attr(755,root,root) %{_bindir}/*
