@@ -5,7 +5,7 @@ Summary(pl):	Narzêdzia do monitorowania procesów
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
 Version:	2.0.2
-Release:	1
+Release:	2
 Copyright:	GPL
 Group:		Utilities/System
 Group(pl):	Narzêdzia/System
@@ -46,7 +46,7 @@ kullanýlabilir bellek miktarýný, ve o an için sisteme girmiþ kullanýcýlarý
 bildirir.
 
 %prep
-%setup  -q 
+%setup -q 
 %patch0 -p1 
 %patch1 -p1 
 %patch2 -p1 
@@ -97,6 +97,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc {NEWS,BUGS}.gz
 
+%lang(pl) /usr/man/pl/man*/*
+/usr/man/man*/*
+
 %config(missingok) /etc/X11/wmconfig/top
 
 %attr(755,root,root) /lib/libproc.so.*
@@ -104,10 +107,13 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /usr/bin/*
 %attr(755,root,root) /usr/X11R6/bin/XConsole
 
-/usr/man/man*/*
-%lang(pl) /usr/man/pl/man*/*
-
 %changelog
+* Wed Apr 21 1999 Piotr Czerwiñski <pius@pld.org.pl>
+  [2.0.2-2]
+- replacements in %files,
+- cosmetic changes,
+- recompiled on rpm 3.
+
 * Sun Apr  4 1999 Piotr Czerwiñski <pius@pld.org.pl>
   [2.0.2-1]
 - removed separate X11 subpackage (the only thing left there was XConsole
