@@ -63,7 +63,7 @@ offrent généralement des représentations graphiques des informations
 disponibles à partir d'outils de la suite procps.
 
 %description -l pl X11
-Pakiet zawiera narzêdzia do monitorowania systemu pod X Window. Inmformacje
+Pakiet zawiera narzêdzia do monitorowania systemu pod X Window. Informacje
 o stanie systemu s± prezentowane w sposób graficzny.
 
 %description -l tr X11
@@ -85,7 +85,7 @@ make LDFLAGS="-s"
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/{etc/X11/wmconfig,bin,lib,usr/{bin,sbin,man/man1,man/man8}}
 
-make install DESTDIR=$RPM_BUILD_ROOT BINGRP=$USER
+make install DESTDIR=$RPM_BUILD_ROOT BINGRP=`id -g`
 
 install top.wmconfig $RPM_BUILD_ROOT/etc/X11/wmconfig/top
 
@@ -111,7 +111,7 @@ fi
 %attr(755, root, root) /lib/lib*.so.*.*
 %attr(755, root, root) /bin/*
 %attr(755, root, root) /usr/bin/*
-%attr(644, root,  man) /usr/man/man[18]/
+%attr(644, root,  man) /usr/man/man[18]/*
 
 %files X11
 %attr(4755, root, root) /usr/X11R6/bin/XConsole
