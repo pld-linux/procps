@@ -8,9 +8,9 @@
  --format     user-defined format
  --context    display security context format (NSA SELinux, etc.)
  
---- procps-3.2.1/ps/parser.c.orig	2004-03-27 04:52:01.000000000 +0100
-+++ procps-3.2.1/ps/parser.c	2004-03-28 22:01:05.542682592 +0200
-@@ -224,7 +224,7 @@
+--- procps-3.2.2/ps/parser.c.orig	2004-05-25 01:49:47.000000000 +0200
++++ procps-3.2.2/ps/parser.c	2004-07-24 20:09:38.748319504 +0200
+@@ -221,7 +221,7 @@
    flagptr = ps_argv[thisarg];
    while(*++flagptr){
      /* Find any excuse to ignore stupid Unix98 misfeatures. */
@@ -19,42 +19,49 @@
      switch(*flagptr){
      case 'A':
        trace("-A selects all processes.\n");
-@@ -314,12 +314,10 @@
+@@ -325,12 +325,19 @@
        exclusive("-V");
        display_version();
        exit(0);
--#if 0
++#ifdef __linux__
++    case 'Z':     /* full Mandatory Access Control level info */
++      trace("-Z shows full MAC info\n");
++      format_modifiers |= FF_Fc;
++      break;
++#else
+     // This must be verified against SVR4-MP. (UnixWare or Powermax)
+     // Leave it undocumented until that problem is solved.
      case 'Z':     /* full Mandatory Access Control level info */
        trace("-Z shows full MAC info\n");
--      return "Don't understand MAC on Linux.";
-+      format_flags |= FF_Fc;
+       format_modifiers |= FM_M;
        break;
--#endif
++#endif
      case 'a':
        trace("-a select all with a tty, but omit session leaders.\n");
        simple_select |= SS_U_a;
-@@ -442,12 +440,10 @@
+@@ -461,13 +468,11 @@
        trace("-y Print lnone info in UID/USER column or do Sun -l hack.\n");
        format_modifiers |= FM_y;
        break;
 -#if 0
+     // This must be verified against SVR4-MP (UnixWare or Powermax)
      case 'z':     /* alias of Mandatory Access Control level info */
 -      trace("-z shows aliased MAC info\n");
--      return "Don't understand MAC on Linux.";
-+      trace("-Z shows full MAC info\n");
-+      format_flags |= FF_Fc;
+-      format_modifiers |= FM_M;
++      trace("-z shows full MAC info\n");
++      format_modifiers |= FF_Fc;
        break;
 -#endif
      case '-':
        return "Embedded '-' among SysV options makes no sense.";
        break;
-@@ -567,10 +563,17 @@
+@@ -587,10 +592,17 @@
        trace("X Old Linux i386 register format\n");
        format_flags |= FF_LX;
        break;
 +#ifdef __linux__
 +    case 'Z':
-+      trace("SElinux Security Context format\n");
++      trace("Z SElinux Security Context format\n");
 +      format_flags |= FF_Fc;
 +      break;
 +#else

@@ -1,11 +1,20 @@
---- ./proc/readproc.h.org	Wed Jul  2 01:27:26 2003
-+++ ./proc/readproc.h	Mon Jul 28 18:35:01 2003
-@@ -213,6 +213,8 @@
- #define PROC_FILLWCHAN  0x0080 /* look up WCHAN name */
- #define PROC_FILLARG    0x0100 /* alloc and fill in `cmdline' */
+--- procps-3.2.2/proc/readproc.h.orig	2004-04-17 02:30:18.000000000 +0200
++++ procps-3.2.2/proc/readproc.h	2004-07-24 21:24:36.488559056 +0200
+@@ -9,7 +9,6 @@
+ // GNU Library General Public License, a copy of which is provided
+ // in the file COPYING
  
-+// Backport from procps 2.0.7 - needed by pTools (what for?)
-+#define PROC_FILLBUG	0x3f	/* No idea what we need */
+-
+ #include "procps.h"
  
- /* Obsolete, consider only processes with one of the passed: */
- #define PROC_PID     0x1000  /* process id numbers ( 0   terminated) */
+ #define SIGNAL_STRING
+@@ -234,6 +233,9 @@
+ #define PROC_FILLWCHAN       0x0080 // look up WCHAN name
+ #define PROC_FILLARG         0x0100 // alloc and fill in `cmdline'
+ 
++// for compatibility with procps 2.0.7
++#define PROC_FILLBUG	     0x007f /* No idea what we need */
++
+ #define PROC_LOOSE_TASKS     0x0200 // threat threads as if they were processes
+ 
+ // Obsolete, consider only processes with one of the passed:
