@@ -5,7 +5,7 @@ Summary(pl):	Narzêdzia do monitorowania procesów
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
 Version:	2.0.4
-Release:	1
+Release:	2
 Copyright:	GPL
 Group:		Utilities/System
 Group(pl):	Narzêdzia/System
@@ -18,6 +18,7 @@ Patch0:		procps-opt.patch
 Patch1:		procps-install.patch
 Patch2:		procps-w.patch
 Patch3:		procps-w2.patch
+Patch4:		procps-man5.patch
 BuildRequires:	ncurses-devel
 URL:		http://www.cs.uml.edu/~acahalan/linux/
 Obsoletes:	procps-X11
@@ -80,6 +81,7 @@ bildirir.
 %patch1 -p1 
 %patch2 -p1 
 %patch3 -p1 
+%patch4 -p1 
 
 %build
 PATH=/usr/X11R6/bin:$PATH
@@ -90,12 +92,13 @@ make OPT="$RPM_OPT_FLAGS -pipe"
 rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT/{bin,sbin,lib,usr/X11R6/bin} \
-	$RPM_BUILD_ROOT{%{_bindir},%{_datadir},%{_mandir}/{man{1,8},pl/man1}} \
+	$RPM_BUILD_ROOT{%{_bindir},%{_datadir},%{_mandir}/{man{1,5,8},pl/man1}} \
 	$RPM_BUILD_ROOT%{_sysconfdir}/applnk/Administration
 
 make install \
 	DESTDIR=$RPM_BUILD_ROOT BINGRP=`id -g` \
 	MAN1DIR=$RPM_BUILD_ROOT%{_mandir}/man1 \
+	MAN5DIR=$RPM_BUILD_ROOT%{_mandir}/man5 \
 	MAN8DIR=$RPM_BUILD_ROOT%{_mandir}/man8
 
 install %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/applnk/Administration
@@ -109,7 +112,6 @@ rm -f $RPM_BUILD_ROOT%{_mandir}/man1/{snice,kill,oldps}.1
 rm -f $RPM_BUILD_ROOT%{_bindir}/{oldps,kill}
 
 echo .so skill.1 > $RPM_BUILD_ROOT%{_mandir}/man1/snice.1
-install ps/ps.1    $RPM_BUILD_ROOT%{_mandir}/man1
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_mandir}/pl/man1/free.1
 install %{SOURCE2} $RPM_BUILD_ROOT%{_mandir}/pl/man1/uptime.1
