@@ -146,12 +146,13 @@ Statyczna wersja biblioteki libproc.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/{bin,sbin,lib} \
+install -d $RPM_BUILD_ROOT/{bin,sbin,%{_lib}} \
 	$RPM_BUILD_ROOT{%{_includedir}/proc,%{_libdir},%{_desktopdir}} \
 	$RPM_BUILD_ROOT{%{_bindir},%{_mandir}/man{1,5,8}}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
+	lib=$RPM_BUILD_ROOT/%{_lib} \
 	install=install
 
 install proc/*.a $RPM_BUILD_ROOT%{_libdir}
@@ -183,7 +184,7 @@ rm -f %{_sysconfdir}/psdevtab %{_sysconfdir}/psdatabase
 %files
 %defattr(644,root,root,755)
 %doc NEWS BUGS TODO
-%attr(755,root,root) /lib/libproc.so.*.*
+%attr(755,root,root) /%{_lib}/libproc.so.*.*
 %attr(755,root,root) /bin/*
 %attr(755,root,root) /sbin/sysctl
 %attr(755,root,root) %{_bindir}/*
@@ -203,7 +204,7 @@ rm -f %{_sysconfdir}/psdevtab %{_sysconfdir}/psdatabase
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) /lib/libproc.so
+%attr(755,root,root) /%{_lib}/libproc.so
 %{_includedir}/proc
 
 %files static
