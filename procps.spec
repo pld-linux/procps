@@ -9,11 +9,11 @@ Release:	1
 Copyright:	GPL
 Group:		Utilities/System
 Group(pl):	Narzêdzia/System
-URL:		http://www.cs.uml.edu/~acahalan/linux
-Source:		%{name}-%{version}.tar.gz
-Patch0:		%{name}-opt.patch
-Patch1:		%{name}-install.patch
-Patch2:		%{name}-w.patch
+Source:		ftp://tsx-11.mit.edu/pub/linux/sources/usr.bin/%{name}-%{version}.tar.gz
+Patch0:		procps-opt.patch
+Patch1:		procps-install.patch
+Patch2:		procps-w.patch
+URL:		http://www.cs.uml.edu/~acahalan/linux/
 Buildroot:	/tmp/%{name}-%{version}-root
 
 %description
@@ -49,7 +49,7 @@ Summary(fr):	Utilitaires de surveillance des processus sous X
 Summary(pl):	Narzêdzia do monitorowania procesów pod X Window
 Summary(tr):	X tabanlý süreç izleme araçlarý
 Group:		X11/Utilities
-Group(pl):	X11/Narzêzia
+Group(pl):	X11/Narzêdzia
 Requires:	%{name} = %{version}  
 
 %description X11
@@ -90,8 +90,8 @@ make OPT="$RPM_OPT_FLAGS -pipe"
 %install
 rm -rf $RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT/{etc/X11/wmconfig,bin,lib}
-install -d $RPM_BUILD_ROOT/usr/{bin,man/{man1,man8}}
+install -d $RPM_BUILD_ROOT/{etc/X11/wmconfig,bin,lib} \
+	$RPM_BUILD_ROOT/usr/{bin,man/{man1,man8}}
 
 make install DESTDIR=$RPM_BUILD_ROOT BINGRP=`id -g`
 
@@ -104,25 +104,25 @@ rm -f  $RPM_BUILD_ROOT/bin/kill
 rm -f $RPM_BUILD_ROOT/usr/man/man1/{snice,kill}.1
 echo .so skill.1 > $RPM_BUILD_ROOT/usr/man/man1/snice.1
 
-strip $RPM_BUILD_ROOT/lib/*.so.*.*
+strip --strip-unneeded $RPM_BUILD_ROOT/lib/*.so.*.*
 
-gzip -9fn $RPM_BUILD_ROOT/usr/man/man[18]/*
-bzip2 -9  NEWS BUGS 
-
-%clean
-rm -rf $RPM_BUILD_ROOT
+gzip -9fn $RPM_BUILD_ROOT/usr/man/man[18]/* NEWS BUGS 
 
 %post 
 /sbin/ldconfig
 if [ -f /proc/uptime ] ; then
-  /bin/ps </dev/null >/dev/null 2>&1
+	/bin/ps </dev/null >/dev/null 2>&1
 fi
+rm -f /etc/psdevtab /etc/psdatabase
 
 %postun -p /sbin/ldconfig
 
+%clean
+rm -rf $RPM_BUILD_ROOT
+
 %files
 %defattr(644,root,root,755)
-%doc {NEWS,BUGS}.bz2
+%doc {NEWS,BUGS}.gz
 
 %config(missingok) /etc/X11/wmconfig/top
 
@@ -135,6 +135,11 @@ fi
 %attr(755,root,root) /usr/X11R6/bin/XConsole
 
 %changelog
+* Fri Mar 19 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
+  [2.0-1]
+- added "rm -f /etc/psdevtab /etc/psdatabase" to %post,
+- strip with --strip-unneeded shared libraries.
+
 * Sat Mar 13 1999 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
 - fixed Group(pl),
 - bzipping documentation,
