@@ -7,7 +7,7 @@ Summary(pt_BR):	Utilitários de monitoração de processos
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
 Version:	2.0.7
-Release:	12
+Release:	13
 License:	GPL
 Group:		Applications/System
 Group(de):	Applikationen/System
@@ -166,7 +166,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %{_mandir}/man*/*
 %lang(cs) %{_mandir}/cs/man*/*
-%lang(da) %{_mandir}/da/man*/*
 %lang(de) %{_mandir}/de/man*/*
 %lang(es) %{_mandir}/es/man*/*
 %lang(fi) %{_mandir}/fi/man*/*
