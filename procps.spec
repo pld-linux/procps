@@ -11,7 +11,9 @@ Release:	1
 License:	GPL
 Group:		Applications/System
 Source0:	http://procps.sourceforge.net/%{name}-%{version}.tar.gz
+# Source0-md5: 617e282bf3eefbd1753529aa8df4144f
 Source1:	%{name}-non-english-man-pages.tar.bz2
+# Source1-md5: f6f441ea8bba8b692649761ebeceb943
 Patch0:		%{name}-make.patch
 Patch1:		%{name}-sysctl_stdin.patch
 URL:		http://procps.sourceforge.net/
