@@ -1,11 +1,9 @@
 --- ./proc/readproc.h.org	Wed Jul  2 01:27:26 2003
 +++ ./proc/readproc.h	Mon Jul 28 18:35:01 2003
-@@ -213,7 +213,9 @@
+@@ -213,6 +213,8 @@
  #define PROC_FILLWCHAN  0x0080 /* look up WCHAN name */
  #define PROC_FILLARG    0x0100 /* alloc and fill in `cmdline' */
  
--#define PROC_FILLANY    0x0000 /* either stat or status will do */
-+#define PROC_FILLANY	0x0000	/* either stat or status will do */
 +// Backport from procps 2.0.7 - needed by pTools (what for?)
 +#define PROC_FILLBUG	0x3f	/* No idea what we need */
  
