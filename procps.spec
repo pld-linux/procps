@@ -16,14 +16,14 @@ Patch0:		%{name}-make.patch
 Patch1:		%{name}-typo.patch
 URL:		http://procps.sourceforge.net/
 BuildRequires:	ncurses-devel >= 5.1
-Prereq:		fileutils
+PreReq:		fileutils
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	procps-X11
 
 %description
 The procps package contains a set of system utilities which provide
 system information. Procps includes ps, free, skill, snice, tload,
-top, uptime, vmstat, w, and watch. The ps command displays a snapshot
+top, uptime, vmstat, w and watch. The ps command displays a snapshot
 of running processes. The top command provides a repetitive update of
 the statuses of running processes. The free command displays the
 amounts of free and used memory on your system. The skill command
