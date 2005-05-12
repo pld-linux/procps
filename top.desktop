@@ -6,6 +6,6 @@ Exec=top
 Icon=top
 Terminal=true
 Type=Application
-Categories=System;Monitor;
+Categories=ConsoleOnly;System;Monitor;
 Encoding=UTF-8
 # vi: encoding=utf-8
