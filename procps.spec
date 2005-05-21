@@ -7,7 +7,7 @@ Summary(pt_BR):	Utilitários de monitoração de processos
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
 Version:	3.2.5
-Release:	2
+Release:	3
 Epoch:		1
 License:	GPL
 Group:		Applications/System
@@ -149,7 +149,7 @@ install -d $RPM_BUILD_ROOT{%{_includedir}/proc,%{_libdir},%{_desktopdir},%{_pixm
 	install="install -D" \
 	ldconfig=true
 
-ln -sf /%{_lib}/$(cd $RPM_BUILD_ROOT/%{_lib}; echo libproc.so.*.*.*) \
+ln -sf /%{_lib}/libproc-%{version}.so \
 	$RPM_BUILD_ROOT%{_libdir}/libproc.so
 
 install libproc.a $RPM_BUILD_ROOT%{_libdir}
