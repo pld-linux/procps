@@ -7,7 +7,7 @@ Summary(pt_BR):	Utilitários de monitoração de processos
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
 Version:	3.2.6
-Release:	1
+Release:	1.1
 Epoch:		1
 License:	GPL
 Group:		Applications/System
@@ -24,6 +24,7 @@ Patch2:		%{name}-global.patch
 Patch3:		%{name}-FILLBUG_backport.patch
 # http://www.nsa.gov/selinux/patches/procps-selinux.patch.gz
 Patch4:		%{name}-selinux.patch
+Patch5:		%{name}-pgrep-g-is-criteria.patch
 URL:		http://procps.sourceforge.net/
 BuildRequires:	ncurses-devel >= 5.1
 Requires:	fileutils
@@ -124,6 +125,7 @@ Statyczna wersja biblioteki libproc.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 %build
 %{__make} proc/libproc.a \
