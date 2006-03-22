@@ -1,0 +1,10 @@
+--- procps-3.2.6/pgrep.c~	2006-03-22 21:33:26.000000000 +0200
++++ procps-3.2.6/pgrep.c	2006-03-22 21:33:27.000000000 +0200
+@@ -539,6 +539,7 @@
+ 	  		opt_pgrp = split_list (optarg, conv_pgrp);
+ 			if (opt_pgrp == NULL)
+ 				usage (opt);
++			++criteria_count;
+ 			break;
+ //		case 'i':
+ //			opt_insensitive = 1;
