@@ -6,25 +6,23 @@ Summary(pl):	Narzêdzia do monitorowania procesów
 Summary(pt_BR):	Utilitários de monitoração de processos
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
-Version:	3.2.6
-Release:	2
+Version:	3.2.7
+Release:	1
 Epoch:		1
 License:	GPL
 Group:		Applications/System
 Source0:	http://procps.sourceforge.net/%{name}-%{version}.tar.gz
-# Source0-md5:	7ce39ea27d7b3da0e8ad74dd41d06783
+# Source0-md5:	f490bca772b16472962c7b9f23b1e97d
 Source1:	http://atos.wmid.amu.edu.pl/~undefine/%{name}-non-english-man-pages.tar.bz2
 # Source1-md5:	60d24720b76c10553ed4abf68b76e079
 Source2:	top.desktop
 Source3:	top.png
 Source4:	XConsole.sh
 Patch0:		%{name}-make.patch
-Patch1:		%{name}-sysctl_stdin.patch
-Patch2:		%{name}-global.patch
-Patch3:		%{name}-FILLBUG_backport.patch
+Patch1:		%{name}-global.patch
+Patch2:		%{name}-FILLBUG_backport.patch
 # http://www.nsa.gov/selinux/patches/procps-selinux.patch.gz
-Patch4:		%{name}-selinux.patch
-Patch5:		%{name}-pgrep-g-is-criteria.patch
+Patch3:		%{name}-selinux.patch
 URL:		http://procps.sourceforge.net/
 BuildRequires:	ncurses-devel >= 5.1
 Requires:	fileutils
@@ -124,8 +122,6 @@ Statyczna wersja biblioteki libproc.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
-%patch5 -p1
 
 %build
 %{__make} proc/libproc.a \
