@@ -133,6 +133,7 @@ mv -f proc/libproc.a .
 %{__make} clean
 
 %{__make} \
+	CURSES="-lncurses -ltinfo" \
 	CC="%{__cc}" \
 	ALL_CFLAGS="%{rpmcflags} -Wall -ffast-math" \
 	LDFLAGS="%{rpmldflags}"
