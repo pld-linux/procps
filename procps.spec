@@ -1,10 +1,10 @@
 Summary:	Utilities for monitoring your system and processes on your system
-Summary(de):	Utilities zum Ueberwachen Ihres Systems und der Prozesse
-Summary(es):	Utilitarios de monitoración de procesos
-Summary(fr):	Utilitaires de surveillance des processus
-Summary(pl):	Narzêdzia do monitorowania procesów
-Summary(pt_BR):	Utilitários de monitoração de processos
-Summary(tr):	Süreç izleme araçlarý
+Summary(de.UTF-8):   Utilities zum Ueberwachen Ihres Systems und der Prozesse
+Summary(es.UTF-8):   Utilitarios de monitoraciÃ³n de procesos
+Summary(fr.UTF-8):   Utilitaires de surveillance des processus
+Summary(pl.UTF-8):   NarzÄ™dzia do monitorowania procesÃ³w
+Summary(pt_BR.UTF-8):   UtilitÃ¡rios de monitoraÃ§Ã£o de processos
+Summary(tr.UTF-8):   SÃ¼reÃ§ izleme araÃ§larÄ±
 Name:		procps
 Version:	3.2.7
 Release:	1
@@ -48,51 +48,51 @@ program watches a running program. The vmstat command displays virtual
 memory statistics about processes, memory, paging, block I/O, traps
 and CPU activity.
 
-%description -l de
-Das procps-Paket enthält System-Utilities, die Systeminformationen
-anzeigen. Procps enthält ps, free, skill, snice, tload, top, uptime,
+%description -l de.UTF-8
+Das procps-Paket enthÃ¤lt System-Utilities, die Systeminformationen
+anzeigen. Procps enthÃ¤lt ps, free, skill, snice, tload, top, uptime,
 vmstat, w und watch. ps zeigt an, welche Prozesse gerade laufen. Top
-zeigt in regelmäßigen Abständen eine Prozessliste an. Free zeigt an,
+zeigt in regelmÃ¤ÃŸigen AbstÃ¤nden eine Prozessliste an. Free zeigt an,
 wieviel Speicher frei ist, und wieviel Speicher benutzt wird. Skill
 schickt den Terminierungsbefehl (oder ein anderes angegebenes Signal)
-an angegebene Prozesse. Snice ändert die Priorität von angegebenen
+an angegebene Prozesse. Snice Ã¤ndert die PrioritÃ¤t von angegebenen
 Prozessen. tload zeigt einen Graphen der aktuellen Systemauslastung
 an. Uptime zeigt an, wie lange das System am laufen ist, wieviele User
 eingeloggt sind, und die Auslastungswerte der letzten Minute, der
 letzten 5 Minuten, und 15 Minuten. Der w-Befehl zeigt eine Liste der
 User an, die gerade eingeloggt sind, und welches Programm sie
-benutzen. Vmstat zeigt Statistiken über den virtuellen Speicher,
-Prozesse, Paging, Block I/O, Traps, und CPU-Aktivität.
+benutzen. Vmstat zeigt Statistiken Ã¼ber den virtuellen Speicher,
+Prozesse, Paging, Block I/O, Traps, und CPU-AktivitÃ¤t.
 
-%description -l es
+%description -l es.UTF-8
 Un paquete de utilitarios que relatan el estado del sistema. Se da
-énfasis a los procesos en ejecución, total de memoria disponible y a
-los usuarios que están "logados" en el sistema.
+Ã©nfasis a los procesos en ejecuciÃ³n, total de memoria disponible y a
+los usuarios que estÃ¡n "logados" en el sistema.
 
-%description -l fr
-Paquetage d'utilitaires donnant des informations sur l'état du
-système, dont les états des processus en cours, le total de mémoire
-disponible, et les utilisateurs loggés.
+%description -l fr.UTF-8
+Paquetage d'utilitaires donnant des informations sur l'Ã©tat du
+systÃ¨me, dont les Ã©tats des processus en cours, le total de mÃ©moire
+disponible, et les utilisateurs loggÃ©s.
 
-%description -l pl
-Pakiet zawiera podstawowe narzêdzia do monitorowania pracy systemu.
-Dziêki tym programom bêdziesz móg³ na bie¿±co kontrolowaæ jakie
-procesy s± w danej chwili uruchomione, ilo¶æ wolnej pamiêci, kto jest
-w danej chwili zalogowany, jakie jest aktualne obci±¿enie systemu itp.
+%description -l pl.UTF-8
+Pakiet zawiera podstawowe narzÄ™dzia do monitorowania pracy systemu.
+DziÄ™ki tym programom bÄ™dziesz mÃ³gÅ‚ na bieÅ¼Ä…co kontrolowaÄ‡ jakie
+procesy sÄ… w danej chwili uruchomione, iloÅ›Ä‡ wolnej pamiÄ™ci, kto jest
+w danej chwili zalogowany, jakie jest aktualne obciÄ…Å¼enie systemu itp.
 
-%description -l pt_BR
-Um pacote de utilitários que relatam o estado do sistema. É dado
-ênfase aos processos em execução, total de memória disponível e aos
-usuários que estão logados no sistema.
+%description -l pt_BR.UTF-8
+Um pacote de utilitÃ¡rios que relatam o estado do sistema. Ã‰ dado
+Ãªnfase aos processos em execuÃ§Ã£o, total de memÃ³ria disponÃ­vel e aos
+usuÃ¡rios que estÃ£o logados no sistema.
 
-%description -l tr
-Sistemin durumunu rapor eden araçlar paketidir. Koþan süreçlerin
-durumunu, kullanýlabilir bellek miktarýný, ve o an için sisteme girmiþ
-kullanýcýlarý bildirir.
+%description -l tr.UTF-8
+Sistemin durumunu rapor eden araÃ§lar paketidir. KoÅŸan sÃ¼reÃ§lerin
+durumunu, kullanÄ±labilir bellek miktarÄ±nÄ±, ve o an iÃ§in sisteme girmiÅŸ
+kullanÄ±cÄ±larÄ± bildirir.
 
 %package devel
 Summary:	libproc header files
-Summary(pl):	Pliki nag³ówkowe libproc
+Summary(pl.UTF-8):   Pliki nagÅ‚Ã³wkowe libproc
 License:	LGPL
 Group:		Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
@@ -100,12 +100,12 @@ Requires:	%{name} = %{epoch}:%{version}-%{release}
 %description devel
 libproc header files.
 
-%description devel -l pl
-Pliki nag³ówkowe biblioteki libproc.
+%description devel -l pl.UTF-8
+Pliki nagÅ‚Ã³wkowe biblioteki libproc.
 
 %package static
 Summary:	Static libproc library
-Summary(pl):	Statyczna biblioteka libproc
+Summary(pl.UTF-8):   Statyczna biblioteka libproc
 License:	LGPL
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
@@ -113,7 +113,7 @@ Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
 %description static
 Static version of libproc library.
 
-%description static -l pl
+%description static -l pl.UTF-8
 Statyczna wersja biblioteki libproc.
 
 %prep
