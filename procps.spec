@@ -1,10 +1,10 @@
 Summary:	Utilities for monitoring your system and processes on your system
-Summary(de.UTF-8):   Utilities zum Ueberwachen Ihres Systems und der Prozesse
-Summary(es.UTF-8):   Utilitarios de monitoración de procesos
-Summary(fr.UTF-8):   Utilitaires de surveillance des processus
-Summary(pl.UTF-8):   Narzędzia do monitorowania procesów
-Summary(pt_BR.UTF-8):   Utilitários de monitoração de processos
-Summary(tr.UTF-8):   Süreç izleme araçları
+Summary(de.UTF-8):	Utilities zum Ueberwachen Ihres Systems und der Prozesse
+Summary(es.UTF-8):	Utilitarios de monitoración de procesos
+Summary(fr.UTF-8):	Utilitaires de surveillance des processus
+Summary(pl.UTF-8):	Narzędzia do monitorowania procesów
+Summary(pt_BR.UTF-8):	Utilitários de monitoração de processos
+Summary(tr.UTF-8):	Süreç izleme araçları
 Name:		procps
 Version:	3.2.7
 Release:	1
@@ -92,7 +92,7 @@ kullanıcıları bildirir.
 
 %package devel
 Summary:	libproc header files
-Summary(pl.UTF-8):   Pliki nagłówkowe libproc
+Summary(pl.UTF-8):	Pliki nagłówkowe libproc
 License:	LGPL
 Group:		Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
@@ -105,7 +105,7 @@ Pliki nagłówkowe biblioteki libproc.
 
 %package static
 Summary:	Static libproc library
-Summary(pl.UTF-8):   Statyczna biblioteka libproc
+Summary(pl.UTF-8):	Statyczna biblioteka libproc
 License:	LGPL
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
