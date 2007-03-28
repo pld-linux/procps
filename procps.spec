@@ -1,3 +1,5 @@
+# TODO
+# - isn't /etc/psdevtab & /etc/psdatabase obsolete? if not package as ghost
 Summary:	Utilities for monitoring your system and processes on your system
 Summary(de):	Utilities zum Ueberwachen Ihres Systems und der Prozesse
 Summary(es):	Utilitarios de monitoración de procesos
@@ -6,27 +8,27 @@ Summary(pl):	Narzêdzia do monitorowania procesów
 Summary(pt_BR):	Utilitários de monitoração de processos
 Summary(tr):	Süreç izleme araçlarý
 Name:		procps
-Version:	3.2.5
-Release:	2
+Version:	3.2.7
+Release:	1
 Epoch:		1
 License:	GPL
 Group:		Applications/System
 Source0:	http://procps.sourceforge.net/%{name}-%{version}.tar.gz
-# Source0-md5:	cde0e3612d1d7c68f404d46f01c44fb4
+# Source0-md5:	f490bca772b16472962c7b9f23b1e97d
 Source1:	http://atos.wmid.amu.edu.pl/~undefine/%{name}-non-english-man-pages.tar.bz2
 # Source1-md5:	60d24720b76c10553ed4abf68b76e079
 Source2:	top.desktop
 Source3:	top.png
 Source4:	XConsole.sh
 Patch0:		%{name}-make.patch
-Patch1:		%{name}-sysctl_stdin.patch
-Patch2:		%{name}-global.patch
-Patch3:		%{name}-FILLBUG_backport.patch
+Patch1:		%{name}-global.patch
+Patch2:		%{name}-FILLBUG_backport.patch
 # http://www.nsa.gov/selinux/patches/procps-selinux.patch.gz
-Patch4:		%{name}-selinux.patch
+Patch3:		%{name}-selinux.patch
 URL:		http://procps.sourceforge.net/
 BuildRequires:	ncurses-devel >= 5.1
-PreReq:		fileutils
+Requires(post):	/sbin/ldconfig
+Requires:	fileutils
 Obsoletes:	procps-X11
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -123,7 +125,6 @@ Statyczna wersja biblioteki libproc.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
 
 %build
 %{__make} proc/libproc.a \
@@ -135,6 +136,7 @@ mv -f proc/libproc.a .
 %{__make} clean
 
 %{__make} \
+	CURSES="-lncurses -ltinfo" \
 	CC="%{__cc}" \
 	ALL_CFLAGS="%{rpmcflags} -Wall -ffast-math" \
 	LDFLAGS="%{rpmldflags}"
@@ -149,7 +151,7 @@ install -d $RPM_BUILD_ROOT{%{_includedir}/proc,%{_libdir},%{_desktopdir},%{_pixm
 	install="install -D" \
 	ldconfig=true
 
-ln -sf /%{_lib}/$(cd $RPM_BUILD_ROOT/%{_lib}; echo libproc.so.*.*.*) \
+ln -sf /%{_lib}/libproc-%{version}.so \
 	$RPM_BUILD_ROOT%{_libdir}/libproc.so
 
 install libproc.a $RPM_BUILD_ROOT%{_libdir}
@@ -166,13 +168,15 @@ echo ".so skill.1" > $RPM_BUILD_ROOT%{_mandir}/man1/snice.1
 
 bzcat -dc %{SOURCE1} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
 rm -f $RPM_BUILD_ROOT%{_mandir}/*/man1/{kill,oldps}.1
+rm -f $RPM_BUILD_ROOT%{_mandir}/README-procps-non-english-man-pages
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/ldconfig
-if [ -f /proc/uptime ] ; then
+# ask ps to set up /etc/psdevtab if /proc is mounted
+if [ -f /proc/uptime ]; then
 	/bin/ps </dev/null >/dev/null 2>&1
 fi
 rm -f %{_sysconfdir}/psdevtab %{_sysconfdir}/psdatabase
