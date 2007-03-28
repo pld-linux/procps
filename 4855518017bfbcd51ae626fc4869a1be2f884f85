@@ -1,0 +1,2 @@
+- simplified install, don't run ldconfig on make install
+- moved devel symlink to %{_libdir}
