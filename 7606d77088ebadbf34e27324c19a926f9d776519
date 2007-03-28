@@ -1,0 +1,5 @@
+- release 13
+- added patches from rawhide
+  larger buffers for reading /proc/stat
+  add smp, signal name patches from VA Linux.  Thanks guys.
+  fix PAGE_SIZE mismatch on ia64
