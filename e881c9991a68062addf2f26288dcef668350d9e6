@@ -1,0 +1,4 @@
+- release 3,
+- added locale patch from RH (on locale diffrent than C top without this fix
+  fails because tries output some variables depending on locale formats),
+- make spec %{debug} ready.
