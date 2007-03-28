@@ -1,3 +1,5 @@
+# TODO
+# - isn't /etc/psdevtab & /etc/psdatabase obsolete? if not package as ghost
 Summary:	Utilities for monitoring your system and processes on your system
 Summary(de.UTF-8):	Utilities zum Ueberwachen Ihres Systems und der Prozesse
 Summary(es.UTF-8):	Utilitarios de monitoración de procesos
@@ -25,6 +27,7 @@ Patch2:		%{name}-FILLBUG_backport.patch
 Patch3:		%{name}-selinux.patch
 URL:		http://procps.sourceforge.net/
 BuildRequires:	ncurses-devel >= 5.1
+Requires(post):	/sbin/ldconfig
 Requires:	fileutils
 Obsoletes:	procps-X11
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -165,13 +168,15 @@ echo ".so skill.1" > $RPM_BUILD_ROOT%{_mandir}/man1/snice.1
 
 bzcat -dc %{SOURCE1} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
 rm -f $RPM_BUILD_ROOT%{_mandir}/*/man1/{kill,oldps}.1
+rm -f $RPM_BUILD_ROOT%{_mandir}/README-procps-non-english-man-pages
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/ldconfig
-if [ -f /proc/uptime ] ; then
+# ask ps to set up /etc/psdevtab if /proc is mounted
+if [ -f /proc/uptime ]; then
 	/bin/ps </dev/null >/dev/null 2>&1
 fi
 rm -f %{_sysconfdir}/psdevtab %{_sysconfdir}/psdatabase
