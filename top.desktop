@@ -7,5 +7,4 @@ Icon=top
 Terminal=true
 Type=Application
 Categories=ConsoleOnly;System;Monitor;
-Encoding=UTF-8
 # vi: encoding=utf-8
