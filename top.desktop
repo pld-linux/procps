@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Top
+Comment=Repetitive display of current process status
+Comment[pl]=Wyświetlanie aktualnego stanu procesów
+Exec=top
+Icon=top
+Terminal=true
+Type=Application
+Categories=ConsoleOnly;System;Monitor;
+# vi: encoding=utf-8
