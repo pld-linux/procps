@@ -1,5 +1,3 @@
-# TODO
-# - isn't /etc/psdevtab & /etc/psdatabase obsolete? if not package as ghost
 Summary:	Utilities for monitoring your system and processes on your system
 Summary(de.UTF-8):	Utilities zum Ueberwachen Ihres Systems und der Prozesse
 Summary(es.UTF-8):	Utilitarios de monitoración de procesos
@@ -9,7 +7,7 @@ Summary(pt_BR.UTF-8):	Utilitários de monitoração de processos
 Summary(tr.UTF-8):	Süreç izleme araçları
 Name:		procps
 Version:	3.2.7
-Release:	3
+Release:	4
 Epoch:		1
 License:	GPL
 Group:		Applications/System
@@ -27,6 +25,7 @@ Patch2:		%{name}-FILLBUG_backport.patch
 Patch3:		%{name}-selinux.patch
 URL:		http://procps.sourceforge.net/
 BuildRequires:	ncurses-devel >= 5.1
+BuildRequires:	rpmbuild(macros) >= 1.402
 Requires(post):	/sbin/ldconfig
 Requires:	fileutils
 Obsoletes:	procps-X11
@@ -161,10 +160,8 @@ install %{SOURCE3} $RPM_BUILD_ROOT%{_pixmapsdir}
 install %{SOURCE4} $RPM_BUILD_ROOT%{_bindir}/XConsole
 
 rm -f $RPM_BUILD_ROOT/bin/kill
-rm -f $RPM_BUILD_ROOT%{_mandir}/man1/{snice,kill,oldps}.1
+rm -f $RPM_BUILD_ROOT%{_mandir}/man1/{kill,oldps}.1
 rm -f $RPM_BUILD_ROOT%{_bindir}/{oldps,kill}
-
-echo ".so skill.1" > $RPM_BUILD_ROOT%{_mandir}/man1/snice.1
 
 bzcat -dc %{SOURCE1} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
 rm -f $RPM_BUILD_ROOT%{_mandir}/*/man1/{kill,oldps}.1
@@ -173,14 +170,7 @@ rm -f $RPM_BUILD_ROOT%{_mandir}/README-procps-non-english-man-pages
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
-/sbin/ldconfig
-# ask ps to set up /etc/psdevtab if /proc is mounted
-if [ -f /proc/uptime ]; then
-	/bin/ps </dev/null >/dev/null 2>&1
-fi
-rm -f %{_sysconfdir}/psdevtab %{_sysconfdir}/psdatabase
-
+%post	-p /sbin/ldconfig
 %postun -p /sbin/ldconfig
 
 %files
