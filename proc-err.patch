@@ -1,0 +1,14 @@
+--- procps-3.2.8/proc/readproc.c~	2006-06-16 10:18:13.000000000 +0200
++++ procps-3.2.8/proc/readproc.c	2009-10-16 20:32:50.373587035 +0200
+@@ -859,7 +859,10 @@
+       PT->finder = listed_nextpid;
+     }else{
+       PT->procfs = opendir("/proc");
+-      if(!PT->procfs) return NULL;
++      if(!PT->procfs) {
++	      perror("/proc");
++	      exit(1);
++      }
+       PT->finder = simple_nextpid;
+     }
+     PT->flags = flags;

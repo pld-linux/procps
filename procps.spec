@@ -23,6 +23,7 @@ Patch1:		%{name}-global.patch
 Patch2:		%{name}-FILLBUG_backport.patch
 # http://www.nsa.gov/selinux/patches/procps-selinux.patch.gz
 Patch3:		%{name}-selinux.patch
+Patch4:		proc-err.patch
 URL:		http://procps.sourceforge.net/
 BuildRequires:	ncurses-devel >= 5.1
 BuildRequires:	rpmbuild(macros) >= 1.402
@@ -124,6 +125,7 @@ Statyczna wersja biblioteki libproc.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 %{__make} proc/libproc.a \
