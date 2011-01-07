@@ -130,23 +130,25 @@ Statyczna wersja biblioteki libproc.
 %build
 %{__make} proc/libproc.a \
 	CC="%{__cc}" \
-	ALL_CFLAGS="%{rpmcflags} -Wall -ffast-math" \
-	LDFLAGS="%{rpmldflags}" \
+	ALL_CFLAGS="%{rpmcppflags} %{rpmcflags} -Wall -ffast-math" \
+	LDFLAGS="%{rpmcflags} %{rpmldflags}" \
 	SHARED=0
-mv -f proc/libproc.a .
+%{__mv} proc/libproc.a .
 %{__make} clean
 
 %{__make} \
 	CURSES="-lncurses -ltinfo" \
 	CC="%{__cc}" \
-	ALL_CFLAGS="%{rpmcflags} -Wall -ffast-math" \
-	LDFLAGS="%{rpmldflags}"
+	ALL_CFLAGS="%{rpmcppflags} %{rpmcflags} -Wall -ffast-math" \
+	LDFLAGS="%{rpmcflags} %{rpmldflags}" \
+	LIBPROC="proc/libproc-%{version}.so"
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_includedir}/proc,%{_libdir},%{_desktopdir},%{_pixmapsdir}}
 
 %{__make} install \
+	CC=false \
 	DESTDIR=$RPM_BUILD_ROOT \
 	lib64=%{_lib} \
 	install="install -D" \
