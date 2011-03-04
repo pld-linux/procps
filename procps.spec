@@ -1,3 +1,4 @@
+%define	snap	20110204
 Summary:	Utilities for monitoring your system and processes on your system
 Summary(de.UTF-8):	Utilities zum Ueberwachen Ihres Systems und der Prozesse
 Summary(es.UTF-8):	Utilitarios de monitoración de procesos
@@ -7,12 +8,12 @@ Summary(pt_BR.UTF-8):	Utilitários de monitoração de processos
 Summary(tr.UTF-8):	Süreç izleme araçları
 Name:		procps
 Version:	3.2.8
-Release:	1
+Release:	1.%{snap}.1
 Epoch:		1
 License:	GPL
 Group:		Applications/System
-Source0:	http://procps.sourceforge.net/%{name}-%{version}.tar.gz
-# Source0-md5:	9532714b6846013ca9898984ba4cd7e0
+Source0:	http://gitorious.org/procps/procps/archive-tarball/master?%{snap}.tar.gz
+# Source0-md5:	d1303b204fa7958658377caf90c3bc60
 Source1:	http://atos.wmid.amu.edu.pl/~undefine/%{name}-non-english-man-pages.tar.bz2
 # Source1-md5:	60d24720b76c10553ed4abf68b76e079
 Source2:	top.desktop
@@ -24,7 +25,7 @@ Patch2:		%{name}-FILLBUG_backport.patch
 # http://www.nsa.gov/selinux/patches/procps-selinux.patch.gz
 Patch3:		%{name}-selinux.patch
 Patch4:		proc-err.patch
-URL:		http://procps.sourceforge.net/
+URL:		http://gitorious.org/procps/
 BuildRequires:	ncurses-devel >= 5.1
 BuildRequires:	rpmbuild(macros) >= 1.402
 Requires(post):	/sbin/ldconfig
@@ -120,7 +121,7 @@ Static version of libproc library.
 Statyczna wersja biblioteki libproc.
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{name}
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1

@@ -1,20 +1,13 @@
 --- procps-3.2.2/proc/readproc.h.orig	2004-04-17 02:30:18.000000000 +0200
 +++ procps-3.2.2/proc/readproc.h	2004-07-24 21:24:36.488559056 +0200
-@@ -9,7 +9,6 @@
- // GNU Library General Public License, a copy of which is provided
- // in the file COPYING
- 
--
- #include "procps.h"
- 
- #define SIGNAL_STRING
-@@ -234,6 +233,9 @@
- #define PROC_FILLWCHAN       0x0080 // look up WCHAN name
+@@ -239,6 +239,9 @@
  #define PROC_FILLARG         0x0100 // alloc and fill in `cmdline'
+ #define PROC_FILLCGROUP      0x0200 // alloc and fill in `cgroup`
  
 +// for compatibility with procps 2.0.7
-+#define PROC_FILLBUG	     0x007f /* No idea what we need */
++#define PROC_FILLBUG         0x007f /* No idea what we need */
 +
- #define PROC_LOOSE_TASKS     0x0200 // threat threads as if they were processes
+ #define PROC_LOOSE_TASKS     0x2000 // threat threads as if they were processes
  
  // Obsolete, consider only processes with one of the passed:
+
