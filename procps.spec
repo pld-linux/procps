@@ -12,7 +12,7 @@ Release:	1.%{snap}.1
 Epoch:		1
 License:	GPL
 Group:		Applications/System
-Source0:	http://gitorious.org/procps/procps/archive-tarball/master?%{snap}.tar.gz
+Source0:	http://gitorious.org/procps/procps/archive-tarball/master#%{snap}.tar.gz
 # Source0-md5:	d1303b204fa7958658377caf90c3bc60
 Source1:	http://atos.wmid.amu.edu.pl/~undefine/%{name}-non-english-man-pages.tar.bz2
 # Source1-md5:	60d24720b76c10553ed4abf68b76e079
