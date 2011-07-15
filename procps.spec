@@ -8,11 +8,11 @@ Summary(pt_BR.UTF-8):	Utilitários de monitoração de processos
 Summary(tr.UTF-8):	Süreç izleme araçları
 Name:		procps
 Version:	3.2.8
-Release:	1.%{snap}.1
+Release:	1.%{snap}.2
 Epoch:		1
 License:	GPL
 Group:		Applications/System
-Source0:	http://gitorious.org/procps/procps/archive-tarball/master/#%{name}-%{snap}.tar.gz
+Source0:	http://gitorious.org/procps/procps/archive-tarball/master#/%{name}-%{snap}.tar.gz
 # Source0-md5:	82e2f9d0ee507ad6b43dfe74f40a6a83
 Source1:	http://atos.wmid.amu.edu.pl/~undefine/%{name}-non-english-man-pages.tar.bz2
 # Source1-md5:	60d24720b76c10553ed4abf68b76e079
