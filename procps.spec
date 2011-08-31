@@ -1,4 +1,5 @@
 %define	snap	20110715
+%define	rc	3
 Summary:	Utilities for monitoring your system and processes on your system
 Summary(de.UTF-8):	Utilities zum Ueberwachen Ihres Systems und der Prozesse
 Summary(es.UTF-8):	Utilitarios de monitoración de procesos
@@ -8,7 +9,7 @@ Summary(pt_BR.UTF-8):	Utilitários de monitoração de processos
 Summary(tr.UTF-8):	Süreç izleme araçları
 Name:		procps
 Version:	3.2.8
-Release:	1.%{snap}.2
+Release:	1.%{snap}.%{rc}
 Epoch:		1
 License:	GPL
 Group:		Applications/System
