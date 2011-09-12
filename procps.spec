@@ -10,7 +10,7 @@ Summary(tr.UTF-8):	Süreç izleme araçları
 Name:		procps
 Version:	3.2.8
 Release:	1.%{snap}.%{rel}
-Epoch:		1
+Epoch:		2
 License:	GPL
 Group:		Applications/System
 Source0:	http://gitorious.org/procps/procps/archive-tarball/master#/%{name}-%{snap}.tar.gz
