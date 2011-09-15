@@ -1,5 +1,5 @@
-%define	snap	20110715
-%define	rel	5
+%define	snap	20110915
+%define	rel	1
 Summary:	Utilities for monitoring your system and processes on your system
 Summary(de.UTF-8):	Utilities zum Ueberwachen Ihres Systems und der Prozesse
 Summary(es.UTF-8):	Utilitarios de monitoración de procesos
@@ -14,14 +14,13 @@ Epoch:		1
 License:	GPL
 Group:		Applications/System
 Source0:	http://gitorious.org/procps/procps/archive-tarball/master#/%{name}-%{snap}.tar.gz
-# Source0-md5:	82e2f9d0ee507ad6b43dfe74f40a6a83
+# Source0-md5:	ba165eebdbeb4ea2dd43acd0d8d3e696
 Source1:	http://atos.wmid.amu.edu.pl/~undefine/%{name}-non-english-man-pages.tar.bz2
 # Source1-md5:	60d24720b76c10553ed4abf68b76e079
 Source2:	top.desktop
 Source3:	top.png
 Source4:	XConsole.sh
 Patch0:		%{name}-make.patch
-Patch1:		%{name}-global.patch
 Patch2:		%{name}-FILLBUG_backport.patch
 # http://www.nsa.gov/selinux/patches/procps-selinux.patch.gz
 Patch3:		%{name}-selinux.patch
@@ -124,7 +123,7 @@ Statyczna wersja biblioteki libproc.
 %prep
 %setup -q -n %{name}-%{name}
 %patch0 -p1
-%patch1 -p1
+
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1

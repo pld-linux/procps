@@ -1,13 +1,12 @@
---- procps-3.2.2/proc/readproc.h.orig	2004-04-17 02:30:18.000000000 +0200
-+++ procps-3.2.2/proc/readproc.h	2004-07-24 21:24:36.488559056 +0200
-@@ -239,6 +239,9 @@
- #define PROC_FILLARG         0x0100 // alloc and fill in `cmdline'
- #define PROC_FILLCGROUP      0x0200 // alloc and fill in `cgroup`
+--- procps-procps/proc/readproc.h~	2011-09-12 14:18:23.000000000 +0200
++++ procps-procps/proc/readproc.h	2011-09-15 12:38:14.976931632 +0200
+@@ -250,6 +250,9 @@
+ // argument is the length of the list (currently only used for lists of user
+ // id's since uid_t supports no convenient termination sentinel.)
  
 +// for compatibility with procps 2.0.7
 +#define PROC_FILLBUG         0x007f /* No idea what we need */
 +
- #define PROC_LOOSE_TASKS     0x2000 // threat threads as if they were processes
- 
- // Obsolete, consider only processes with one of the passed:
-
+ #define PROC_FILLMEM         0x0001 // read statm
+ #define PROC_FILLCOM         0x0002 // alloc and fill in `cmdline'
+ #define PROC_FILLENV         0x0004 // alloc and fill in `environ'
