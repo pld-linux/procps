@@ -1,4 +1,4 @@
-%define	snap	20110915
+%define	snap	20111114
 %define	rel	1
 Summary:	Utilities for monitoring your system and processes on your system
 Summary(de.UTF-8):	Utilities zum Ueberwachen Ihres Systems und der Prozesse
@@ -14,17 +14,15 @@ Epoch:		1
 License:	GPL
 Group:		Applications/System
 Source0:	http://gitorious.org/procps/procps/archive-tarball/master#/%{name}-%{snap}.tar.gz
-# Source0-md5:	ba165eebdbeb4ea2dd43acd0d8d3e696
+# Source0-md5:	7c9b068afce3ad7f1391c7506e48534c
 Source1:	http://atos.wmid.amu.edu.pl/~undefine/%{name}-non-english-man-pages.tar.bz2
 # Source1-md5:	60d24720b76c10553ed4abf68b76e079
 Source2:	top.desktop
 Source3:	top.png
 Source4:	XConsole.sh
-Patch0:		%{name}-make.patch
 Patch2:		%{name}-FILLBUG_backport.patch
 # http://www.nsa.gov/selinux/patches/procps-selinux.patch.gz
 Patch3:		%{name}-selinux.patch
-Patch4:		proc-err.patch
 URL:		http://gitorious.org/procps/
 BuildRequires:	ncurses-devel >= 5.1
 BuildRequires:	rpmbuild(macros) >= 1.402
@@ -122,44 +120,41 @@ Statyczna wersja biblioteki libproc.
 
 %prep
 %setup -q -n %{name}-%{name}
-%patch0 -p1
 
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
+
+sed -i -e "s#usrbin_execdir=.*#usrbin_execdir='\${bindir}'#g" configure.ac
 
 %build
-%{__make} proc/libproc.a \
-	CC="%{__cc}" \
-	ALL_CFLAGS="%{rpmcppflags} %{rpmcflags} -Wall -ffast-math" \
-	LDFLAGS="%{rpmcflags} %{rpmldflags}" \
-	SHARED=0
-%{__mv} proc/libproc.a .
-%{__make} clean
-
-%{__make} \
-	CURSES="-lncurses -ltinfo" \
-	CC="%{__cc}" \
-	ALL_CFLAGS="%{rpmcppflags} %{rpmcflags} -Wall -ffast-math" \
-	LDFLAGS="%{rpmcflags} %{rpmldflags}" \
-	LIBPROC="proc/libproc-%{version}.so"
+%{__libtoolize}
+%{__aclocal}
+%{__autoconf}
+%{__autoheader}
+%{__automake}
+%configure \
+	CPPFLAGS="-I%{_includedir}/ncurses" \
+	--bindir=/bin \
+	--sbindir=/sbin \
+	--libdir=/%{_lib}
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_includedir}/proc,%{_libdir},%{_desktopdir},%{_pixmapsdir}}
+install -d $RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir},%{_libdir},%{_bindir}}
 
 %{__make} install \
-	CC=false \
-	DESTDIR=$RPM_BUILD_ROOT \
-	lib64=%{_lib} \
-	install="install -D" \
-	ldconfig=true
+	DESTDIR=$RPM_BUILD_ROOT
 
-ln -sf /%{_lib}/libproc-%{version}.so \
-	$RPM_BUILD_ROOT%{_libdir}/libproc.so
+mv $RPM_BUILD_ROOT/%{_lib}/libproc-ng.{a,la,so} \
+	$RPM_BUILD_ROOT%{_libdir}
+sed -i -e "s|libdir='/%{_lib}'|libdir='%{_libdir}'|" \
+	$RPM_BUILD_ROOT%{_libdir}/libproc-ng.la
+ln -snf /%{_lib}/$(basename $RPM_BUILD_ROOT/%{_lib}/libproc-ng-*.so) \
+        $RPM_BUILD_ROOT%{_libdir}/libproc-ng.so
+ln -snf libproc-ng.so $RPM_BUILD_ROOT%{_libdir}/libproc.so
+ln -snf libproc-ng.a $RPM_BUILD_ROOT%{_libdir}/libproc.a
 
-install libproc.a $RPM_BUILD_ROOT%{_libdir}
-install proc/*.h $RPM_BUILD_ROOT%{_includedir}/proc
 install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}
 install %{SOURCE3} $RPM_BUILD_ROOT%{_pixmapsdir}
 install %{SOURCE4} $RPM_BUILD_ROOT%{_bindir}/XConsole
@@ -203,8 +198,10 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libproc.so
+%attr(755,root,root) %{_libdir}/libproc-ng.so
 %{_includedir}/proc
 
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libproc.a
+%{_libdir}/libproc-ng.a
