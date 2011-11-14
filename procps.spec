@@ -134,18 +134,18 @@ sed -i -e "s#usrbin_execdir=.*#usrbin_execdir='\${bindir}'#g" configure.ac
 %{__automake}
 %configure \
 	CPPFLAGS="-I%{_includedir}/ncurses" \
-	--bindir=/bin \
 	--sbindir=/sbin \
 	--libdir=/%{_lib}
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir},%{_libdir},%{_bindir}}
+install -d $RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir},%{_libdir},/bin}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+mv $RPM_BUILD_ROOT%{_bindir}/ps $RPM_BUILD_ROOT/bin/ps
 mv $RPM_BUILD_ROOT/%{_lib}/libproc-ng.{a,la,so} \
 	$RPM_BUILD_ROOT%{_libdir}
 sed -i -e "s|libdir='/%{_lib}'|libdir='%{_libdir}'|" \
