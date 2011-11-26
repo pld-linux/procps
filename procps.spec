@@ -1,4 +1,4 @@
-%define	snap	20111114
+%define	snap	20111124
 %define	rel	1
 Summary:	Utilities for monitoring your system and processes on your system
 Summary(de.UTF-8):	Utilities zum Ueberwachen Ihres Systems und der Prozesse
@@ -14,7 +14,7 @@ Epoch:		1
 License:	GPL
 Group:		Applications/System
 Source0:	http://gitorious.org/procps/procps/archive-tarball/master#/%{name}-%{snap}.tar.gz
-# Source0-md5:	7c9b068afce3ad7f1391c7506e48534c
+# Source0-md5:	01acfb2f9a2d832c95d9abbedbdbe3ce
 Source1:	http://atos.wmid.amu.edu.pl/~undefine/%{name}-non-english-man-pages.tar.bz2
 # Source1-md5:	60d24720b76c10553ed4abf68b76e079
 Source2:	top.desktop
