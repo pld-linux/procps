@@ -134,22 +134,19 @@ sed -i -e "s#usrbin_execdir=.*#usrbin_execdir='\${bindir}'#g" configure.ac
 %{__automake}
 %configure \
 	CPPFLAGS="-I%{_includedir}/ncurses" \
-	--sbindir=/sbin \
-	--libdir=/%{_lib}
+	--sbindir=/sbin
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir},%{_libdir},/bin}
+install -d $RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir},/%{_lib},/bin}
 
 %{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT
+	DESTDIR=$RPM_BUILD_ROOT \
+	pkgconfigdir=%{_pkgconfigdir}
 
 mv $RPM_BUILD_ROOT%{_bindir}/ps $RPM_BUILD_ROOT/bin/ps
-mv $RPM_BUILD_ROOT/%{_lib}/libproc-ng.{a,la,so} \
-	$RPM_BUILD_ROOT%{_libdir}
-sed -i -e "s|libdir='/%{_lib}'|libdir='%{_libdir}'|" \
-	$RPM_BUILD_ROOT%{_libdir}/libproc-ng.la
+mv $RPM_BUILD_ROOT%{_libdir}/libproc-ng-*.so $RPM_BUILD_ROOT/%{_lib}
 ln -snf /%{_lib}/$(basename $RPM_BUILD_ROOT/%{_lib}/libproc-ng-*.so) \
         $RPM_BUILD_ROOT%{_libdir}/libproc-ng.so
 ln -snf libproc-ng.so $RPM_BUILD_ROOT%{_libdir}/libproc.so
@@ -159,13 +156,19 @@ install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}
 install %{SOURCE3} $RPM_BUILD_ROOT%{_pixmapsdir}
 install %{SOURCE4} $RPM_BUILD_ROOT%{_bindir}/XConsole
 
-rm -f $RPM_BUILD_ROOT/bin/kill
-rm -f $RPM_BUILD_ROOT%{_mandir}/man1/{kill,oldps}.1
-rm -f $RPM_BUILD_ROOT%{_bindir}/{oldps,kill}
+# PLD: kill is packaged in util-linux
+%{__rm} $RPM_BUILD_ROOT%{_bindir}/kill
+%{__rm} $RPM_BUILD_ROOT%{_mandir}/man1/kill.1
+# PLD: packaged in rc-scripts
+%{__rm} $RPM_BUILD_ROOT%{_sysconfdir}/sysctl.conf
+# obsoleted by pkg-config
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libproc-ng.la
+# packaged as doc
+%{__rm} -r $RPM_BUILD_ROOT%{_docdir}/procps-ng
 
 bzcat -dc %{SOURCE1} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
-rm -f $RPM_BUILD_ROOT%{_mandir}/*/man1/{kill,oldps}.1
-rm -f $RPM_BUILD_ROOT%{_mandir}/README-procps-non-english-man-pages
+%{__rm} $RPM_BUILD_ROOT%{_mandir}/*/man1/{kill,oldps}.1
+%{__rm} $RPM_BUILD_ROOT%{_mandir}/README-procps-non-english-man-pages
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -175,31 +178,62 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc NEWS BUGS TODO
-%attr(755,root,root) /%{_lib}/libproc*.*so
-%attr(755,root,root) /bin/*
+%doc AUTHORS BUGS FAQ NEWS README README.top TODO
+%attr(755,root,root) /%{_lib}/libproc-ng-3.3.0.so
+%attr(755,root,root) /bin/ps
 %attr(755,root,root) /sbin/sysctl
-%attr(755,root,root) %{_bindir}/*
+%attr(755,root,root) %{_bindir}/XConsole
+%attr(755,root,root) %{_bindir}/free
+%attr(755,root,root) %{_bindir}/pgrep
+%attr(755,root,root) %{_bindir}/pkill
+%attr(755,root,root) %{_bindir}/pmap
+%attr(755,root,root) %{_bindir}/pwdx
+%attr(755,root,root) %{_bindir}/skill
+%attr(755,root,root) %{_bindir}/slabtop
+%attr(755,root,root) %{_bindir}/snice
+%attr(755,root,root) %{_bindir}/tload
+%attr(755,root,root) %{_bindir}/top
+%attr(755,root,root) %{_bindir}/uptime
+%attr(755,root,root) %{_bindir}/vmstat
+%attr(755,root,root) %{_bindir}/w
+%attr(755,root,root) %{_bindir}/watch
 %{_desktopdir}/top.desktop
 %{_pixmapsdir}/top.png
-%{_mandir}/man*/*
-%lang(cs) %{_mandir}/cs/man*/*
-%lang(de) %{_mandir}/de/man*/*
-%lang(es) %{_mandir}/es/man*/*
-%lang(fi) %{_mandir}/fi/man*/*
-%lang(fr) %{_mandir}/fr/man*/*
-%lang(hu) %{_mandir}/hu/man*/*
-%lang(it) %{_mandir}/it/man*/*
-%lang(ja) %{_mandir}/ja/man*/*
-%lang(ko) %{_mandir}/ko/man*/*
-%lang(nl) %{_mandir}/nl/man*/*
-%lang(pl) %{_mandir}/pl/man*/*
+%{_mandir}/man1/free.1*
+%{_mandir}/man1/pgrep.1*
+%{_mandir}/man1/pkill.1*
+%{_mandir}/man1/pmap.1*
+%{_mandir}/man1/ps.1*
+%{_mandir}/man1/pwdx.1*
+%{_mandir}/man1/skill.1*
+%{_mandir}/man1/slabtop.1*
+%{_mandir}/man1/snice.1*
+%{_mandir}/man1/tload.1*
+%{_mandir}/man1/top.1*
+%{_mandir}/man1/uptime.1*
+%{_mandir}/man1/w.1*
+%{_mandir}/man1/watch.1*
+%{_mandir}/man5/sysctl.conf.5*
+%{_mandir}/man8/sysctl.8*
+%{_mandir}/man8/vmstat.8*
+%lang(cs) %{_mandir}/cs/man[158]/*
+%lang(de) %{_mandir}/de/man[158]/*
+%lang(es) %{_mandir}/es/man[158]/*
+%lang(fi) %{_mandir}/fi/man[158]/*
+%lang(fr) %{_mandir}/fr/man[158]/*
+%lang(hu) %{_mandir}/hu/man[158]/*
+%lang(it) %{_mandir}/it/man[158]/*
+%lang(ja) %{_mandir}/ja/man[158]/*
+%lang(ko) %{_mandir}/ko/man[158]/*
+%lang(nl) %{_mandir}/nl/man[158]/*
+%lang(pl) %{_mandir}/pl/man[158]/*
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libproc.so
 %attr(755,root,root) %{_libdir}/libproc-ng.so
 %{_includedir}/proc
+%{_pkgconfigdir}/libproc-ng.pc
 
 %files static
 %defattr(644,root,root,755)
