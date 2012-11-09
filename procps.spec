@@ -9,7 +9,7 @@ Name:		procps
 Version:	3.3.3
 Release:	1
 Epoch:		1
-License:	GPL
+License:	GPL v2+
 Group:		Applications/System
 Source0:	http://gitorious.org/procps/procps/archive-tarball/v%{version}
 ##/%{name}-%{version}.tar.gz
@@ -21,7 +21,12 @@ Source3:	top.png
 Source4:	XConsole.sh
 Patch1:		%{name}-FILLBUG_backport.patch
 URL:		http://gitorious.org/procps/pages/Home
+BuildRequires:	autoconf >= 2.64
+BuildRequires:	automake >= 1:1.11
+BuildRequires:	gettext-devel >= 0.14.1
+BuildRequires:	libtool >= 2:2
 BuildRequires:	ncurses-devel >= 5.1
+BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.402
 Requires(post):	/sbin/ldconfig
 Requires:	fileutils
@@ -120,11 +125,12 @@ Statyczna wersja biblioteki libproc.
 %patch1 -p1
 
 sed -i -e "s#usrbin_execdir=.*#usrbin_execdir='\${bindir}'#g" configure.ac
-echo AM_MKINSTALLDIRS >> configure.ac
+# gettextize workaround
+sed -i -e '/po\/Makefile.in/d' configure.ac
 
 %build
-./po/update-potfiles
-%{__autopoint}
+po/update-potfiles
+%{__gettextize}
 %{__libtoolize}
 %{__aclocal} -I m4
 %{__autoconf}
