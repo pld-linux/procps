@@ -11,7 +11,8 @@ Release:	1
 Epoch:		1
 License:	GPL
 Group:		Applications/System
-Source0:	http://gitorious.org/procps/procps/archive-tarball/v%{version}#/%{name}-%{version}.tar.gz
+Source0:	http://gitorious.org/procps/procps/archive-tarball/v%{version}
+##/%{name}-%{version}.tar.gz
 # Source0-md5:	b3a24b00791bc97b62f6952264d7031d
 Source1:	%{name}-non-english-man-pages.tar.bz2
 # Source1-md5:	60d24720b76c10553ed4abf68b76e079
