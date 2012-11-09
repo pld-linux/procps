@@ -1,5 +1,3 @@
-%define	snap	20111124
-%define	rel	1
 Summary:	Utilities for monitoring your system and processes on your system
 Summary(de.UTF-8):	Utilities zum Ueberwachen Ihres Systems und der Prozesse
 Summary(es.UTF-8):	Utilitarios de monitoración de procesos
@@ -8,22 +6,20 @@ Summary(pl.UTF-8):	Narzędzia do monitorowania procesów
 Summary(pt_BR.UTF-8):	Utilitários de monitoração de processos
 Summary(tr.UTF-8):	Süreç izleme araçları
 Name:		procps
-Version:	3.2.8
-Release:	1.%{snap}.%{rel}
+Version:	3.3.3
+Release:	1
 Epoch:		1
 License:	GPL
 Group:		Applications/System
-Source0:	http://gitorious.org/procps/procps/archive-tarball/master#/%{name}-%{snap}.tar.gz
-# Source0-md5:	01acfb2f9a2d832c95d9abbedbdbe3ce
-Source1:	http://atos.wmid.amu.edu.pl/~undefine/%{name}-non-english-man-pages.tar.bz2
+Source0:	http://gitorious.org/procps/procps/archive-tarball/v%{version}#/%{name}-%{version}.tar.gz
+# Source0-md5:	b3a24b00791bc97b62f6952264d7031d
+Source1:	%{name}-non-english-man-pages.tar.bz2
 # Source1-md5:	60d24720b76c10553ed4abf68b76e079
 Source2:	top.desktop
 Source3:	top.png
 Source4:	XConsole.sh
-Patch2:		%{name}-FILLBUG_backport.patch
-# http://www.nsa.gov/selinux/patches/procps-selinux.patch.gz
-Patch3:		%{name}-selinux.patch
-URL:		http://gitorious.org/procps/
+Patch1:		%{name}-FILLBUG_backport.patch
+URL:		http://gitorious.org/procps/pages/Home
 BuildRequires:	ncurses-devel >= 5.1
 BuildRequires:	rpmbuild(macros) >= 1.402
 Requires(post):	/sbin/ldconfig
@@ -120,21 +116,25 @@ Statyczna wersja biblioteki libproc.
 
 %prep
 %setup -q -n %{name}-%{name}
-
-%patch2 -p1
-%patch3 -p1
+%patch1 -p1
 
 sed -i -e "s#usrbin_execdir=.*#usrbin_execdir='\${bindir}'#g" configure.ac
+echo AM_MKINSTALLDIRS >> configure.ac
 
 %build
+./po/update-potfiles
+%{__autopoint}
 %{__libtoolize}
-%{__aclocal}
+%{__aclocal} -I m4
 %{__autoconf}
 %{__autoheader}
 %{__automake}
 %configure \
 	CPPFLAGS="-I%{_includedir}/ncurses" \
-	--sbindir=/sbin
+	--sbindir=/sbin \
+	--enable-skill \
+	--enable-oom \
+	--enable-w-from
 %{__make}
 
 %install
@@ -146,11 +146,11 @@ install -d $RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir},/%{_lib},/bin}
 	pkgconfigdir=%{_pkgconfigdir}
 
 mv $RPM_BUILD_ROOT%{_bindir}/ps $RPM_BUILD_ROOT/bin/ps
-mv $RPM_BUILD_ROOT%{_libdir}/libproc-ng-*.so $RPM_BUILD_ROOT/%{_lib}
-ln -snf /%{_lib}/$(basename $RPM_BUILD_ROOT/%{_lib}/libproc-ng-*.so) \
-        $RPM_BUILD_ROOT%{_libdir}/libproc-ng.so
-ln -snf libproc-ng.so $RPM_BUILD_ROOT%{_libdir}/libproc.so
-ln -snf libproc-ng.a $RPM_BUILD_ROOT%{_libdir}/libproc.a
+
+install -d $RPM_BUILD_ROOT/%{_lib}
+mv -f $RPM_BUILD_ROOT%{_libdir}/libprocps.so.* $RPM_BUILD_ROOT/%{_lib}
+ln -sf /%{_lib}/$(basename $RPM_BUILD_ROOT/%{_lib}/libprocps.so.*.*.*) \
+        $RPM_BUILD_ROOT%{_libdir}/libprocps.so
 
 install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}
 install %{SOURCE3} $RPM_BUILD_ROOT%{_pixmapsdir}
@@ -159,10 +159,8 @@ install %{SOURCE4} $RPM_BUILD_ROOT%{_bindir}/XConsole
 # PLD: kill is packaged in util-linux
 %{__rm} $RPM_BUILD_ROOT%{_bindir}/kill
 %{__rm} $RPM_BUILD_ROOT%{_mandir}/man1/kill.1
-# PLD: packaged in rc-scripts
-%{__rm} $RPM_BUILD_ROOT%{_sysconfdir}/sysctl.conf
 # obsoleted by pkg-config
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/libproc-ng.la
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libprocps.la
 # packaged as doc
 %{__rm} -r $RPM_BUILD_ROOT%{_docdir}/procps-ng
 
@@ -178,8 +176,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS BUGS FAQ NEWS README README.top TODO
-%attr(755,root,root) /%{_lib}/libproc-ng-3.3.0.so
+%doc AUTHORS Documentation/{BUGS,FAQ,TODO} NEWS README top/README.top
+%attr(755,root,root) /%{_lib}/libprocps.so.*.*
+%ghost %attr(755,root,root) /%{_lib}/libprocps.so.0
 %attr(755,root,root) /bin/ps
 %attr(755,root,root) /sbin/sysctl
 %attr(755,root,root) %{_bindir}/XConsole
@@ -230,12 +229,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libproc.so
-%attr(755,root,root) %{_libdir}/libproc-ng.so
+%attr(755,root,root) %{_libdir}/libprocps.so
 %{_includedir}/proc
-%{_pkgconfigdir}/libproc-ng.pc
+%{_pkgconfigdir}/libprocps.pc
 
 %files static
 %defattr(644,root,root,755)
-%{_libdir}/libproc.a
-%{_libdir}/libproc-ng.a
+%{_libdir}/libprocps.a
