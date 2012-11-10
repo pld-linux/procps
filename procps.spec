@@ -11,8 +11,7 @@ Release:	1
 Epoch:		1
 License:	GPL v2+
 Group:		Applications/System
-Source0:	http://gitorious.org/procps/procps/archive-tarball/v%{version}
-##/%{name}-%{version}.tar.gz
+Source0:	http://gitorious.org/procps/procps/archive-tarball/v%{version}?/%{name}-%{version}.tar.gz
 # Source0-md5:	b3a24b00791bc97b62f6952264d7031d
 Source1:	%{name}-non-english-man-pages.tar.bz2
 # Source1-md5:	60d24720b76c10553ed4abf68b76e079
@@ -28,6 +27,7 @@ BuildRequires:	libtool >= 2:2
 BuildRequires:	ncurses-devel >= 5.1
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.402
+BuildRequires:	sed >= 4.0
 Requires(post):	/sbin/ldconfig
 Requires:	fileutils
 Obsoletes:	procps-X11
@@ -121,15 +121,16 @@ Static version of libproc library.
 Statyczna wersja biblioteki libproc.
 
 %prep
-%setup -q -n %{name}-%{name}
+%setup -qc
+mv %{name}-%{name}/* .
 %patch1 -p1
 
-sed -i -e "s#usrbin_execdir=.*#usrbin_execdir='\${bindir}'#g" configure.ac
+%{__sed} -i -e "s#usrbin_execdir=.*#usrbin_execdir='\${bindir}'#g" configure.ac
 # gettextize workaround
-sed -i -e '/po\/Makefile.in/d' configure.ac
+%{__sed} -i -e '/po\/Makefile.in/d' configure.ac
 
 %build
-po/update-potfiles
+./po/update-potfiles
 %{__gettextize}
 %{__libtoolize}
 %{__aclocal} -I m4
@@ -137,7 +138,7 @@ po/update-potfiles
 %{__autoheader}
 %{__automake}
 %configure \
-	CPPFLAGS="-I%{_includedir}/ncurses" \
+	CPPFLAGS="-I/usr/include/ncurses" \
 	--sbindir=/sbin \
 	--enable-skill \
 	--enable-oom \
