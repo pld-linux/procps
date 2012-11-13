@@ -7,7 +7,7 @@ Summary(pt_BR.UTF-8):	Utilitários de monitoração de processos
 Summary(tr.UTF-8):	Süreç izleme araçları
 Name:		procps
 Version:	3.3.3
-Release:	1
+Release:	2
 Epoch:		1
 License:	GPL v2+
 Group:		Applications/System
@@ -18,6 +18,7 @@ Source1:	%{name}-non-english-man-pages.tar.bz2
 Source2:	top.desktop
 Source3:	top.png
 Source4:	XConsole.sh
+Patch0:		%{name}-missing-symbol.patch
 Patch1:		%{name}-FILLBUG_backport.patch
 URL:		http://gitorious.org/procps/pages/Home
 BuildRequires:	autoconf >= 2.64
@@ -123,6 +124,7 @@ Statyczna wersja biblioteki libproc.
 %prep
 %setup -qc
 mv %{name}-%{name}/* .
+%patch0 -p1
 %patch1 -p1
 
 %{__sed} -i -e "s#usrbin_execdir=.*#usrbin_execdir='\${bindir}'#g" configure.ac
