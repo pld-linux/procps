@@ -23,7 +23,7 @@ Patch1:		%{name}-FILLBUG_backport.patch
 URL:		http://gitorious.org/procps/pages/Home
 BuildRequires:	autoconf >= 2.64
 BuildRequires:	automake >= 1:1.11
-BuildRequires:	gettext-devel >= 0.14.1
+BuildRequires:	gettext-tools >= 0.14.1
 BuildRequires:	libtool >= 2:2
 BuildRequires:	ncurses-devel >= 5.1
 BuildRequires:	pkgconfig
