@@ -152,6 +152,10 @@ install -d $RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir},/%{_lib},/bin}
 	DESTDIR=$RPM_BUILD_ROOT \
 	pkgconfigdir=%{_pkgconfigdir}
 
+# identical binaries are copied, not linked:
+ln -f $RPM_BUILD_ROOT%{_bindir}/{pkill,pgrep}
+ln -f $RPM_BUILD_ROOT%{_bindir}/{snice,skill}
+
 mv $RPM_BUILD_ROOT{%{_bindir},/bin}/ps
 
 install -d $RPM_BUILD_ROOT/%{_lib}
