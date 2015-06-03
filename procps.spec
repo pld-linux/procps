@@ -2,6 +2,7 @@
 # Conditional build:
 %bcond_without	systemd		# systemd support
 %bcond_with	selinux		# selinux support
+%bcond_with	tests		# run tests. The testsuite is unsuitable for running on buildsystems
 
 Summary:	Utilities for monitoring your system and processes on your system
 Summary(de.UTF-8):	Utilities zum Ueberwachen Ihres Systems und der Prozesse
@@ -12,7 +13,7 @@ Summary(pt_BR.UTF-8):	Utilitários de monitoração de processos
 Summary(tr.UTF-8):	Süreç izleme araçları
 Name:		procps
 Version:	3.3.10
-Release:	0.1
+Release:	0.3
 Epoch:		1
 License:	GPL v2+
 Group:		Applications/System
@@ -28,6 +29,7 @@ Patch1:		%{name}-FILLBUG_backport.patch
 URL:		https://gitlab.com/procps-ng/procps
 BuildRequires:	autoconf >= 2.69
 BuildRequires:	automake >= 1:1.11
+%{?with_tests:BuildRequires: dejagnu}
 BuildRequires:	gettext-tools >= 0.14.1
 %{?with_selinux:BuildRequires:	libselinux-devel}
 BuildRequires:	libtool >= 2:2
@@ -38,7 +40,7 @@ BuildRequires:	sed >= 4.0
 %{?with_systemd:BuildRequires:	systemd-devel >= 1:206}
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
-Requires(post):	/sbin/ldconfig
+Requires(post,postun):	/sbin/ldconfig
 Requires:	fileutils
 Obsoletes:	procps-X11
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -157,6 +159,10 @@ Statyczna wersja biblioteki libproc.
 	--enable-wide-percent \
 	--sbindir=/sbin
 %{__make}
+
+%if %{with tests}
+%{__make} check
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
