@@ -146,7 +146,7 @@ Statyczna wersja biblioteki libproc.
 %{__automake}
 %configure \
 	--disable-silent-rules \
-	%{?with_systemd:--enable-systemd} \
+	%{?with_systemd:--with-systemd} \
 	%{?with_selinux:--enable-libselinux} \
 	--disable-pidof \
 	--enable-oomem \
