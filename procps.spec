@@ -139,10 +139,14 @@ Statyczna wersja biblioteki libproc.
 %{__automake}
 %configure \
 	--disable-silent-rules \
-	--sbindir=/sbin \
 	--disable-pidof \
+	--enable-oomem \
+	--enable-sigwinch \
 	--enable-skill \
-	--enable-w-from
+	--enable-w-from \
+	--enable-watch8bit \
+	--enable-wide-percent \
+	--sbindir=/sbin
 %{__make}
 
 %install
