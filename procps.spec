@@ -129,11 +129,8 @@ Statyczna wersja biblioteki libproc.
 %patch1 -p1
 
 %{__sed} -i -e "s#usrbin_execdir=.*#usrbin_execdir='\${bindir}'#g" configure.ac
-# gettextize workaround
-%{__sed} -i -e '/po\/Makefile.in/d' configure.ac
 
 %build
-./po/update-potfiles
 %{__gettextize}
 %{__libtoolize}
 %{__aclocal} -I m4
@@ -141,8 +138,8 @@ Statyczna wersja biblioteki libproc.
 %{__autoheader}
 %{__automake}
 %configure \
-	CPPFLAGS="-I/usr/include/ncurses" \
 	--sbindir=/sbin \
+	--disable-pidof \
 	--enable-skill \
 	--enable-oom \
 	--enable-w-from
@@ -151,15 +148,14 @@ Statyczna wersja biblioteki libproc.
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir},/%{_lib},/bin}
-
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
 	pkgconfigdir=%{_pkgconfigdir}
 
-mv $RPM_BUILD_ROOT%{_bindir}/ps $RPM_BUILD_ROOT/bin/ps
+mv $RPM_BUILD_ROOT{%{_bindir},/bin}/ps
 
 install -d $RPM_BUILD_ROOT/%{_lib}
-mv -f $RPM_BUILD_ROOT%{_libdir}/libprocps.so.* $RPM_BUILD_ROOT/%{_lib}
+mv -f $RPM_BUILD_ROOT{%{_libdir}/libprocps.so.*,/%{_lib}}
 ln -sf /%{_lib}/$(basename $RPM_BUILD_ROOT/%{_lib}/libprocps.so.*.*.*) \
         $RPM_BUILD_ROOT%{_libdir}/libprocps.so
 
@@ -189,7 +185,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS Documentation/{BUGS,FAQ,TODO} NEWS README top/README.top
 %attr(755,root,root) /%{_lib}/libprocps.so.*.*
-%ghost %attr(755,root,root) /%{_lib}/libprocps.so.0
+%ghost %attr(755,root,root) /%{_lib}/libprocps.so.4
 %attr(755,root,root) /bin/ps
 %attr(755,root,root) /sbin/sysctl
 %attr(755,root,root) %{_bindir}/XConsole
