@@ -1,3 +1,7 @@
+#
+# Conditional build:
+%bcond_without	systemd		# systemd support
+
 Summary:	Utilities for monitoring your system and processes on your system
 Summary(de.UTF-8):	Utilities zum Ueberwachen Ihres Systems und der Prozesse
 Summary(es.UTF-8):	Utilitarios de monitoración de procesos
@@ -29,6 +33,7 @@ BuildRequires:	ncurses-devel >= 5.1
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.402
 BuildRequires:	sed >= 4.0
+%{?with_systemd:BuildRequires:	systemd-devel >= 1:206}
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
 Requires(post):	/sbin/ldconfig
@@ -139,6 +144,7 @@ Statyczna wersja biblioteki libproc.
 %{__automake}
 %configure \
 	--disable-silent-rules \
+	%{?with_systemd:--enable-systemd} \
 	--disable-pidof \
 	--enable-oomem \
 	--enable-sigwinch \
