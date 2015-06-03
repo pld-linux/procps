@@ -6,13 +6,13 @@ Summary(pl.UTF-8):	Narzędzia do monitorowania procesów
 Summary(pt_BR.UTF-8):	Utilitários de monitoração de processos
 Summary(tr.UTF-8):	Süreç izleme araçları
 Name:		procps
-Version:	3.3.3
-Release:	3
+Version:	3.3.10
+Release:	0.1
 Epoch:		1
 License:	GPL v2+
 Group:		Applications/System
-Source0:	http://gitorious.org/procps/procps/archive-tarball/v%{version}?/%{name}-%{version}.tar.gz
-# Source0-md5:	b3a24b00791bc97b62f6952264d7031d
+Source0:	http://downloads.sourceforge.net/procps-ng/%{name}-ng-%{version}.tar.xz
+# Source0-md5:	1fb7f3f6bf92ce6c5c9ed9949ae858fe
 Source1:	%{name}-non-english-man-pages.tar.bz2
 # Source1-md5:	60d24720b76c10553ed4abf68b76e079
 Source2:	top.desktop
@@ -20,8 +20,8 @@ Source3:	top.png
 Source4:	XConsole.sh
 Patch0:		%{name}-missing-symbol.patch
 Patch1:		%{name}-FILLBUG_backport.patch
-URL:		http://gitorious.org/procps/pages/Home
-BuildRequires:	autoconf >= 2.64
+URL:		https://gitlab.com/procps-ng/procps
+BuildRequires:	autoconf >= 2.69
 BuildRequires:	automake >= 1:1.11
 BuildRequires:	gettext-tools >= 0.14.1
 BuildRequires:	libtool >= 2:2
@@ -29,6 +29,8 @@ BuildRequires:	ncurses-devel >= 5.1
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.402
 BuildRequires:	sed >= 4.0
+BuildRequires:	tar >= 1:1.22
+BuildRequires:	xz
 Requires(post):	/sbin/ldconfig
 Requires:	fileutils
 Obsoletes:	procps-X11
@@ -122,8 +124,7 @@ Static version of libproc library.
 Statyczna wersja biblioteki libproc.
 
 %prep
-%setup -qc
-mv %{name}-%{name}/* .
+%setup -qn %{name}-ng-%{version}
 %patch0 -p1
 %patch1 -p1
 
@@ -162,9 +163,9 @@ mv -f $RPM_BUILD_ROOT%{_libdir}/libprocps.so.* $RPM_BUILD_ROOT/%{_lib}
 ln -sf /%{_lib}/$(basename $RPM_BUILD_ROOT/%{_lib}/libprocps.so.*.*.*) \
         $RPM_BUILD_ROOT%{_libdir}/libprocps.so
 
-install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}
-install %{SOURCE3} $RPM_BUILD_ROOT%{_pixmapsdir}
-install %{SOURCE4} $RPM_BUILD_ROOT%{_bindir}/XConsole
+cp -p %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}
+cp -p %{SOURCE3} $RPM_BUILD_ROOT%{_pixmapsdir}
+install -p %{SOURCE4} $RPM_BUILD_ROOT%{_bindir}/XConsole
 
 # PLD: kill is packaged in util-linux
 %{__rm} $RPM_BUILD_ROOT%{_bindir}/kill
