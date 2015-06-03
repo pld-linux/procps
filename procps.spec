@@ -1,6 +1,7 @@
 #
 # Conditional build:
 %bcond_without	systemd		# systemd support
+%bcond_with	selinux		# selinux support
 
 Summary:	Utilities for monitoring your system and processes on your system
 Summary(de.UTF-8):	Utilities zum Ueberwachen Ihres Systems und der Prozesse
@@ -28,6 +29,7 @@ URL:		https://gitlab.com/procps-ng/procps
 BuildRequires:	autoconf >= 2.69
 BuildRequires:	automake >= 1:1.11
 BuildRequires:	gettext-tools >= 0.14.1
+%{?with_selinux:BuildRequires:	libselinux-devel}
 BuildRequires:	libtool >= 2:2
 BuildRequires:	ncurses-devel >= 5.1
 BuildRequires:	pkgconfig
@@ -145,6 +147,7 @@ Statyczna wersja biblioteki libproc.
 %configure \
 	--disable-silent-rules \
 	%{?with_systemd:--enable-systemd} \
+	%{?with_selinux:--enable-libselinux} \
 	--disable-pidof \
 	--enable-oomem \
 	--enable-sigwinch \
