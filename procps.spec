@@ -138,10 +138,10 @@ Statyczna wersja biblioteki libproc.
 %{__autoheader}
 %{__automake}
 %configure \
+	--disable-silent-rules \
 	--sbindir=/sbin \
 	--disable-pidof \
 	--enable-skill \
-	--enable-oom \
 	--enable-w-from
 %{__make}
 
@@ -239,6 +239,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libprocps.so
 %{_includedir}/proc
 %{_pkgconfigdir}/libprocps.pc
+%{_mandir}/man3/openproc.3*
+%{_mandir}/man3/readproc.3*
+%{_mandir}/man3/readproctab.3*
 
 %files static
 %defattr(644,root,root,755)
