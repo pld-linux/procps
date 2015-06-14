@@ -1,7 +1,7 @@
 #
 # Conditional build:
 %bcond_without	systemd		# systemd support
-%bcond_with	selinux		# selinux support
+%bcond_with	selinux		# libselinux support (get ps context values from dynamically loaded libselinux.so.1 instead of /proc/*/attr/current)
 %bcond_with	tests		# run tests. The testsuite is unsuitable for running on buildsystems
 
 Summary:	Utilities for monitoring your system and processes on your system
@@ -198,13 +198,15 @@ bzcat -dc %{SOURCE1} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
 %{__rm} $RPM_BUILD_ROOT%{_mandir}/*/man1/{kill,oldps}.1
 %{__rm} $RPM_BUILD_ROOT%{_mandir}/README-procps-non-english-man-pages
 
+%find_lang procps-ng
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post	-p /sbin/ldconfig
 %postun -p /sbin/ldconfig
 
-%files
+%files -f procps-ng.lang
 %defattr(644,root,root,755)
 %doc AUTHORS Documentation/{BUGS,FAQ,TODO} NEWS README top/README.top
 %attr(755,root,root) /%{_lib}/libprocps.so.*.*
