@@ -1,4 +1,8 @@
-#
+# TODO
+# - switch pidof to this package(?):
+#   3.3.9 contains pidof reimplemented from scratch (replacing sysvinit pidof)
+#   NOTE: it is not 100% compatible: https://gitlab.com/procps-ng/procps/issues/4
+
 # Conditional build:
 %bcond_without	systemd		# systemd support
 %bcond_with	selinux		# libselinux support (get ps context values from dynamically loaded libselinux.so.1 instead of /proc/*/attr/current)
