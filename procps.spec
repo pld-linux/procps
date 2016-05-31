@@ -27,6 +27,7 @@ Source1:	%{name}-non-english-man-pages.tar.bz2
 # Source1-md5:	60d24720b76c10553ed4abf68b76e079
 Source2:	top.desktop
 Source3:	top.png
+# Source3-md5:	5f0133b3c18000116ca48381eecc07af
 Source4:	XConsole.sh
 Patch0:		%{name}-missing-symbol.patch
 Patch1:		%{name}-FILLBUG_backport.patch
