@@ -16,13 +16,13 @@ Summary(pl.UTF-8):	Narzędzia do monitorowania procesów
 Summary(pt_BR.UTF-8):	Utilitários de monitoração de processos
 Summary(tr.UTF-8):	Süreç izleme araçları
 Name:		procps
-Version:	3.3.11
+Version:	3.3.12
 Release:	1
 Epoch:		1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	http://downloads.sourceforge.net/procps-ng/%{name}-ng-%{version}.tar.xz
-# Source0-md5:	6cc5b94c1c5b8cbc89ad345a7b522f74
+# Source0-md5:	957e42e8b193490b2111252e4a2b443c
 Source1:	%{name}-non-english-man-pages.tar.bz2
 # Source1-md5:	60d24720b76c10553ed4abf68b76e079
 Source2:	top.desktop
