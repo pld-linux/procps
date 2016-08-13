@@ -17,7 +17,7 @@ Summary(pt_BR.UTF-8):	Utilitários de monitoração de processos
 Summary(tr.UTF-8):	Süreç izleme araçları
 Name:		procps
 Version:	3.3.12
-Release:	1
+Release:	2
 Epoch:		1
 License:	GPL v2+
 Group:		Applications/System
@@ -156,7 +156,6 @@ Statyczna wersja biblioteki libproc.
 	%{?with_systemd:--with-systemd} \
 	%{?with_selinux:--enable-libselinux} \
 	--disable-pidof \
-	--enable-oomem \
 	--enable-sigwinch \
 	--enable-skill \
 	--enable-w-from \
@@ -215,7 +214,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS Documentation/{FAQ,TODO,bugs.md} NEWS
 %attr(755,root,root) /%{_lib}/libprocps.so.*.*
-%ghost %attr(755,root,root) /%{_lib}/libprocps.so.5
+%ghost %attr(755,root,root) /%{_lib}/libprocps.so.6
 %attr(755,root,root) /bin/ps
 %attr(755,root,root) /sbin/sysctl
 %attr(755,root,root) %{_bindir}/XConsole
