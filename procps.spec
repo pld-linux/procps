@@ -1,7 +1,7 @@
 # TODO
-# - switch pidof to this package(?):
+# - switch pidof to this package instead of sysvinit-tools:
 #   3.3.9 contains pidof reimplemented from scratch (replacing sysvinit pidof)
-#   NOTE: it is not 100% compatible: https://gitlab.com/procps-ng/procps/issues/4
+#   sysvinit compatibility was fixed in 3.3.12: https://gitlab.com/procps-ng/procps/issues/4
 
 # Conditional build:
 %bcond_without	systemd		# systemd support
