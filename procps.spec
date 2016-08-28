@@ -45,7 +45,7 @@ BuildRequires:	sed >= 4.0
 %{?with_systemd:BuildRequires:	systemd-devel >= 1:206}
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
-Requires(post,postun):	/sbin/ldconfig
+Requires:	/sbin/ldconfig
 Requires:	fileutils
 Obsoletes:	procps-X11
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
