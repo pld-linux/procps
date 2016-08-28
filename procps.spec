@@ -31,6 +31,7 @@ Source3:	top.png
 Source4:	XConsole.sh
 Patch0:		%{name}-missing-symbol.patch
 Patch1:		%{name}-FILLBUG_backport.patch
+Patch2:		%{name}-pl.po-update.patch
 URL:		https://gitlab.com/procps-ng/procps
 BuildRequires:	autoconf >= 2.69
 BuildRequires:	automake >= 1:1.11
@@ -141,6 +142,7 @@ Statyczna wersja biblioteki libproc.
 %setup -qn %{name}-ng-%{version}
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %{__sed} -i -e "s#usrbin_execdir=.*#usrbin_execdir='\${bindir}'#g" configure.ac
 

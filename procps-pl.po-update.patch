@@ -1,0 +1,220 @@
+--- procps-ng-3.3.12/po/pl.po.orig	2016-07-10 01:03:28.350596052 +0200
++++ procps-ng-3.3.12/po/pl.po	2016-08-28 20:58:20.154031696 +0200
+@@ -26,53 +26,44 @@
+ msgstr " -b, --bytes         wyjście w bajtach\n"
+ 
+ #: free.c:77
+-#, fuzzy
+ msgid "     --kilo          show output in kilobytes\n"
+-msgstr " -k, --kilo          wyjście w kilobajtach\n"
++msgstr "     --kilo          wyjście w kilobajtach\n"
+ 
+ #: free.c:78
+-#, fuzzy
+ msgid "     --mega          show output in megabytes\n"
+-msgstr " -m, --mega          wyjście w megabajtach\n"
++msgstr "     --mega          wyjście w megabajtach\n"
+ 
+ #: free.c:79
+-#, fuzzy
+ msgid "     --giga          show output in gigabytes\n"
+-msgstr " -g, --giga          wyjście w gigabajtach\n"
++msgstr "     --giga          wyjście w gigabajtach\n"
+ 
+ #: free.c:80
+ msgid "     --tera          show output in terabytes\n"
+ msgstr "     --tera          wyjście w terabajtach\n"
+ 
+ #: free.c:81
+-#, fuzzy
+ msgid "     --peta          show output in petabytes\n"
+-msgstr "     --tera          wyjście w terabajtach\n"
++msgstr "     --peta          wyjście w petabajtach\n"
+ 
+ #: free.c:82
+-#, fuzzy
+ msgid " -k, --kibi          show output in kibibytes\n"
+-msgstr " -k, --kilo          wyjście w kilobajtach\n"
++msgstr " -k, --kibi          wyjście w kibibajtach\n"
+ 
+ #: free.c:83
+-#, fuzzy
+ msgid " -m, --mebi          show output in mebibytes\n"
+-msgstr " -m, --mega          wyjście w megabajtach\n"
++msgstr " -m, --mebi          wyjście w mebibajtach\n"
+ 
+ #: free.c:84
+-#, fuzzy
+ msgid " -g, --gibi          show output in gibibytes\n"
+-msgstr " -g, --giga          wyjście w gigabajtach\n"
++msgstr " -g, --gibi          wyjście w gibibajtach\n"
+ 
+ #: free.c:85
+-#, fuzzy
+ msgid "     --tebi          show output in tebibytes\n"
+-msgstr "     --tera          wyjście w terabajtach\n"
++msgstr "     --tebi          wyjście w tebibajtach\n"
+ 
+ #: free.c:86
+-#, fuzzy
+ msgid "     --pebi          show output in pebibytes\n"
+-msgstr "     --tera          wyjście w terabajtach\n"
++msgstr "     --pebi          wyjście w pebibajtach\n"
+ 
+ #: free.c:87
+ msgid " -h, --human         show human-readable output\n"
+@@ -109,7 +100,7 @@
+ 
+ #: free.c:198
+ msgid "Multiple unit options doesn't make sense."
+-msgstr ""
++msgstr "Podanie wielu opcji dotyczących jednostek nie ma sensu."
+ 
+ #: free.c:330
+ #, c-format
+@@ -220,7 +211,7 @@
+ 
+ #: pgrep.c:120
+ msgid " -i, --ignore-case         match case insensitively\n"
+-msgstr ""
++msgstr " -i, --ignore-case         dopasowanie niezależne od wielkości liter\n"
+ 
+ #: pgrep.c:121
+ msgid " -n, --newest              select most recently started\n"
+@@ -2419,20 +2410,20 @@
+ #. Translation Hint: maximum 'OOMa' = 5
+ #: top/top_nls.c:241
+ msgid "OOMa"
+-msgstr ""
++msgstr "OOMa"
+ 
+ #: top/top_nls.c:242
+ msgid "OOMEM Adjustment"
+-msgstr ""
++msgstr "Poprawka OOMEM"
+ 
+ #. Translation Hint: maximum 'OOMs' = 4
+ #: top/top_nls.c:244
+ msgid "OOMs"
+-msgstr ""
++msgstr "OOMs"
+ 
+ #: top/top_nls.c:245
+ msgid "OOMEM Score current"
+-msgstr ""
++msgstr "Bieżąca punktacja OOMEM"
+ 
+ #. Translation Hint: maximum 'ENVIRON' = 7
+ #: top/top_nls.c:247
+@@ -2529,58 +2520,56 @@
+ #. Translation Hint: maximum 'LXC' = 7
+ #: top/top_nls.c:279
+ msgid "LXC"
+-msgstr ""
++msgstr "LXC"
+ 
+ #: top/top_nls.c:280
+ msgid "LXC container name"
+-msgstr ""
++msgstr "Nazwa kontenera LXC"
+ 
+ #. Translation Hint: maximum 'RSan' = 4
+ #: top/top_nls.c:282
+ msgid "RSan"
+-msgstr ""
++msgstr "RSan"
+ 
+ #: top/top_nls.c:283
+ msgid "RES Anonymous (KiB)"
+-msgstr ""
++msgstr "REZ anonimowe (KiB)"
+ 
+ #. Translation Hint: maximum 'RSfd' = 4
+ #: top/top_nls.c:285
+ msgid "RSfd"
+-msgstr ""
++msgstr "RSfd"
+ 
+ #: top/top_nls.c:286
+ msgid "RES File-based (KiB)"
+-msgstr ""
++msgstr "REZ oparte na plikach (KiB)"
+ 
+ #. Translation Hint: maximum 'RSlk' = 4
+ #: top/top_nls.c:288
+ msgid "RSlk"
+-msgstr ""
++msgstr "RSlk"
+ 
+ #: top/top_nls.c:289
+ msgid "RES Locked (KiB)"
+-msgstr ""
++msgstr "REZ zablokowane (KiB)"
+ 
+ #. Translation Hint: maximum 'RSsh' = 4
+ #: top/top_nls.c:291
+ msgid "RSsh"
+-msgstr ""
++msgstr "RSsh"
+ 
+ #: top/top_nls.c:292
+-#, fuzzy
+ msgid "RES Shared (KiB)"
+-msgstr "Pamięć współdzielona (KiB)"
++msgstr "REZ współdzielone (KiB)"
+ 
+ #. Translation Hint: maximum 'CGNAME' = 7
+ #: top/top_nls.c:294
+ msgid "CGNAME"
+-msgstr ""
++msgstr "NAZWACG"
+ 
+ #: top/top_nls.c:295
+-#, fuzzy
+ msgid "Control Group name"
+-msgstr "Grupy sterujące"
++msgstr "Nazwa grupy sterującej"
+ 
+ #. Translation Notes ------------------------------------------------
+ #. .  It is strongly recommend that the --no-wrap command line option
+@@ -3553,27 +3542,27 @@
+ "%s %s:~3 %9.9s~2razem,~3 %9.9s~2wolne,~3 %9.9s~2użyte.~3 %9.9s~2dost. %s~3\n"
+ 
+ #: top/top_nls.c:659
+-#, fuzzy, c-format
++#, c-format
+ msgid ""
+ "Inspection~2 Pause at: pid ~1%d~6, running ~1%s~6\n"
+ "Use~2:  left/right then <Enter> to ~1select~5 an option; 'q' or <Esc> to "
+ "~1end~5 !\n"
+ "Options~2: ~1%s\n"
+ msgstr ""
+-"Podgląd~2 Pauza: pid ~1%d~6 działający ~1%s~6 jako użytkownik ~1%s~6\n"
++"Podgląd~2 Pauza: pid ~1%d~6 działający ~1%s~6\n"
+ "Obsługa~2: lewo/prawo, potem <Enter> aby ~1wybrać~5 opcję; 'q' lub <Esc> aby "
+ "~1zakończyć~5.\n"
+ "Opcje~2: ~1%s\n"
+ 
+ #: top/top_nls.c:664
+-#, fuzzy, c-format
++#, c-format
+ msgid ""
+ "Inspection~2 View at pid: ~1%s~3, running ~1%s~3.  Locating: ~1%s~6\n"
+ "Use~2:  left/right/up/down/etc to ~1navigate~5 the output; 'L'/'&' to "
+ "~1locate~5/~1next~5.\n"
+ "Or~2:   <Enter> to ~1select another~5; 'q' or <Esc> to ~1end~5 !\n"
+ msgstr ""
+-"Podgląd~2 Widok: ~1%s~3, ~1%s~3, ~1%s~3.  Szukanie: ~1%s~6\n"
++"Podgląd~2 Widok: pid ~1%s~3, działający ~1%s~3. Szukanie: ~1%s~6\n"
+ "Obsługa~2: lewo/prawo/góra/dół/itp. ~1nawigacja~5; 'L'/'&' ~1szukanie~5/"
+ "~1następny~5.\n"
+ "Lub~2:     <Enter> aby ~1wybrać inny~5; 'q' lub <Esc> aby ~1zakończyć~5.\n"
+@@ -4129,7 +4118,7 @@
+ #: watch.c:385
+ #, c-format
+ msgid "%s: %s"
+-msgstr ""
++msgstr "%s: %s"
+ 
+ #: watch.c:456
+ msgid "unable to create IPC pipes"
