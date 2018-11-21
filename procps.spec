@@ -5,9 +5,13 @@
 
 # Conditional build:
 %bcond_without	systemd		# systemd support
+%bcond_with	elogind		# elogind support (instead of systemd)
 %bcond_with	selinux		# libselinux support (get ps context values from dynamically loaded libselinux.so.1 instead of /proc/*/attr/current)
 %bcond_with	tests		# run tests. The testsuite is unsuitable for running on buildsystems
 
+%if %{with elogind}
+%undefine	with_systemd
+%endif
 Summary:	Utilities for monitoring your system and processes on your system
 Summary(de.UTF-8):	Utilities zum Ueberwachen Ihres Systems und der Prozesse
 Summary(es.UTF-8):	Utilitarios de monitoración de procesos
@@ -36,6 +40,7 @@ URL:		https://gitlab.com/procps-ng/procps
 BuildRequires:	autoconf >= 2.69
 BuildRequires:	automake >= 1:1.11
 %{?with_tests:BuildRequires: dejagnu}
+%{?with_elogind:BuildRequires:	elogind-devel}
 BuildRequires:	gettext-tools >= 0.14.1
 %{?with_selinux:BuildRequires:	libselinux-devel}
 BuildRequires:	libtool >= 2:2
@@ -155,6 +160,7 @@ Statyczna wersja biblioteki libproc.
 %{__automake}
 %configure \
 	--disable-silent-rules \
+	%{?with_elogind:--with-elogind} \
 	%{?with_systemd:--with-systemd} \
 	%{?with_selinux:--enable-libselinux} \
 	--disable-pidof \
@@ -181,10 +187,10 @@ install -d $RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir},/%{_lib},/bin}
 ln -f $RPM_BUILD_ROOT%{_bindir}/{pkill,pgrep}
 ln -f $RPM_BUILD_ROOT%{_bindir}/{snice,skill}
 
-mv $RPM_BUILD_ROOT{%{_bindir},/bin}/ps
+%{__mv} $RPM_BUILD_ROOT{%{_bindir},/bin}/ps
 
 install -d $RPM_BUILD_ROOT/%{_lib}
-mv -f $RPM_BUILD_ROOT{%{_libdir}/libprocps.so.*,/%{_lib}}
+%{__mv} $RPM_BUILD_ROOT{%{_libdir}/libprocps.so.*,/%{_lib}}
 ln -sf /%{_lib}/$(basename $RPM_BUILD_ROOT/%{_lib}/libprocps.so.*.*.*) \
         $RPM_BUILD_ROOT%{_libdir}/libprocps.so
 
