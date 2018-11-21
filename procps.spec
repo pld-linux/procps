@@ -6,6 +6,7 @@
 # Conditional build:
 %bcond_without	systemd		# systemd support
 %bcond_with	elogind		# elogind support (instead of systemd)
+%bcond_with	pidof		# include pidof here [see also SysVinit.spec:SysVinit-tools
 %bcond_with	selinux		# libselinux support (get ps context values from dynamically loaded libselinux.so.1 instead of /proc/*/attr/current)
 %bcond_with	tests		# run tests. The testsuite is unsuitable for running on buildsystems
 
@@ -162,8 +163,9 @@ Statyczna wersja biblioteki libproc.
 	--disable-silent-rules \
 	%{?with_elogind:--with-elogind} \
 	%{?with_systemd:--with-systemd} \
+	--disable-kill \
 	%{?with_selinux:--enable-libselinux} \
-	--disable-pidof \
+	%{!?with_pidof:--disable-pidof} \
 	--enable-sigwinch \
 	--enable-skill \
 	--enable-w-from \
@@ -183,11 +185,14 @@ install -d $RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir},/%{_lib},/bin}
 	DESTDIR=$RPM_BUILD_ROOT \
 	pkgconfigdir=%{_pkgconfigdir}
 
-# identical binaries are copied, not linked:
+# identical programs are built independently, not hard- or symlinked:
 ln -f $RPM_BUILD_ROOT%{_bindir}/{pkill,pgrep}
 ln -f $RPM_BUILD_ROOT%{_bindir}/{snice,skill}
 
 %{__mv} $RPM_BUILD_ROOT{%{_bindir},/bin}/ps
+%if %{with pidof}
+%{__mv} $RPM_BUILD_ROOT{%{_bindir},/bin}/pidof
+%endif
 
 install -d $RPM_BUILD_ROOT/%{_lib}
 %{__mv} $RPM_BUILD_ROOT{%{_libdir}/libprocps.so.*,/%{_lib}}
@@ -198,9 +203,6 @@ cp -p %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}
 cp -p %{SOURCE3} $RPM_BUILD_ROOT%{_pixmapsdir}
 install -p %{SOURCE4} $RPM_BUILD_ROOT%{_bindir}/XConsole
 
-# PLD: kill is packaged in util-linux
-%{__rm} $RPM_BUILD_ROOT%{_bindir}/kill
-%{__rm} $RPM_BUILD_ROOT%{_mandir}/man1/kill.1
 # obsoleted by pkg-config
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/libprocps.la
 # packaged as doc
@@ -224,6 +226,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /%{_lib}/libprocps.so.*.*
 %ghost %attr(755,root,root) /%{_lib}/libprocps.so.7
 %attr(755,root,root) /bin/ps
+%if %{with pidof}
+%attr(755,root,root) /bin/pidof
+%endif
 %attr(755,root,root) /sbin/sysctl
 %attr(755,root,root) %{_bindir}/XConsole
 %attr(755,root,root) %{_bindir}/free
@@ -243,6 +248,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_desktopdir}/top.desktop
 %{_pixmapsdir}/top.png
 %{_mandir}/man1/free.1*
+%if %{with pidof}
+%{_mandir}/man1/pidof.1*
+%endif
 %{_mandir}/man1/pgrep.1*
 %{_mandir}/man1/pkill.1*
 %{_mandir}/man1/pmap.1*
