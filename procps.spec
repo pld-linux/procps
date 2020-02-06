@@ -21,13 +21,13 @@ Summary(pl.UTF-8):	Narzędzia do monitorowania procesów
 Summary(pt_BR.UTF-8):	Utilitários de monitoração de processos
 Summary(tr.UTF-8):	Süreç izleme araçları
 Name:		procps
-Version:	3.3.15
+Version:	3.3.16
 Release:	1
 Epoch:		1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	http://downloads.sourceforge.net/procps-ng/%{name}-ng-%{version}.tar.xz
-# Source0-md5:	2b0717a7cb474b3d6dfdeedfbad2eccc
+# Source0-md5:	e8dc8455e573bdc40b8381d572bbb89b
 Source1:	%{name}-non-english-man-pages.tar.bz2
 # Source1-md5:	60d24720b76c10553ed4abf68b76e079
 Source2:	top.desktop
@@ -224,7 +224,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS Documentation/{FAQ,TODO,bugs.md} NEWS
 %attr(755,root,root) /%{_lib}/libprocps.so.*.*
-%ghost %attr(755,root,root) /%{_lib}/libprocps.so.7
+%ghost %attr(755,root,root) /%{_lib}/libprocps.so.8
 %attr(755,root,root) /bin/ps
 %if %{with pidof}
 %attr(755,root,root) /bin/pidof
