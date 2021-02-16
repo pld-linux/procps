@@ -281,6 +281,9 @@ rm -rf $RPM_BUILD_ROOT
 %lang(ko) %{_mandir}/ko/man[158]/*
 %lang(nl) %{_mandir}/nl/man[158]/*
 %lang(pl) %{_mandir}/pl/man[158]/*
+%lang(pt_BR) %{_mandir}/pt_BR/man[158]/*
+%lang(sv) %{_mandir}/sv/man[158]/*
+%lang(uk) %{_mandir}/uk/man[158]/*
 
 %files devel
 %defattr(644,root,root,755)
