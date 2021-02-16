@@ -21,13 +21,13 @@ Summary(pl.UTF-8):	Narzędzia do monitorowania procesów
 Summary(pt_BR.UTF-8):	Utilitários de monitoração de processos
 Summary(tr.UTF-8):	Süreç izleme araçları
 Name:		procps
-Version:	3.3.16
+Version:	3.3.17
 Release:	1
 Epoch:		1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	http://downloads.sourceforge.net/procps-ng/%{name}-ng-%{version}.tar.xz
-# Source0-md5:	e8dc8455e573bdc40b8381d572bbb89b
+# Source0-md5:	d60613e88c2f442ebd462b5a75313d56
 Source1:	%{name}-non-english-man-pages.tar.bz2
 # Source1-md5:	60d24720b76c10553ed4abf68b76e079
 Source2:	top.desktop
@@ -145,7 +145,7 @@ Static version of libproc library.
 Statyczna wersja biblioteki libproc.
 
 %prep
-%setup -qn %{name}-ng-%{version}
+%setup -q
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -235,6 +235,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/pgrep
 %attr(755,root,root) %{_bindir}/pkill
 %attr(755,root,root) %{_bindir}/pmap
+%attr(755,root,root) %{_bindir}/pwait
 %attr(755,root,root) %{_bindir}/pwdx
 %attr(755,root,root) %{_bindir}/skill
 %attr(755,root,root) %{_bindir}/slabtop
@@ -256,6 +257,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/pmap.1*
 %{_mandir}/man1/procps.1*
 %{_mandir}/man1/ps.1*
+%{_mandir}/man1/pwait.1*
 %{_mandir}/man1/pwdx.1*
 %{_mandir}/man1/skill.1*
 %{_mandir}/man1/slabtop.1*
