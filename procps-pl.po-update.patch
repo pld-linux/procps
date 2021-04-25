@@ -1,6 +1,7 @@
---- procps-ng-3.3.14/po/pl.po.orig	2018-04-10 13:33:19.155533970 +0200
-+++ procps-ng-3.3.14/po/pl.po	2018-05-17 22:15:38.343130853 +0200
-@@ -279,8 +279,8 @@ msgid ""
+diff -urNp -x '*.orig' procps-3.3.17.org/po/pl.po procps-3.3.17/po/pl.po
+--- procps-3.3.17.org/po/pl.po	2021-02-09 11:11:25.000000000 +0100
++++ procps-3.3.17/po/pl.po	2021-04-25 19:52:34.958750126 +0200
+@@ -285,8 +285,8 @@ msgid ""
  " --ns <PID>                match the processes that belong to the same\n"
  "                           namespace as <pid>\n"
  msgstr ""
@@ -9,6 +10,5 @@
 +" --ns <PID>                dopasowanie procesów należących do tej samej\n"
 +"                           przestrzeni nazw, co <PID>\n"
  
- #: pgrep.c:139 procps-ng-3.3.15.93-bfad-dirty/pgrep.c:139
+ #: pgrep.c:164
  msgid ""
-
