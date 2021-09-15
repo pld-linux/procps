@@ -22,7 +22,7 @@ Summary(pt_BR.UTF-8):	Utilitários de monitoração de processos
 Summary(tr.UTF-8):	Süreç izleme araçları
 Name:		procps
 Version:	3.3.17
-Release:	1
+Release:	2
 Epoch:		1
 License:	GPL v2+
 Group:		Applications/System
@@ -37,6 +37,7 @@ Source4:	XConsole.sh
 Patch0:		%{name}-missing-symbol.patch
 Patch1:		%{name}-FILLBUG_backport.patch
 Patch2:		%{name}-pl.po-update.patch
+Patch3:		systemd-glob.patch
 URL:		https://gitlab.com/procps-ng/procps
 BuildRequires:	autoconf >= 2.69
 BuildRequires:	automake >= 1:1.11
@@ -149,6 +150,7 @@ Statyczna wersja biblioteki libproc.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %{__sed} -i -e "s#usrbin_execdir=.*#usrbin_execdir='\${bindir}'#g" configure.ac
 
