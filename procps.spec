@@ -282,6 +282,7 @@ rm -rf $RPM_BUILD_ROOT
 %lang(nl) %{_mandir}/nl/man[158]/*
 %lang(pl) %{_mandir}/pl/man[158]/*
 %lang(pt_BR) %{_mandir}/pt_BR/man[158]/*
+%lang(ro) %{_mandir}/ro/man[158]/*
 %lang(sv) %{_mandir}/sv/man[158]/*
 %lang(uk) %{_mandir}/uk/man[158]/*
 
@@ -293,6 +294,18 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/procps.3*
 %{_mandir}/man3/procps_misc.3*
 %{_mandir}/man3/procps_pids.3*
+%lang(pl) %{_mandir}/pl/man3/procps.3*
+%lang(pl) %{_mandir}/pl/man3/procps_misc.3*
+%lang(pl) %{_mandir}/pl/man3/procps_pids.3*
+%lang(ro) %{_mandir}/ro/man3/procps.3*
+%lang(ro) %{_mandir}/ro/man3/procps_misc.3*
+%lang(ro) %{_mandir}/ro/man3/procps_pids.3*
+%lang(sv) %{_mandir}/sv/man3/procps.3*
+%lang(sv) %{_mandir}/sv/man3/procps_misc.3*
+%lang(sv) %{_mandir}/sv/man3/procps_pids.3*
+%lang(uk) %{_mandir}/uk/man3/procps.3*
+%lang(uk) %{_mandir}/uk/man3/procps_misc.3*
+%lang(uk) %{_mandir}/uk/man3/procps_pids.3*
 
 %files static
 %defattr(644,root,root,755)
