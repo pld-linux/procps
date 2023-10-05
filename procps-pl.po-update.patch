@@ -1,7 +1,7 @@
 diff -urNp -x '*.orig' procps-3.3.17.org/po/pl.po procps-3.3.17/po/pl.po
 --- procps-3.3.17.org/po/pl.po	2021-02-09 11:11:25.000000000 +0100
 +++ procps-3.3.17/po/pl.po	2021-04-25 19:52:34.958750126 +0200
-@@ -285,8 +285,8 @@ msgid ""
+@@ -401,8 +401,8 @@
  " --ns <PID>                match the processes that belong to the same\n"
  "                           namespace as <pid>\n"
  msgstr ""
@@ -10,5 +10,6 @@ diff -urNp -x '*.orig' procps-3.3.17.org/po/pl.po procps-3.3.17/po/pl.po
 +" --ns <PID>                dopasowanie procesów należących do tej samej\n"
 +"                           przestrzeni nazw, co <PID>\n"
  
- #: pgrep.c:164
+ #: src/pgrep.c:199
  msgid ""
+
