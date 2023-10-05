@@ -49,11 +49,12 @@ BuildRequires:	ncurses-devel >= 5.1
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.402
 BuildRequires:	sed >= 4.0
-%{?with_systemd:BuildRequires:	systemd-devel >= 1:206}
+%{?with_systemd:BuildRequires:	systemd-devel >= 1:254}
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
 Requires:	/sbin/ldconfig
 Requires:	fileutils
+%{?with_systemd:Requires:	systemd-libs >= 1:254}
 Obsoletes:	procps-X11
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
