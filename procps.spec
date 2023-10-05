@@ -26,7 +26,7 @@ Release:	1
 Epoch:		1
 License:	GPL v2+
 Group:		Applications/System
-Source0:	http://downloads.sourceforge.net/procps-ng/%{name}-ng-%{version}.tar.xz
+Source0:	https://downloads.sourceforge.net/procps-ng/%{name}-ng-%{version}.tar.xz
 # Source0-md5:	2f747fc7df8ccf402d03e375c565cf96
 Source1:	%{name}-non-english-man-pages.tar.bz2
 # Source1-md5:	60d24720b76c10553ed4abf68b76e079
