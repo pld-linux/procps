@@ -55,7 +55,7 @@ BuildRequires:	xz
 Requires:	/sbin/ldconfig
 Requires:	fileutils
 %{?with_systemd:Requires:	systemd-libs >= 1:254}
-Obsoletes:	procps-X11
+Obsoletes:	procps-X11 < 2.0.2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
