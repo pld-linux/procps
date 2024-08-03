@@ -56,7 +56,7 @@ index fd6e75f7..e2d754b5 100644
 -        printf("%-*.*s%-9.8s", userlen + 1, userlen, uname, tty + 5);
 +    printf("%-*.*s%-9.8s", userlen + 1, userlen, uname, tty + 5);
 +    if (from)
-+        print_from(session, NULL, ip_addresses, fromlen);
++        print_from(session, u, ip_addresses, fromlen);
 +
 +    /* login time */
 +    if (longform) {
