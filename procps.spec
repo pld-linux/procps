@@ -22,7 +22,7 @@ Summary(pt_BR.UTF-8):	Utilitários de monitoração de processos
 Summary(tr.UTF-8):	Süreç izleme araçları
 Name:		procps
 Version:	4.0.4
-Release:	2
+Release:	3
 Epoch:		1
 License:	GPL v2+
 Group:		Applications/System
