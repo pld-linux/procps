@@ -150,9 +150,9 @@ Statyczna wersja biblioteki libproc.
 %prep
 %setup -q -n %{name}-ng-%{version}
 
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
+%patch -P1 -p1
+%patch -P2 -p1
+%patch -P3 -p1
 
 %{__sed} -i -e "s#usrbin_execdir=.*#usrbin_execdir='\${bindir}'#g" configure.ac
 
