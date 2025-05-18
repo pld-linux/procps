@@ -9,6 +9,7 @@
 %bcond_with	pidof		# include pidof here [see also SysVinit.spec:SysVinit-tools
 %bcond_with	selinux		# libselinux support (get ps context values from dynamically loaded libselinux.so.1 instead of /proc/*/attr/current)
 %bcond_with	tests		# run tests. The testsuite is unsuitable for running on buildsystems
+%bcond_with	static_libs	# static library
 
 %if %{with elogind}
 %undefine	with_systemd
@@ -49,7 +50,7 @@ BuildRequires:	gettext-tools >= 0.14.1
 BuildRequires:	libtool >= 2:2
 BuildRequires:	ncurses-devel >= 5.1
 BuildRequires:	pkgconfig
-BuildRequires:	rpmbuild(macros) >= 1.402
+BuildRequires:	rpmbuild(macros) >= 1.527
 BuildRequires:	sed >= 4.0
 %{?with_systemd:BuildRequires:	systemd-devel >= 1:254}
 BuildRequires:	tar >= 1:1.22
@@ -165,6 +166,7 @@ Statyczna wersja biblioteki libproc.
 %{__automake}
 %configure \
 	--disable-silent-rules \
+	%{__enable_disable static_libs static} \
 	%{?with_elogind:--with-elogind} \
 	%{?with_systemd:--with-systemd} \
 	--disable-kill \
@@ -310,6 +312,8 @@ rm -rf $RPM_BUILD_ROOT
 %lang(uk) %{_mandir}/uk/man3/procps_misc.3*
 %lang(uk) %{_mandir}/uk/man3/procps_pids.3*
 
+%if %{with static_libs}
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libproc2.a
+%endif
