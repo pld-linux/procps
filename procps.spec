@@ -157,6 +157,11 @@ Statyczna wersja biblioteki libproc.
 
 %{__sed} -i -e "s#usrbin_execdir=.*#usrbin_execdir='\${bindir}'#g" configure.ac
 
+test ! -f po/LINGUAS
+cd po
+echo *.po | sed 's/\.po//g' > LINGUAS
+cd ..
+
 %build
 %{__gettextize}
 %{__libtoolize}
@@ -203,7 +208,7 @@ ln -f $RPM_BUILD_ROOT%{_bindir}/{snice,skill}
 install -d $RPM_BUILD_ROOT/%{_lib}
 %{__mv} $RPM_BUILD_ROOT{%{_libdir}/libproc2.so.*,/%{_lib}}
 ln -sf /%{_lib}/$(basename $RPM_BUILD_ROOT/%{_lib}/libproc2.so.*.*.*) \
-        $RPM_BUILD_ROOT%{_libdir}/libproc2.so
+	$RPM_BUILD_ROOT%{_libdir}/libproc2.so
 
 cp -p %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}
 cp -p %{SOURCE3} $RPM_BUILD_ROOT%{_pixmapsdir}
