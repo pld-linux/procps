@@ -22,13 +22,13 @@ Summary(pl.UTF-8):	Narzędzia do monitorowania procesów
 Summary(pt_BR.UTF-8):	Utilitários de monitoração de processos
 Summary(tr.UTF-8):	Süreç izleme araçları
 Name:		procps
-Version:	4.0.4
-Release:	3
+Version:	4.0.5
+Release:	1
 Epoch:		1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://downloads.sourceforge.net/procps-ng/%{name}-ng-%{version}.tar.xz
-# Source0-md5:	2f747fc7df8ccf402d03e375c565cf96
+# Source0-md5:	90803e64f51f192f3325d25c3335d057
 Source1:	%{name}-non-english-man-pages.tar.bz2
 # Source1-md5:	60d24720b76c10553ed4abf68b76e079
 Source2:	top.desktop
@@ -38,8 +38,6 @@ Source4:	XConsole.sh
 
 Patch1:		%{name}-FILLBUG_backport.patch
 Patch2:		%{name}-pl.po-update.patch
-# [PATCH] w: Don't crash when using short option
-Patch3:		79042e07fab9956135a21b1df7a69d1fbde7ef79.patch
 URL:		https://gitlab.com/procps-ng/procps
 BuildRequires:	autoconf >= 2.69
 BuildRequires:	automake >= 1:1.11
@@ -153,7 +151,6 @@ Statyczna wersja biblioteki libproc.
 
 %patch -P1 -p1
 %patch -P2 -p1
-%patch -P3 -p1
 
 %{__sed} -i -e "s#usrbin_execdir=.*#usrbin_execdir='\${bindir}'#g" configure.ac
 
@@ -235,7 +232,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS doc/{FAQ,TODO,bugs.md} NEWS
 %attr(755,root,root) /%{_lib}/libproc2.so.*.*
-%ghost %attr(755,root,root) /%{_lib}/libproc2.so.0
+%ghost %attr(755,root,root) /%{_lib}/libproc2.so.1
 %attr(755,root,root) /bin/ps
 %if %{with pidof}
 %attr(755,root,root) /bin/pidof
@@ -243,6 +240,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /sbin/sysctl
 %attr(755,root,root) %{_bindir}/XConsole
 %attr(755,root,root) %{_bindir}/free
+%attr(755,root,root) %{_bindir}/hugetop
 %attr(755,root,root) %{_bindir}/pgrep
 %attr(755,root,root) %{_bindir}/pkill
 %attr(755,root,root) %{_bindir}/pmap
@@ -260,6 +258,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_desktopdir}/top.desktop
 %{_pixmapsdir}/top.png
 %{_mandir}/man1/free.1*
+%{_mandir}/man1/hugetop.1*
 %if %{with pidof}
 %{_mandir}/man1/pidof.1*
 %endif
@@ -295,6 +294,7 @@ rm -rf $RPM_BUILD_ROOT
 %lang(ro) %{_mandir}/ro/man[158]/*
 %lang(sv) %{_mandir}/sv/man[158]/*
 %lang(uk) %{_mandir}/uk/man[158]/*
+%lang(zh_CN) %{_mandir}/zh_CN/man[158]/*
 
 %files devel
 %defattr(644,root,root,755)
@@ -304,15 +304,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/procps.3*
 %{_mandir}/man3/procps_misc.3*
 %{_mandir}/man3/procps_pids.3*
-%lang(pl) %{_mandir}/pl/man3/procps.3*
-%lang(pl) %{_mandir}/pl/man3/procps_misc.3*
-%lang(pl) %{_mandir}/pl/man3/procps_pids.3*
 %lang(ro) %{_mandir}/ro/man3/procps.3*
 %lang(ro) %{_mandir}/ro/man3/procps_misc.3*
 %lang(ro) %{_mandir}/ro/man3/procps_pids.3*
-%lang(sv) %{_mandir}/sv/man3/procps.3*
-%lang(sv) %{_mandir}/sv/man3/procps_misc.3*
-%lang(sv) %{_mandir}/sv/man3/procps_pids.3*
 %lang(uk) %{_mandir}/uk/man3/procps.3*
 %lang(uk) %{_mandir}/uk/man3/procps_misc.3*
 %lang(uk) %{_mandir}/uk/man3/procps_pids.3*
