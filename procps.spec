@@ -9,7 +9,7 @@
 %bcond_with	pidof		# include pidof here [see also SysVinit.spec:SysVinit-tools
 %bcond_with	selinux		# libselinux support (get ps context values from dynamically loaded libselinux.so.1 instead of /proc/*/attr/current)
 %bcond_with	tests		# run tests. The testsuite is unsuitable for running on buildsystems
-%bcond_with	static_libs	# static library
+%bcond_without	static_libs	# static library
 
 %if %{with elogind}
 %undefine	with_systemd
@@ -23,7 +23,7 @@ Summary(pt_BR.UTF-8):	Utilitários de monitoração de processos
 Summary(tr.UTF-8):	Süreç izleme araçları
 Name:		procps
 Version:	4.0.5
-Release:	1
+Release:	2
 Epoch:		1
 License:	GPL v2+
 Group:		Applications/System
