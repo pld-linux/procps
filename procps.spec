@@ -22,13 +22,13 @@ Summary(pl.UTF-8):	Narzędzia do monitorowania procesów
 Summary(pt_BR.UTF-8):	Utilitários de monitoração de processos
 Summary(tr.UTF-8):	Süreç izleme araçları
 Name:		procps
-Version:	4.0.5
-Release:	2
+Version:	4.0.6
+Release:	1
 Epoch:		1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://downloads.sourceforge.net/procps-ng/%{name}-ng-%{version}.tar.xz
-# Source0-md5:	90803e64f51f192f3325d25c3335d057
+# Source0-md5:	20c23dc3dd1569a2bb1d1fa93de213ed
 Source1:	%{name}-non-english-man-pages.tar.bz2
 # Source1-md5:	60d24720b76c10553ed4abf68b76e079
 Source2:	top.desktop
@@ -263,7 +263,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/pidof.1*
 %endif
 %{_mandir}/man1/pgrep.1*
-%{_mandir}/man1/pkill.1*
 %{_mandir}/man1/pmap.1*
 %{_mandir}/man1/ps.1*
 %{_mandir}/man1/pidwait.1*
@@ -304,9 +303,15 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/procps.3*
 %{_mandir}/man3/procps_misc.3*
 %{_mandir}/man3/procps_pids.3*
+%lang(de) %{_mandir}/de/man3/procps.3*
+%lang(de) %{_mandir}/de/man3/procps_misc.3*
+%lang(de) %{_mandir}/de/man3/procps_pids.3*
 %lang(ro) %{_mandir}/ro/man3/procps.3*
 %lang(ro) %{_mandir}/ro/man3/procps_misc.3*
 %lang(ro) %{_mandir}/ro/man3/procps_pids.3*
+%lang(sv) %{_mandir}/sv/man3/procps.3*
+%lang(sv) %{_mandir}/sv/man3/procps_misc.3*
+%lang(sv) %{_mandir}/sv/man3/procps_pids.3*
 %lang(uk) %{_mandir}/uk/man3/procps.3*
 %lang(uk) %{_mandir}/uk/man3/procps_misc.3*
 %lang(uk) %{_mandir}/uk/man3/procps_pids.3*

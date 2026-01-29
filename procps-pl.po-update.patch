@@ -10,6 +10,6 @@ diff -urNp -x '*.orig' procps-3.3.17.org/po/pl.po procps-3.3.17/po/pl.po
 +" --ns <PID>                dopasowanie procesów należących do tej samej\n"
 +"                           przestrzeni nazw, co <PID>\n"
  
- #: src/pgrep.c:199
+ #: src/pgrep.c:212
  msgid ""
 
