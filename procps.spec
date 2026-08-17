@@ -22,13 +22,13 @@ Summary(pl.UTF-8):	Narzędzia do monitorowania procesów
 Summary(pt_BR.UTF-8):	Utilitários de monitoração de processos
 Summary(tr.UTF-8):	Süreç izleme araçları
 Name:		procps
-Version:	4.0.6
+Version:	4.0.7
 Release:	1
 Epoch:		1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://downloads.sourceforge.net/procps-ng/%{name}-ng-%{version}.tar.xz
-# Source0-md5:	20c23dc3dd1569a2bb1d1fa93de213ed
+# Source0-md5:	d47bdda51c4bd595a1ab21b8e538bcb3
 Source1:	%{name}-non-english-man-pages.tar.bz2
 # Source1-md5:	60d24720b76c10553ed4abf68b76e079
 Source2:	top.desktop
@@ -266,6 +266,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/pmap.1*
 %{_mandir}/man1/ps.1*
 %{_mandir}/man1/pidwait.1*
+%{_mandir}/man1/pkill.1*
 %{_mandir}/man1/pwdx.1*
 %{_mandir}/man1/skill.1*
 %{_mandir}/man1/slabtop.1*
